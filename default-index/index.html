@@ -168,6 +168,197 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/09/AI_and_ML_Accelerator_Research/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="Treeby">
+      <meta itemprop="description" content="La vie est belle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Amusement Park">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/10/09/AI_and_ML_Accelerator_Research/" class="post-title-link" itemprop="url">AI_and_ML_Accelerator_Research</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-10-09 02:43:04 / Modified: 02:55:20" itemprop="dateCreated datePublished" datetime="2023-10-09T02:43:04+08:00">2023-10-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BE%88%E6%B0%B4%E7%9A%84%E8%B0%83%E7%A0%94%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">很水的调研类</span></a>
+                </span>
+            </span>
+
+          
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p><strong>credit to</strong>
+《人工智能芯片技术白皮书2018，清华大学》《AI
+芯片前沿技术与创新未来，张臣雄》</p>
+</blockquote>
+<p><strong><em>当英伟达成为全球首家市值超过1万亿美元芯片公司时，便意味着AI芯片的的热潮前所未有地席卷各行各业，成为人工智能时代的最重要的物理基石——无芯片，不
+AI</em></strong></p>
+<h2 id="什么是-ai-芯片">什么是 AI 芯片？</h2>
+<p><strong>定义</strong>：从广义上讲只要能够运行人工智能算法的芯片都叫作
+AI 芯片。但是通常意义上的 AI
+芯片指的是针对人工智能算法做了特殊加速设计的芯片，现阶段，这些人工智能算法一般以深度学习算法
+(DNN) 为主 (比如包括 CNN, RNN, LSTM, GNN, Transformer)</p>
+<ul>
+<li>研究如何设计出高效的硬件友好型的智能算法</li>
+<li>研究如何将这些算法有效可靠地在芯片上实现</li>
+</ul>
+<p><strong>AI
+芯片本身处于整个链条的中部，向上为应用和算法提供高效支持，向下对器件和电路、工艺和材料提出需求。</strong></p>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696787293538.png" alt="Fig1">
+<figcaption aria-hidden="true">Fig1</figcaption>
+</figure>
+<h2 id="ai-芯片的种类">AI 芯片的种类</h2>
+<h3 id="按类型">按类型</h3>
+<ol type="1">
+<li><p><strong>经过软硬件优化可以高效支持 AI 应用的通用芯片</strong></p>
+<ul>
+<li><p><strong>GPU</strong></p>
+<p>GPU是单指令、多数据处理，采用数量众多的计算单元和超长的流水线，主要处理图像领域的运算加速。GPU是不能单独使用的，它只是处理大数据计算时的能手，必须由CPU进行调用，下达指令才能工作。为此开发的专用编程系统CUDA，能够帮助工程师们运行数万个并发线程和数百个处理器核。</p></li>
+<li><p><strong>TPU, NPU</strong></p></li>
+</ul></li>
+<li><p><strong>侧重加速机器学习（尤其是神经网络、深度学习）算法的芯片</strong></p>
+<ul>
+<li><p><strong>FPGA</strong></p>
+<p>现场可编程逻辑门阵列是一种可重构芯片，具有模块化核规则化的架构与极大的灵活性。与
+GPU 不同，FPGA
+同时拥有硬件流水线并行和数据并行处理能力,适用于以硬件流水线方式处理一条数据，且整数运算性能更高，因此常用于深度学习算法中的推断阶段。优点是（1）
+FPGA 没有内存和控制所带来的存储和读取部分，速度更快；（2） FPGA
+没有读取指令操作,所以功耗更低。劣势是价格比较高、编程复杂、整体运算能力不是很高。</p></li>
+<li><p><strong>ASIC</strong></p>
+<p>ASIC是为实现特定场景应用要求时，而定制的专用AI芯片。在功耗、可靠性、体积方面都有优势，尤其在高性能、低功耗的移动设备端。缺点是电路设计需要定制，相对开发周期长，功能难以扩展。</p></li>
+</ul></li>
+<li><p><strong>受生物脑启发设计的神经形态计算芯片</strong></p>
+<ul>
+<li><p><strong>类脑芯片</strong></p>
+<p>类脑芯片架构是一款模拟人脑的神经网络模型的新型芯片编程架构，这一系统可以模拟人脑功能进行感知方式、行为方式和思维方式。如，清华大学天机系列芯片。</p></li>
+</ul></li>
+</ol>
+<h3 id="按功能分类">按功能分类</h3>
+<p>根据机器学习算法步骤，可分为训练和推断两个环节：</p>
+<ul>
+<li><p><strong>训练 (Training)</strong></p>
+<p>训练环节通常需要通过大量的数据输入，训练出一个复杂的深度神经网络模型。训练过程由于涉及海量的训练数据和复杂的深度神经网络结构，运算量巨大，需要庞大的计算规模。训练要求<strong>高精度、高吞吐量、强大的算力</strong>。目前市场上通常使用英伟达的GPU集群，Google的
+TPU 来训练。</p></li>
+<li><p><strong>推断 (Inference)</strong></p>
+<p>推断环节是指利用训练好的模型，使用新的数据去“推断”出各种结论。这个环节的计算量相对训练环节少很多，但仍然会涉及到大量的矩阵运算。因此，对于众多应用场景来说，<strong>速度、能效、安全和硬件成本</strong>是考虑的因素。</p></li>
+<li><p><strong>趋势</strong></p>
+<p>在未来的 AI
+应用当中，训练（学习）和推断在更多场景下会是交织在一起的。</p></li>
+</ul>
+<h3 id="按-ai-部署的位置">按 AI 部署的位置</h3>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696788206981.png" alt="Fig2">
+<figcaption aria-hidden="true">Fig2</figcaption>
+</figure>
+<ul>
+<li><p><strong>云端</strong></p>
+<p>云端是指在数据中心或超级计算机，利用海量的数据和庞大而复杂的深度学习算法进行模型训练，也能用作推理。</p></li>
+<li><p><strong>边缘侧</strong></p>
+<p>数据中心外的设备，如自动驾驶汽车、机器人、智能手机、物联网设备等，一般用训练好的模型进行推理。</p></li>
+<li><p><strong>趋势</strong></p>
+<p>云的边界也
+逐渐向数据的源头推进，未来很可能在传统的终端设备和云端设备直接出现更多的边缘设备，把
+AI
+处理分布在各种网络设备（比如5G的基站）中，让数据尽量实现本地处理</p></li>
+</ul>
+<h2 id="ai-芯片的技术挑战">AI 芯片的技术挑战</h2>
+<ul>
+<li><strong>冯·诺依曼瓶颈</strong></li>
+</ul>
+<p><strong>内存墙</strong>问题。</p>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696789769571.png" alt="Fig3">
+<figcaption aria-hidden="true">Fig3</figcaption>
+</figure>
+<ul>
+<li><strong>CMOS工艺和器件瓶颈</strong></li>
+</ul>
+<p><strong>Dennard Scaling定律</strong>已经失效，<strong>Amdahl’s
+Law</strong>已经达到了极限，<strong>Moore's
+Law</strong>也变得越来越难以遵循，而且成本也越来越高，特别是在功率和性能效益下降的情况下。</p>
+<h2 id="ai-芯片的优化方向">AI 芯片的优化方向</h2>
+<h3 id="新型计算范式">新型计算范式</h3>
+<p>目前，AI芯片主要用于DNN模型的训练和推理，计算量非常大，故需从硬件友好方面考虑对算法的改进，降低计算成本。</p>
+<ul>
+<li><p><strong>降低数值精度的量化技术</strong></p>
+<p>实现一个精度与硬件开销的 trade-off</p></li>
+<li><p><strong>压缩网络规模、修剪网络</strong></p>
+<p>在DNN计算中，有许多值是0或接近于0或重复的值，将这些值输入一个MAC进行乘积累加运算没有意义，浪费资源，因此需要压缩和剪枝。</p></li>
+<li><p><strong>二值、三值神经网络</strong></p>
+<p>BNN: Binary Neural Network</p>
+<p>TNN: Ternary Neural Network</p></li>
+<li><p><strong>增加和利用网络稀疏性</strong></p></li>
+</ul>
+<h3 id="架构的设计和优化">架构的设计和优化</h3>
+<ul>
+<li><p><strong>CPU+GPU+DSA异构并行计算</strong></p></li>
+<li><p><strong>存算感一体新架构</strong></p>
+<p>有望突破冯·诺依曼架构，存内运算、近内存计算、基于新型存储器的人工神经网络、生物神经网络，等等。</p></li>
+</ul>
+<h3 id="电路的设计和优化">电路的设计和优化</h3>
+<ul>
+<li><p><strong>FPGA Overlay技术</strong></p>
+<p>为了提高FPGA的开发效率、更好的利用FPGA的逻辑资源、方便FPGA的大规模部署和应用，需要将FPGA进行一定程度的逻辑抽象，使顶层用户不必太多关注于FPGA硬件逻辑的实现方式与细节。</p></li>
+<li><p><strong>模数混合电路设计MAC</strong></p></li>
+<li><p><strong>软件定义芯片</strong></p>
+<p>可重构计算技术允许硬件架构和功能随软件变化而变化，具备处理器的灵活性和专用集成电路的高性能和低功耗，被认为是突破性的下一代集成电路技术</p>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696789666625.png" alt="Fig4">
+<figcaption aria-hidden="true">Fig4</figcaption>
+</figure></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/05/%E6%88%AA%E6%96%AD%E6%96%B9%E6%B3%95%E7%9A%84%E8%BF%91%E4%BC%BC%E4%B9%98%E6%B3%95%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -199,7 +390,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-06 17:07:53" itemprop="dateModified" datetime="2023-10-06T17:07:53+08:00">2023-10-06</time>
+                <time title="Modified: 2023-10-07 19:40:07" itemprop="dateModified" datetime="2023-10-07T19:40:07+08:00">2023-10-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,8 +459,10 @@ y_{n-1}y_{n-2}y_{n-3}\dotsc y_{1}y_{0}\\\\
 +(-2y_{3}+y_{2}+y_{1})*2^{2}+(-2y_{1}+y_{0})*2^{0}\\\\ &amp;=
 \sum_{k=0}^{\frac{n}{2}-1}(-2y_{2k+1}+y_{2k}+y_{2k-1})*2^{2k}\\\\ &amp;=
 \sum_{k=0}^{\frac{n}{2}-1}d_{k}*2^{2k} \end{aligned}\)</span></p>
-<p>即将三元组 <span class="math inline">\((y_{2k+1},y_{2k},y_{2k-1})\)</span> 映射至 <span class="math inline">\(d_{k}\)</span>， <span class="math inline">\(c_{k}\)</span> 为校正位，即若 <span class="math inline">\(d_{k}\)</span>
-为负数，则根据补码规则，将乘积取反后需要加上1 所有的8种情况如下表： <img src="/2023/10/05/%E6%88%AA%E6%96%AD%E6%96%B9%E6%B3%95%E7%9A%84%E8%BF%91%E4%BC%BC%E4%B9%98%E6%B3%95%E5%99%A8/1696487355293.png" alt="1696487355293"></p>
+<p>即将三元组 <span class="math inline">\((y_{2k+1},y_{2k},y_{2k-1})\)</span> 映射至 <span class="math inline">\(d_{k}\)</span>，</p>
+<p><span class="math inline">\(c_{k}\)</span> 为校正位，即若 <span class="math inline">\(d_{k}\)</span>
+为负数，则根据补码规则，将乘积取反后需要加上1</p>
+<p>所有的8种情况如下表： <img src="/2023/10/05/%E6%88%AA%E6%96%AD%E6%96%B9%E6%B3%95%E7%9A%84%E8%BF%91%E4%BC%BC%E4%B9%98%E6%B3%95%E5%99%A8/1696487355293.png" alt="1696487355293"></p>
 <h3 id="full-accuracy-productsp_a">Full Accuracy Products(<span class="math inline">\(P_{A}\)</span>)</h3>
 <p><span class="math inline">\(\begin{aligned} P_{A} &amp;=
 X(x_{n-1}x_{n-2}x_{n-3}\dotsc x_{1}x_{0})*Y(y_{n-1}y_{n-2}y_{n-3}\dotsc
@@ -1027,13 +1220,13 @@ Computations</h3>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
