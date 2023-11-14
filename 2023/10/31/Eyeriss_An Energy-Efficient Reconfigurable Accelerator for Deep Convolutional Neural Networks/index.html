@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo_treeby.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC|Roboto&display=swap" rel="stylesheet">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs | buttons","Available values":"disqus | changyan | disqus | disqusjs | gitalk | livere | valine","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Eyeriss: An Energy-Efficient Reconfigurable Accelerator for Deep Convolutional Neural NetworksAbstractIntroductionCNN BASICSCNN  filters infmaps(input feature maps) ofmaps(output feature maps) psums(p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Amusement Park">
+<meta property="og:url" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/index.html">
+<meta property="og:site_name" content="Amusement Park">
+<meta property="og:description" content="Eyeriss: An Energy-Efficient Reconfigurable Accelerator for Deep Convolutional Neural NetworksAbstractIntroductionCNN BASICSCNN  filters infmaps(input feature maps) ofmaps(output feature maps) psums(p">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698684647207.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698685541855.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698736236503.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698753420423.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698754655474.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698756278238.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698757232830.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698757353178.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698757366566.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698756278238.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698761331459.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698762095756.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698771515055.png">
+<meta property="og:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1699116006038.png">
+<meta property="article:published_time" content="2023-10-30T16:32:29.911Z">
+<meta property="article:modified_time" content="2023-11-14T15:58:15.969Z">
+<meta property="article:author" content="Treeby">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698684647207.png">
+
+<link rel="canonical" href="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title> | Amusement Park</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Amusement Park</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Treeby's blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-github">
+
+    <a href="https://github.com/satreeby" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="Treeby">
+      <meta itemprop="description" content="La vie est belle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Amusement Park">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-10-31 00:32:29" itemprop="dateCreated datePublished" datetime="2023-10-31T00:32:29+08:00">2023-10-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-14 23:58:15" itemprop="dateModified" datetime="2023-11-14T23:58:15+08:00">2023-11-14</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Eyeriss-An-Energy-Efficient-Reconfigurable-Accelerator-for-Deep-Convolutional-Neural-Networks"><a href="#Eyeriss-An-Energy-Efficient-Reconfigurable-Accelerator-for-Deep-Convolutional-Neural-Networks" class="headerlink" title="Eyeriss: An Energy-Efficient Reconfigurable Accelerator for Deep Convolutional Neural Networks"></a>Eyeriss: An Energy-Efficient Reconfigurable Accelerator for Deep Convolutional Neural Networks</h1><h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h2 id="CNN-BASICS"><a href="#CNN-BASICS" class="headerlink" title="CNN BASICS"></a>CNN BASICS</h2><h3 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h3><p><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698684647207.png" alt="1698684647207"></p>
+<ul>
+<li><em><strong>filters</strong></em></li>
+<li><em><strong>infmaps</strong></em>(input feature maps)</li>
+<li><em><strong>ofmaps</strong></em>(output feature maps)</li>
+<li><em><strong>psums</strong></em>(partial sums)</li>
+<li><em><strong>bias</strong></em></li>
+</ul>
+<p>$\begin{aligned}<br>O[z][u][x][y] &amp;&#x3D; ReLU(B[u]+\sum\limits_{k&#x3D;0}^{C-1} \sum\limits_{i&#x3D;0}^{R-1} \sum\limits_{j&#x3D;0}^{S-1} I[z][k][Ux+i][Uy+j]\times W[u][k][i][j])\\<br>&amp;0\leq z \lt N, 0\leq u \lt M, 0\leq y \lt E, 0\leq x \lt F,  \\<br>&amp;E&#x3D;(H-R+U)&#x2F;U, F&#x3D;(W-S+U)&#x2F;U  \\<br>\end{aligned}$</p>
+<ul>
+<li><em><strong>z</strong></em>指第z个样本</li>
+<li><em><strong>u</strong></em>指该样本经过第u个filter得到第u个结果</li>
+<li><em><strong>x,y</strong></em>指结果中第y行，第x列的像素</li>
+<li><em><strong>k</strong></em>指第k个通道</li>
+<li><em><strong>U</strong></em>代表步长</li>
+<li><em><strong>filters</strong></em>维度为$M\times S\times R\times C$</li>
+<li><em><strong>ifmaps</strong></em>维度为$(N\times) W\times H\times C$</li>
+<li><em><strong>ofmaps</strong></em>维度为$(N\times) M\times F\times E$</li>
+</ul>
+<h3 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h3><p><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698685541855.png" alt="1698685541855"></p>
+<p>AlexNet共有五个卷积层，每个卷积层都包含卷积核、偏置项、ReLU激活函数和局部响应归一化（LRN）模块。</p>
+<h3 id="卷积层C1"><a href="#卷积层C1" class="headerlink" title="卷积层C1"></a>卷积层C1</h3><ul>
+<li><em><strong>filters</strong></em>: 96 × 11 × 11 × 3</li>
+<li><em><strong>ifmaps</strong></em>：1 × 224 × 224 × 3</li>
+<li><em><strong>stride</strong></em>: 4</li>
+<li><em><strong>ofmaps</strong></em>: 55 × 55 × (48 × 2)</li>
+<li>ReLU激活函数</li>
+<li>最大池化后：2 × 27 × 27 × 48</li>
+</ul>
+<h3 id="卷积层C2"><a href="#卷积层C2" class="headerlink" title="卷积层C2"></a>卷积层C2</h3><ul>
+<li><em><strong>filters</strong></em>: 256 × 5 × 5 × 48</li>
+<li><em><strong>ifmaps</strong></em>：2 × (27+4) × (27+4) × 48</li>
+<li><em><strong>stride</strong></em>: 1</li>
+<li><em><strong>ofmaps</strong></em>: 27 × 27 × (128 × 2)</li>
+<li>ReLU激活函数</li>
+<li>最大池化后：2 × 13 × 13 × 128</li>
+</ul>
+<h3 id="卷积层C3"><a href="#卷积层C3" class="headerlink" title="卷积层C3"></a>卷积层C3</h3><ul>
+<li><em><strong>filters</strong></em>: 384 × 3 × 3 × 256</li>
+<li><em><strong>ifmaps</strong></em>：(13+2) × (13+2) × (128 × 2)</li>
+<li><em><strong>stride</strong></em>: 1</li>
+<li><em><strong>ofmaps</strong></em>: 13 × 13 × (192 × 2)</li>
+<li>ReLU激活函数</li>
+</ul>
+<h3 id="卷积层C4"><a href="#卷积层C4" class="headerlink" title="卷积层C4"></a>卷积层C4</h3><ul>
+<li><em><strong>filters</strong></em>: 384 × 3 × 3 × 192</li>
+<li><em><strong>ifmaps</strong></em>：2 × (13+2) × (13+2) × 192</li>
+<li><em><strong>stride</strong></em>: 1</li>
+<li><em><strong>ofmaps</strong></em>: 13 × 13 × (192 × 2)</li>
+<li>ReLU激活函数</li>
+</ul>
+<h3 id="卷积层C5"><a href="#卷积层C5" class="headerlink" title="卷积层C5"></a>卷积层C5</h3><ul>
+<li><em><strong>filters</strong></em>: 256 × 3 × 3 × 192</li>
+<li><em><strong>ifmaps</strong></em>：2 × (13+2) × (13+2) × 192</li>
+<li><em><strong>stride</strong></em>: 1</li>
+<li><em><strong>ofmaps</strong></em>: 13 × 13 × (128 × 2)</li>
+<li>ReLU激活函数</li>
+<li>最大池化层</li>
+</ul>
+<h2 id="SYSTEM-ARCHITECTURE"><a href="#SYSTEM-ARCHITECTURE" class="headerlink" title="SYSTEM ARCHITECTURE"></a>SYSTEM ARCHITECTURE</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698736236503.png" alt="1698736236503"></p>
+<ul>
+<li>two clock domain<ul>
+<li>the core clock domain for processing</li>
+<li>the link clock domain for communicating</li>
+</ul>
+</li>
+<li>DRAM</li>
+<li>a 64 bit bidirectional data bus</li>
+<li>an asynchronous FIFO interface</li>
+<li>a spatial array of 168 PEs<ul>
+<li>12 × 16 rectangle</li>
+<li>108-kB GLB</li>
+<li>RLC CODEC</li>
+</ul>
+</li>
+<li>an ReLU module</li>
+<li>an NoC</li>
+</ul>
+<h3 id="System-Control-and-Configuration"><a href="#System-Control-and-Configuration" class="headerlink" title="System Control and Configuration"></a>System Control and Configuration</h3><ul>
+<li><p>two levels of control hierarchy</p>
+<ul>
+<li>top level<ol>
+<li>traffic between the off-chip DRAM and the GLB through the asynchronous interface</li>
+<li>traffic between the GLB and the PE array through the NoC; and</li>
+<li>operation of the RLC CODEC and ReLU module.</li>
+</ol>
+</li>
+<li>lower level<br>control logic in each PE</li>
+</ul>
+</li>
+<li><p>reconfigure first offline</p>
+</li>
+</ul>
+<h2 id="ENERGY-EFFICIENT-FEATURES"><a href="#ENERGY-EFFICIENT-FEATURES" class="headerlink" title="ENERGY-EFFICIENT FEATURES"></a>ENERGY-EFFICIENT FEATURES</h2><h3 id="Energy-Efficient-Dataflow-Row-Stationary-RS"><a href="#Energy-Efficient-Dataflow-Row-Stationary-RS" class="headerlink" title="Energy-Efficient Dataflow: Row Stationary(RS)"></a>Energy-Efficient Dataflow: Row Stationary(RS)</h3><ol>
+<li><strong>reducing data movement</strong></li>
+<li><strong>exploiting data statistics</strong></li>
+</ol>
+<ul>
+<li><p><em><strong>Data Reusing</strong></em></p>
+<ol>
+<li>Convolutional Reuse:<ul>
+<li>Each filter weight is reused E × F times in the same ifmap plane</li>
+<li>each ifmap pixel is usually reused R × S times in the same filter plane(when stride &#x3D; 1)</li>
+</ul>
+</li>
+<li>Filter Reuse:<ul>
+<li>Each filter weight is reused across the batch of N ifmaps</li>
+</ul>
+</li>
+<li>Ifmaps Reuse:<ul>
+<li>Each ifmap pixel is reused across M filters</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><em><strong>1-D Convolution Primitive in a PE</strong></em><br>每个 <strong>PE(Process Element)</strong> 先计算一维的卷积<br><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698753420423.png" alt="1698753420423"><br>filter, ifmap 皆从 spad 中取数据<br>psum 也存到 spad 中<br>因此，每个 PE 都需要配备一个</p>
+<ol>
+<li><strong>filter spad(capcity&#x3D;S)</strong></li>
+<li><strong>ifmaps spad(capcity&#x3D;S)</strong></li>
+<li><strong>psum spad(capcity&#x3D;1)</strong></li>
+</ol>
+</li>
+<li><p><em><strong>2-D Convolution PE Set</strong></em><br>每个2D卷积由若干个1D卷积构成</p>
+<ol>
+<li>filter reuse<br> each row of filter is reused horizontally</li>
+<li>ifmaps reuse<br> each row of ifmap is reused diagonally</li>
+<li>final result of 2-D<br> rows of psum are accumulated vertically<br>以 filter&#x3D;3 × 3, ifmaps&#x3D;5 × 5, ofmaps&#x3D;3 × 3 (stride&#x3D;1) 为例，一个 PE Set 如下<br><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698754655474.png" alt="1698754655474"><br>因此，$PE_{i,j}$ 计算的是 ofmaps 中的 第 j 行，第 ？ 列的像素的 2-D 卷积中的第 i 行 1-D 卷积<br>因此，the height and the width of the PE set are equal to the number of filter rows (R) and ofmap rows (E)</li>
+</ol>
+<ul>
+<li><em><strong>PE Set Mapping</strong></em><br>将 2-D Convolution PE Set(R × E) 映射到 PE 计算阵列 (12 × 14) 中。</li>
+</ul>
+<ol>
+<li>R&lt;&#x3D;12 &amp; E&lt;&#x3D;14: 直接映射</li>
+<li>R&lt;&#x3D;12 &amp; E&gt;14: 分批次映射，E&#x3D;e1+e2+e3+…</li>
+<li>R&gt;12: 无解<br>以 AlexNet 为例，可以进行如下映射<br><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698756278238.png" alt="1698756278238"></li>
+</ol>
+</li>
+<li><p><em><strong>Dimensions Beyond 2-D in PE Array</strong></em></p>
+<ol>
+<li>batch size N<br> <img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698757232830.png" alt="1698757232830"><br> <strong>streaming</strong> different ifmaps through the same PE set <strong>sequentially</strong><br> the filter <strong>stays constant</strong> in the set(filter reuse)</li>
+<li>numbers of kernels M<br> <img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698757353178.png" alt="1698757353178"><br><strong>ifmaps reuse</strong></li>
+<li>numbers of channel C<br> <img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698757366566.png" alt="1698757366566"><br> <strong>ifmaps reuse</strong><br> <strong>psums accumulation</strong></li>
+</ol>
+<ul>
+<li><p><em><strong>时间上的合理规划</strong></em><br>for N</p>
+</li>
+<li><p><em><strong>Multiple 2-D Convolutions in a PE Set</strong></em><br><strong>PE 内部的并行计算</strong><br>可以使每个 PE 不仅仅只计算一个 1-D 卷积，而是<strong>同时</strong>计算 <strong>p(for filters) × q(for channels)</strong> 个 1-D 卷积，这要求：</p>
+<ol>
+<li>Capacity of filter spad: p × q × S</li>
+<li>Capacity of ifmaps spad: q × S</li>
+<li>Capacity of psums spad: p × 1</li>
+</ol>
+<p>for M &amp; C</p>
+</li>
+<li><p><em><strong>Multiple PE Sets in the PE Array</strong></em><br><strong>PE 之间的并行计算</strong><br>The PE array fits <strong>r × t</strong> PE sets in parallel that run r different channels of t different filters <strong>simultaneously</strong>.</p>
+<ol>
+<li>Every t sets share <strong>the same ifmap</strong> with t filters</li>
+<li>Every r sets that run on r channels <strong>accumulate their psums</strong> within the PE array.</li>
+</ol>
+<p>再次以 AlexNet 为例，可以进行如下映射<br><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698756278238.png" alt="1698756278238"><br>可令，CONV1: t&#x3D;2, CONV3: t&#x3D;4, CONV4&amp;CONV5: r&#x3D;t&#x3D;4;</p>
+</li>
+<li><p><em><strong>PE array processing passes</strong></em></p>
+<ol>
+<li>The PE array can run multiple 2-D convolutions from up to q × r channels of p × t filters simultaneously.</li>
+<li>Multiple ifmaps can also be processed sequentially through the array.</li>
+</ol>
+</li>
+</ul>
+<p>比如，一个卷积层，<strong>C&#x3D;6, M&#x3D;8, N&#x3D;4,</strong> 一个通道可处理 <strong>3 (q×r) channel</strong> 和 <strong>4 (p×t) filters</strong>. 每次传递 <strong>ifmaps 的量 n&#x3D;2</strong>，则时序可按如下安排：<br><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698761331459.png" alt="1698761331459"></p>
+<p>每个 Pass 完成后，都将改组 psum 存在 GLB 中，故上例在最终完成后，<strong>GLB</strong> 将存储 <strong>m&#x3D;8</strong> 组 psum</p>
+<ul>
+<li><em><strong>Summary</strong></em><br><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698762095756.png" alt="1698762095756"></li>
+</ul>
+</li>
+</ul>
+<h3 id="Exploit-Data-Statistics"><a href="#Exploit-Data-Statistics" class="headerlink" title="Exploit Data Statistics"></a>Exploit Data Statistics</h3><p>ReLu(Rectified Linear Unit) function: f(x)&#x3D;max(0,x)</p>
+<p>因此，会存在大量的0；</p>
+<p>使用 <strong>RLC</strong> 游程编码</p>
+<ul>
+<li>5 bit作为最大的连续0的长度，然后直接插入下一个数据16 bit，成为 1 pair</li>
+<li>3 pairs + 1 indicating bit &#x3D; 1 word (64 bit)</li>
+</ul>
+<p><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1698771515055.png" alt="1698771515055"></p>
+<h2 id="SYSTEM-MODULES"><a href="#SYSTEM-MODULES" class="headerlink" title="SYSTEM MODULES"></a>SYSTEM MODULES</h2><h3 id="Global-Buffer"><a href="#Global-Buffer" class="headerlink" title="Global Buffer"></a>Global Buffer</h3><ul>
+<li>108kB</li>
+<li>the space is divided into 25 banks, each of which is a 512-b ×64-b (4 kB) SRAM</li>
+<li>the remaining 8 kB (two banks of 512-b × 64-b SRAMs) of the GLB is allocated for filter weights</li>
+</ul>
+<h3 id="Network-on-Chip"><a href="#Network-on-Chip" class="headerlink" title="Network-on-Chip"></a>Network-on-Chip</h3><ul>
+<li>Global Input Network<ul>
+<li>use ID match</li>
+<li>every data has a col id and row id</li>
+<li>every PE has a col id and row id</li>
+<li>they match by a Multicast Controller (MC)</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/10/31/Eyeriss_An%20Energy-Efficient%20Reconfigurable%20Accelerator%20for%20Deep%20Convolutional%20Neural%20Networks/Eyeriss_AnEnergy-EfficientReconfigurableAcceleratorforDeepConvolutionalNeuralNetworks/1699116006038.png" alt="1699116006038"></p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------END<i class="fa fa-paw"></i>Best Wishes-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/10/09/AI_and_ML_Accelerator_Research/" rel="prev" title="AI_and_ML_Accelerator_Research">
+      <i class="fa fa-chevron-left"></i> AI_and_ML_Accelerator_Research
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/11/14/key%20metrics/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Eyeriss-An-Energy-Efficient-Reconfigurable-Accelerator-for-Deep-Convolutional-Neural-Networks"><span class="nav-number">1.</span> <span class="nav-text">Eyeriss: An Energy-Efficient Reconfigurable Accelerator for Deep Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.2.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CNN-BASICS"><span class="nav-number">1.3.</span> <span class="nav-text">CNN BASICS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN"><span class="nav-number">1.3.1.</span> <span class="nav-text">CNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AlexNet"><span class="nav-number">1.3.2.</span> <span class="nav-text">AlexNet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E5%B1%82C1"><span class="nav-number">1.3.3.</span> <span class="nav-text">卷积层C1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E5%B1%82C2"><span class="nav-number">1.3.4.</span> <span class="nav-text">卷积层C2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E5%B1%82C3"><span class="nav-number">1.3.5.</span> <span class="nav-text">卷积层C3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E5%B1%82C4"><span class="nav-number">1.3.6.</span> <span class="nav-text">卷积层C4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E5%B1%82C5"><span class="nav-number">1.3.7.</span> <span class="nav-text">卷积层C5</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SYSTEM-ARCHITECTURE"><span class="nav-number">1.4.</span> <span class="nav-text">SYSTEM ARCHITECTURE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-number">1.4.1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#System-Control-and-Configuration"><span class="nav-number">1.4.2.</span> <span class="nav-text">System Control and Configuration</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENERGY-EFFICIENT-FEATURES"><span class="nav-number">1.5.</span> <span class="nav-text">ENERGY-EFFICIENT FEATURES</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Energy-Efficient-Dataflow-Row-Stationary-RS"><span class="nav-number">1.5.1.</span> <span class="nav-text">Energy-Efficient Dataflow: Row Stationary(RS)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exploit-Data-Statistics"><span class="nav-number">1.5.2.</span> <span class="nav-text">Exploit Data Statistics</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SYSTEM-MODULES"><span class="nav-number">1.6.</span> <span class="nav-text">SYSTEM MODULES</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Global-Buffer"><span class="nav-number">1.6.1.</span> <span class="nav-text">Global Buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Network-on-Chip"><span class="nav-number">1.6.2.</span> <span class="nav-text">Network-on-Chip</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Treeby"
+      src="/images/author.jpg">
+  <p class="site-author-name" itemprop="name">Treeby</p>
+  <div class="site-description" itemprop="description">La vie est belle</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/satreeby" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;satreeby" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:satreeby@gmail.com" title="E-Mail → mailto:satreeby@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      friendly link
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://ltnsxd.github.io/" title="https:&#x2F;&#x2F;ltnsxd.github.io" rel="noopener" target="_blank">LTNS</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Treeby</span>
+</div><div>
+<!--添加网站运行时间-->
+<span>小破站已经在风雨中度过了</span>
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    function createtime() {
+        const startTime = '06/28/2023 20:13:14',
+            start = new Date(startTime)
+        let mill = new Date() - start,
+            seconds = Math.floor(mill / 1000),
+            mins = Math.floor(seconds / 60),
+            hours = Math.floor(mins / 60),
+            days = Math.floor(hours / 24)
+        const time = {
+            seconds: seconds - mins * 60,
+            mins: mins - hours * 60,
+            hours: hours - days * 24,
+        }
+        for (const k in time) {
+            time[k] = `${time[k]}`.padStart(2, '0')
+        }
+        document.getElementById("timeDate").innerHTML = ` ${days} 天`
+        document.getElementById("times").innerHTML = ` ${time.hours} 小时 ${time.mins} 分 ${time.seconds} 秒`
+    }
+    setInterval(createtime, 500)
+</script>
+</div>
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6zRY3CX7EmWrElP42NGxNKsd-gzGzoHsz',
+      appKey     : '1v8aaMV8PG0GgDS8Sqwnt9EM',
+      placeholder: "帅呆啦！",
+      avatar     : 'monsterid',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
