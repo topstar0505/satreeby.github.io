@@ -168,6 +168,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/15/Kernel_Computation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="Treeby">
+      <meta itemprop="description" content="La vie est belle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Amusement Park">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/11/15/Kernel_Computation/" class="post-title-link" itemprop="url">Kernel_Computation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-11-15 19:44:54 / Modified: 19:47:27" itemprop="dateCreated datePublished" datetime="2023-11-15T19:44:54+08:00">2023-11-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Notes-of-E%EF%AC%83cient-Processing-of-Deep-Neural-Networks/" itemprop="url" rel="index"><span itemprop="name">Notes of Eﬃcient Processing of Deep Neural Networks</span></a>
+                </span>
+            </span>
+
+          
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><ul>
+<li>the fundamental computation are <strong>multiply-and-accumulate(MAC)</strong> operations</li>
+<li>Temporal architecture(CPU, GPU)</li>
+<li>Spatial architecture(ASIC, FPGA)</li>
+</ul>
+<p><img src="/2023/11/15/Kernel_Computation/1700046066156.png" alt="1700046066156"></p>
+<h2 id="Temporal-Arichitecure"><a href="#Temporal-Arichitecure" class="headerlink" title="Temporal Arichitecure"></a>Temporal Arichitecure</h2><p>DNN computations can be formulated as a matrix multiplication</p>
+<ul>
+<li><strong>Toeplitz Matrix</strong></li>
+</ul>
+<p>Example(1):</p>
+<blockquote>
+<p>a FC(full connect) layer:<br><strong>$O_{nm}&#x3D;\sum_{chw} I_{nchw}F_{mchw}$</strong><br><img src="/2023/11/15/Kernel_Computation/1700046522900.png" alt="1700046522900"><br>Turning to the matrix multilplication, means turning one filter into a row vector, one input into a col vector<br><img src="/2023/11/15/Kernel_Computation/1700046639970.png" alt="1700046639970"></p>
+</blockquote>
+<p>Example(2):</p>
+<blockquote>
+<p>a CONV layer:<br><strong>$\begin{aligned}<br>&amp;O[n][m][p][q]&#x3D;((\sum_{c&#x3D;0}^{C-1} \sum_{r&#x3D;0}^{R-1} \sum_{s&#x3D;0}^{S-1}i[n][c][Uq+s]\times f[m][c][r][s])+b[m]).\\<br>&amp;0\leq n\lt N, 0\leq m\lt M, 0\leq p\lt P, 0\leq q\lt Q,\\<br>&amp;P&#x3D;(H-R+U)&#x2F;U, Q&#x3D;(Q-S+U)&#x2F;U.<br>\end{aligned}$</strong><br><img src="/2023/11/15/Kernel_Computation/1700046905051.png" alt="1700046905051"><br>Turning to the matrix multilplication, for example:<br>a 2-D convolution:<br><img src="/2023/11/15/Kernel_Computation/1700047588149.png" alt="1700047588149"><br>higher dimention:<br><img src="/2023/11/15/Kernel_Computation/1700047616484.png" alt="1700047616484"><br>generally speaking:<br><img src="/2023/11/15/Kernel_Computation/1700047791426.png" alt="1700047791426"></p>
+</blockquote>
+<ul>
+<li><strong>Tiling Algorithm</strong></li>
+</ul>
+<p><img src="/2023/11/15/Kernel_Computation/1700048102232.png" alt="1700048102232"></p>
+<h2 id="Computation-Transform"><a href="#Computation-Transform" class="headerlink" title="Computation Transform"></a>Computation Transform</h2><p>Objection: to reduce the number of <em><strong>multiplications</strong></em> by increasing the number of <em><strong>additions</strong></em></p>
+<ul>
+<li>Strassen’s algorithm</li>
+<li>Winogard’s algorithm</li>
+<li>Fast Fourier Transform</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/15/2023%E7%A7%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -225,65 +322,6 @@
 <p><img src="/2023/11/15/2023%E7%A7%8B/1699980268904.png" alt="二中！我的二中！"></p>
 <p><strong>今晚梦里，必归去兮！</strong></p>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/14/key%20metrics/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="Treeby">
-      <meta itemprop="description" content="La vie est belle">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Amusement Park">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/11/14/key%20metrics/" class="post-title-link" itemprop="url">Untitled</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-11-14 23:57:01" itemprop="dateCreated datePublished" datetime="2023-11-14T23:57:01+08:00">2023-11-14</time>
-            </span>
-
-          
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
       
     </div>
 
@@ -1627,7 +1665,7 @@ Computations</h3>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
