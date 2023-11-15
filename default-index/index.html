@@ -265,6 +265,205 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/15/Designing_DNN_Accelerators/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="Treeby">
+      <meta itemprop="description" content="La vie est belle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Amusement Park">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/11/15/Designing_DNN_Accelerators/" class="post-title-link" itemprop="url">Designing_DNN_Accelerators</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-11-15 19:44:54 / Modified: 22:55:14" itemprop="dateCreated datePublished" datetime="2023-11-15T19:44:54+08:00">2023-11-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Notes-of-E%EF%AC%83cient-Processing-of-Deep-Neural-Networks/" itemprop="url" rel="index"><span itemprop="name">Notes of Eﬃcient Processing of Deep Neural Networks</span></a>
+                </span>
+            </span>
+
+          
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="关键指标">关键指标</h2>
+<ul>
+<li><strong>Energy consumption</strong>
+<ol type="1">
+<li>减少数据的移动(data movement)</li>
+<li>减少移动单位数据的代价</li>
+</ol></li>
+<li><strong>Performance in terms of throughput and latency</strong>
+<ol type="1">
+<li>增加并行度(parallel)</li>
+<li>减少PE空闲周期数</li>
+</ol></li>
+<li><strong>Area</strong></li>
+</ul>
+<h2 id="key-properties-of-dnn-to-leverage">Key Properties of DNN to
+Leverage</h2>
+<p><strong><em>Data reuse</em></strong></p>
+<ul>
+<li><strong>Input feature map reuse</strong>
+不同的滤波器(M)，相同的输入</li>
+<li><strong>Filter reuse</strong> 同一个滤波器，不同样本(N)的输入</li>
+<li><strong>Convolutional reuse</strong>
+<ol type="1">
+<li>每个filter的每个weight，复用 <span class="math inline">\(P\times
+Q\)</span> 次，产生 <span class="math inline">\(P\times Q\)</span> 个
+output 像素点</li>
+<li>若步长 U=1，则每个 input 的像素，一般会与 <span class="math inline">\(R\times S\)</span> 个filter weight相乘，得到的
+psum 属于不同的 output 像素</li>
+</ol></li>
+<li><strong>Movement of Partial Sums</strong> 得到一个输出的像素点，有
+<span class="math inline">\(C \times R \times S\)</span> 个 psum 需要被
+accumulated</li>
+</ul>
+<h2 id="dnn-hardware-design-consideratuions">DNN hardware design
+Consideratuions</h2>
+<p>设计一个 DNN 加速器，大致需要以下步骤：</p>
+<ul>
+<li><strong>At design time</strong>
+<ol type="1">
+<li>dataflow(s)</li>
+<li>PE(process element)的数量，以及每个PE执行的MAC数量</li>
+<li>the memory
+hierarchy，包括存储的级数(levels)，以及每一级的容量(capicity)</li>
+<li>the allowed pattern of NoC(Network on-chip)</li>
+</ol></li>
+<li><strong>At mapping time</strong> 将 DNN
+网络有效的映射到硬件加速器上</li>
+<li><strong>At configuration time</strong></li>
+<li><strong>At run time</strong></li>
+</ul>
+<h2 id="data-reuse">Data reuse</h2>
+<ul>
+<li><strong>Temporal reuse</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong><em>Temporal reuse occurs when the same data value is used
+more than once by the same consumer</em></strong></li>
+<li>It can be exploited by adding an intermediate memory level to the
+memory hierarchy of the hardware, where the intermediate memory level
+has a smaller storage capacity than the level that acts as the original
+source of the data</li>
+<li>For exploiting temporal reuse, the reuse distance is defined as the
+number of data accesses required by the consumer in between the accesses
+to the same data value, which is a function of the ordering of
+operations.</li>
+</ul>
+</blockquote>
+<p>比如，以下1-D卷积，filter weight
+的存储有两级，L0存放着所有权重，L1仅能存放数量为一的权重，如(d)，则两种不同的计算顺序(order)，其
+weight reuse distance 也不同，(output reuse distance 也不同)。 <img src="/2023/11/15/Designing_DNN_Accelerators/1700057619410.png" alt="1700057619410"></p>
+<p>因此，重要的是，<strong>reuse distance, 即 the processing
+order</strong></p>
+<ul>
+<li><strong>Spatial reuse</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong><em>Spatial reuse occurs when the same data value is used by
+more than one consumer (e.g., a group ofPEs) at different spatial
+locations ofthe hardware.</em></strong></li>
+<li>It can be exploited by reading the data once fromthe source memory
+level andmulticasting it to all ofthe consumers.</li>
+<li>For exploiting spatial reuse, the reuse distance is defined as the
+maximum number of data accesses in between any pair ofconsumers that
+access the same data value, which is again a function of the ordering of
+operations.</li>
+</ul>
+</blockquote>
+<p>比如，以下1-D卷积，有数量为4的 consumers(PE)，可用于同时计算 MAC，
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700058040471.png" alt="1700058040471"></p>
+<p>因此，重要的是，<strong>reuse distance, 即 the designs of
+parallel</strong></p>
+<p>同时需要注意，spatial reuse 需要 Noc 来支持，与 Memory 的层级和带宽
+(bandwidth) 都有关系。</p>
+<ul>
+<li>data reuse 设计关键点
+<ol type="1">
+<li>Process order</li>
+<li>Parallel computation</li>
+<li>Data tiling</li>
+<li>同时考虑 bandwidth, Memory hierarchy 等</li>
+</ol></li>
+<li>算法(Algorithm)描述</li>
+</ul>
+<blockquote>
+<ul>
+<li>loop nests</li>
+<li>WS, IS, OS</li>
+<li><strong><em>for</em></strong></li>
+</ul>
+</blockquote>
+<p>比如，使用伪代码描述下面一个1-D卷积，循环越靠近外层，说明其静态性(stationary)越高，
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700058946892.png" alt="1700058946892"> <img src="/2023/11/15/Designing_DNN_Accelerators/1700059062834.png" alt="1700059062834"> 以图 (a) 的 WS 为例，完成本次卷积所有操作的 0-35
+次 cycle 里面，追踪每次 cycle 用到的数据的索引 (Index) 如下图： <img src="/2023/11/15/Designing_DNN_Accelerators/1700059237627.png" alt="1700059237627"></p>
+<blockquote>
+<p><strong><em>parallel-for</em></strong></p>
+</blockquote>
+<p>比如，对上述的 <strong>WS</strong> 加入对 <strong>权重</strong>
+的并行设计，即将权重的循环更进行的划分(Tiling)： <img src="/2023/11/15/Designing_DNN_Accelerators/1700059779411.png" alt="1700059779411"> 每次执行的状况如下： <img src="/2023/11/15/Designing_DNN_Accelerators/1700059801549.png" alt="1700059801549"> 可将之与无并行进行对比。 设计并行时，既要考虑 PE
+数量，又要考虑 Memory 的容量与带宽，还要考虑划分是否整除，等等。 &gt;A
+dataflow only defines the following aspects of a loop nest: (1) the
+specific order of the loops to prioritize the data types; (2) the number
+of loops for each data dimension to describe the tiling; and (3) whether
+each of the loops is temporal (for) or spatial (parallel-for).</p>
+<h2 id="dataflow-taxonomy">Dataflow Taxonomy</h2>
+<h3 id="weight-stationaryws">Weight Stationary(WS)</h3>
+<h3 id="output-stationaryws">Output Stationary(WS)</h3>
+<h3 id="input-stationaryws">Input Stationary(WS)</h3>
+<h3 id="row-stationaryws">Row Stationary(WS)</h3>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/15/2023%E7%A7%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1659,7 +1858,7 @@ Computations</h3>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
