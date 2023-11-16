@@ -288,10 +288,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-11-15 19:44:54 / Modified: 22:55:14" itemprop="dateCreated datePublished" datetime="2023-11-15T19:44:54+08:00">2023-11-15</time>
+              <time title="Created: 2023-11-15 19:44:54" itemprop="dateCreated datePublished" datetime="2023-11-15T19:44:54+08:00">2023-11-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-16 20:42:40" itemprop="dateModified" datetime="2023-11-16T20:42:40+08:00">2023-11-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -315,137 +321,182 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="关键指标">关键指标</h2>
-<ul>
-<li><strong>Energy consumption</strong>
-<ol type="1">
+          <h2 id="Key-Metrics"><a href="#Key-Metrics" class="headerlink" title="Key Metrics"></a>Key Metrics</h2><ul>
+<li><p><strong>Energy consumption</strong></p>
+<ol>
 <li>减少数据的移动(data movement)</li>
 <li>减少移动单位数据的代价</li>
-</ol></li>
-<li><strong>Performance in terms of throughput and latency</strong>
-<ol type="1">
+</ol>
+</li>
+<li><p><strong>Performance in terms of throughput and latency</strong></p>
+<ol>
 <li>增加并行度(parallel)</li>
 <li>减少PE空闲周期数</li>
-</ol></li>
-<li><strong>Area</strong></li>
+</ol>
+</li>
+<li><p><strong>Area</strong></p>
+</li>
 </ul>
-<h2 id="key-properties-of-dnn-to-leverage">Key Properties of DNN to
-Leverage</h2>
-<p><strong><em>Data reuse</em></strong></p>
+<h2 id="Key-Properties-of-DNN-to-Leverage"><a href="#Key-Properties-of-DNN-to-Leverage" class="headerlink" title="Key Properties of DNN to Leverage"></a>Key Properties of DNN to Leverage</h2><p><em><strong>Data reuse</strong></em></p>
 <ul>
-<li><strong>Input feature map reuse</strong>
-不同的滤波器(M)，相同的输入</li>
-<li><strong>Filter reuse</strong> 同一个滤波器，不同样本(N)的输入</li>
-<li><strong>Convolutional reuse</strong>
-<ol type="1">
-<li>每个filter的每个weight，复用 <span class="math inline">\(P\times
-Q\)</span> 次，产生 <span class="math inline">\(P\times Q\)</span> 个
-output 像素点</li>
-<li>若步长 U=1，则每个 input 的像素，一般会与 <span class="math inline">\(R\times S\)</span> 个filter weight相乘，得到的
-psum 属于不同的 output 像素</li>
-</ol></li>
-<li><strong>Movement of Partial Sums</strong> 得到一个输出的像素点，有
-<span class="math inline">\(C \times R \times S\)</span> 个 psum 需要被
-accumulated</li>
+<li><strong>Input feature map reuse</strong><br>不同的滤波器(M)，相同的输入</li>
+<li><strong>Filter reuse</strong><br>同一个滤波器，不同样本(N)的输入</li>
+<li><strong>Convolutional reuse</strong><ol>
+<li>每个filter的每个weight，复用 $P\times Q$ 次，产生 $P\times Q$ 个 output 像素点</li>
+<li>若步长 U&#x3D;1，则每个 input 的像素，一般会与 $R\times S$ 个filter weight相乘，得到的 psum 属于不同的 output 像素</li>
+</ol>
+</li>
+<li><strong>Movement of Partial Sums</strong><br>得到一个输出的像素点，有 $C \times R \times S$ 个 psum 需要被 accumulated</li>
 </ul>
-<h2 id="dnn-hardware-design-consideratuions">DNN hardware design
-Consideratuions</h2>
-<p>设计一个 DNN 加速器，大致需要以下步骤：</p>
+<h2 id="DNN-hardware-design-Consideratuions"><a href="#DNN-hardware-design-Consideratuions" class="headerlink" title="DNN hardware design Consideratuions"></a>DNN hardware design Consideratuions</h2><p>设计一个 DNN 加速器，大致需要以下步骤：</p>
 <ul>
-<li><strong>At design time</strong>
-<ol type="1">
+<li><strong>At design time</strong><ol>
 <li>dataflow(s)</li>
 <li>PE(process element)的数量，以及每个PE执行的MAC数量</li>
-<li>the memory
-hierarchy，包括存储的级数(levels)，以及每一级的容量(capicity)</li>
+<li>the memory hierarchy，包括存储的级数(levels)，以及每一级的容量(capicity)</li>
 <li>the allowed pattern of NoC(Network on-chip)</li>
-</ol></li>
-<li><strong>At mapping time</strong> 将 DNN
-网络有效的映射到硬件加速器上</li>
+</ol>
+</li>
+<li><strong>At mapping time</strong><br>将 DNN 网络有效的映射到硬件加速器上</li>
 <li><strong>At configuration time</strong></li>
 <li><strong>At run time</strong></li>
 </ul>
-<h2 id="data-reuse">Data reuse</h2>
-<ul>
+<h2 id="Data-reuse"><a href="#Data-reuse" class="headerlink" title="Data reuse"></a>Data reuse</h2><ul>
 <li><strong>Temporal reuse</strong></li>
 </ul>
 <blockquote>
 <ul>
-<li><strong><em>Temporal reuse occurs when the same data value is used
-more than once by the same consumer</em></strong></li>
-<li>It can be exploited by adding an intermediate memory level to the
-memory hierarchy of the hardware, where the intermediate memory level
-has a smaller storage capacity than the level that acts as the original
-source of the data</li>
-<li>For exploiting temporal reuse, the reuse distance is defined as the
-number of data accesses required by the consumer in between the accesses
-to the same data value, which is a function of the ordering of
-operations.</li>
+<li><em><strong>Temporal reuse occurs when the same data value is used more than once by the same consumer</strong></em></li>
+<li>It can be exploited by adding an intermediate memory level to the memory hierarchy of the hardware, where the intermediate memory level has a smaller storage capacity than the level that acts as the original source of the data</li>
+<li>For exploiting temporal reuse, the reuse distance is defined as the number of data accesses required by the consumer in between the accesses to the same data value, which is a function of the ordering<br>of operations.</li>
 </ul>
 </blockquote>
-<p>比如，以下1-D卷积，filter weight
-的存储有两级，L0存放着所有权重，L1仅能存放数量为一的权重，如(d)，则两种不同的计算顺序(order)，其
-weight reuse distance 也不同，(output reuse distance 也不同)。 <img src="/2023/11/15/Designing_DNN_Accelerators/1700057619410.png" alt="1700057619410"></p>
-<p>因此，重要的是，<strong>reuse distance, 即 the processing
-order</strong></p>
+<p>比如，以下1-D卷积，filter weight 的存储有两级，L0存放着所有权重，L1仅能存放数量为一的权重，如(d)，则两种不同的计算顺序(order)，其 weight reuse distance 也不同，(output reuse distance 也不同)。<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700057619410.png" alt="任我行"></p>
+<p>因此，重要的是，<strong>reuse distance, 即 the processing order</strong></p>
 <ul>
 <li><strong>Spatial reuse</strong></li>
 </ul>
 <blockquote>
 <ul>
-<li><strong><em>Spatial reuse occurs when the same data value is used by
-more than one consumer (e.g., a group ofPEs) at different spatial
-locations ofthe hardware.</em></strong></li>
-<li>It can be exploited by reading the data once fromthe source memory
-level andmulticasting it to all ofthe consumers.</li>
-<li>For exploiting spatial reuse, the reuse distance is defined as the
-maximum number of data accesses in between any pair ofconsumers that
-access the same data value, which is again a function of the ordering of
-operations.</li>
+<li><em><strong>Spatial reuse occurs when the same data value is used by more than one consumer (e.g., a group ofPEs) at different spatial locations ofthe hardware.</strong></em></li>
+<li>It can be exploited by reading the data once fromthe source memory level andmulticasting it to all ofthe consumers.</li>
+<li>For exploiting spatial reuse, the reuse distance is defined as the maximum number of data accesses in between any pair ofconsumers that access the same data value, which is again a function of the ordering of operations.</li>
 </ul>
 </blockquote>
-<p>比如，以下1-D卷积，有数量为4的 consumers(PE)，可用于同时计算 MAC，
-<img src="/2023/11/15/Designing_DNN_Accelerators/1700058040471.png" alt="1700058040471"></p>
-<p>因此，重要的是，<strong>reuse distance, 即 the designs of
-parallel</strong></p>
-<p>同时需要注意，spatial reuse 需要 Noc 来支持，与 Memory 的层级和带宽
-(bandwidth) 都有关系。</p>
+<p>比如，以下1-D卷积，有数量为4的 consumers(PE)，可用于同时计算 MAC，<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700058040471.png" alt="任我行"></p>
+<p>因此，重要的是，<strong>reuse distance, 即 the designs of parallel</strong></p>
+<p>同时需要注意，spatial reuse 需要 Noc 来支持，与 Memory 的层级和带宽 (bandwidth) 都有关系。</p>
 <ul>
-<li>data reuse 设计关键点
-<ol type="1">
+<li><p>data reuse 设计关键点</p>
+<ol>
 <li>Process order</li>
 <li>Parallel computation</li>
 <li>Data tiling</li>
 <li>同时考虑 bandwidth, Memory hierarchy 等</li>
-</ol></li>
-<li>算法(Algorithm)描述</li>
+</ol>
+</li>
+<li><p>算法(Algorithm)描述</p>
+</li>
 </ul>
 <blockquote>
 <ul>
 <li>loop nests</li>
 <li>WS, IS, OS</li>
-<li><strong><em>for</em></strong></li>
+<li><em><strong>for</strong></em></li>
 </ul>
 </blockquote>
-<p>比如，使用伪代码描述下面一个1-D卷积，循环越靠近外层，说明其静态性(stationary)越高，
-<img src="/2023/11/15/Designing_DNN_Accelerators/1700058946892.png" alt="1700058946892"> <img src="/2023/11/15/Designing_DNN_Accelerators/1700059062834.png" alt="1700059062834"> 以图 (a) 的 WS 为例，完成本次卷积所有操作的 0-35
-次 cycle 里面，追踪每次 cycle 用到的数据的索引 (Index) 如下图： <img src="/2023/11/15/Designing_DNN_Accelerators/1700059237627.png" alt="1700059237627"></p>
+<p>比如，使用伪代码描述下面一个1-D卷积，循环越靠近外层，说明其静态性(stationary)越高，<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700058946892.png" alt="任我行"><br><img src="/2023/11/15/Designing_DNN_Accelerators/1700059062834.png" alt="任我行"><br>以图 (a) 的 WS 为例，完成本次卷积所有操作的 0-35 次 cycle 里面，追踪每次 cycle 用到的数据的索引 (Index) 如下图：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700059237627.png" alt="任我行"></p>
 <blockquote>
-<p><strong><em>parallel-for</em></strong></p>
+<p><em><strong>parallel-for</strong></em></p>
 </blockquote>
-<p>比如，对上述的 <strong>WS</strong> 加入对 <strong>权重</strong>
-的并行设计，即将权重的循环更进行的划分(Tiling)： <img src="/2023/11/15/Designing_DNN_Accelerators/1700059779411.png" alt="1700059779411"> 每次执行的状况如下： <img src="/2023/11/15/Designing_DNN_Accelerators/1700059801549.png" alt="1700059801549"> 可将之与无并行进行对比。 设计并行时，既要考虑 PE
-数量，又要考虑 Memory 的容量与带宽，还要考虑划分是否整除，等等。 &gt;A
-dataflow only defines the following aspects of a loop nest: (1) the
-specific order of the loops to prioritize the data types; (2) the number
-of loops for each data dimension to describe the tiling; and (3) whether
-each of the loops is temporal (for) or spatial (parallel-for).</p>
-<h2 id="dataflow-taxonomy">Dataflow Taxonomy</h2>
-<h3 id="weight-stationaryws">Weight Stationary(WS)</h3>
-<h3 id="output-stationaryws">Output Stationary(WS)</h3>
-<h3 id="input-stationaryws">Input Stationary(WS)</h3>
-<h3 id="row-stationaryws">Row Stationary(WS)</h3>
-
+<p>比如，对上述的 <strong>WS</strong> 加入对 <strong>权重</strong> 的并行设计，即将权重的循环更进行的划分(Tiling)：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700059779411.png" alt="任我行"><br>每次执行的状况如下：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700059801549.png" alt="任我行"><br>可将之与无并行进行对比。<br>设计并行时，既要考虑 PE 数量，又要考虑 Memory 的容量与带宽，还要考虑划分是否整除，等等。</p>
+<blockquote>
+<p>A dataflow only defines the following aspects of a loop nest: (1) the specific order of the loops to prioritize the data types; (2) the number of loops for each data dimension to describe the tiling; and (3) whether each of the loops is temporal (for) or spatial (parallel-for).</p>
+</blockquote>
+<h2 id="Dataflow-Taxonomy"><a href="#Dataflow-Taxonomy" class="headerlink" title="Dataflow Taxonomy"></a>Dataflow Taxonomy</h2><h3 id="Weight-Stationary-WS"><a href="#Weight-Stationary-WS" class="headerlink" title="Weight Stationary(WS)"></a>Weight Stationary(WS)</h3><blockquote>
+<ul>
+<li>The weight-stationary dataflow is designed to minimize the energy consumption of reading weights by maximizing the reuse ofweights from the register file (RF) at each PE</li>
+<li>The processing runs as manyMACs that use the same weight as possible while the weight is present in the RF</li>
+<li>The inputs and partial sums must move through the spatial array and global buffer. The input feature map activations are broadcast to all PEs and then the partial sums are spatially accumulated across the PE array.</li>
+</ul>
+</blockquote>
+<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700062976339.png" alt="任我行"></p>
+<p>比如，nn-X (also called neuFlow)，它有：</p>
+<ul>
+<li>8 个 2-D CONV engines</li>
+<li>每个 engine 有 100 个 PE（因此可以实现最多$10 \times 10$的卷积）</li>
+<li>weight 在每个 PE 里保持静态不变</li>
+<li>input 广播(broadcast) 至每个 PE 中</li>
+<li>由于每次(cycle)所广播的只有一个 input 像素，为保证时序正确性，需要添加寄存器以控制 psum 的相加</li>
+</ul>
+<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700063409653.png" alt="任我行"></p>
+<p>再比如，Nvidia’s Deep Learning Accelerator (NVDLA)，与前面不同的是，psum 是一列列相加（不同列不同的 filter ，每一行则对应不同的 input(and filter) channel<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700063949353.png" alt="任我行"><br>其算法如下：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700064715944.png" alt="任我行"></p>
+<h3 id="Output-Stationary-OS"><a href="#Output-Stationary-OS" class="headerlink" title="Output Stationary(OS)"></a>Output Stationary(OS)</h3><blockquote>
+<ul>
+<li>The output-stationary dataflow is designed to minimize the energy consumption of reading and writing the partial sums.</li>
+<li>In order to keep the accumulation of partial sums stationary in the RF, one common implementation is to stream the input activations across the PE array and broadcast the weights to all PEs in the array from the global buffer.</li>
+</ul>
+</blockquote>
+<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700065902277.png" alt="任我行"></p>
+<p>可以选择不同的 output 像素保持 stationary<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700065547456.png" alt="任我行"></p>
+<p>未完待续。。。</p>
+<h3 id="Input-Stationary-IS"><a href="#Input-Stationary-IS" class="headerlink" title="Input Stationary(IS)"></a>Input Stationary(IS)</h3><blockquote>
+<ul>
+<li>Similar to the previous two dataflows, the input-stationary dataflow is designed to minimize the energy consumption ofreading input activations.</li>
+<li>With minimized reuse distance, each input activation is read from DRAM and put into the RF ofeach PE and stays stationary for further access. Then, it runs through as many MACs as possible in the PE to reuse the same input activation.</li>
+<li>While each input activation stays stationary in the RF, unique filter weights are uni-cast into the PEs at each cycle, while the partial sums are spatially accumulated across the PEs to generate the final output activation.</li>
+</ul>
+</blockquote>
+<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700124708788.png" alt="任我行"></p>
+<p>未完待续。。。</p>
+<h3 id="Row-Stationary-RS"><a href="#Row-Stationary-RS" class="headerlink" title="Row Stationary(RS)"></a>Row Stationary(RS)</h3><p>A row-stationary dataflow is proposed in <em>Eyeriss</em>, which aims to maximize the reuse and accumulation at the RF level for all types of data (weights, input activations, and partial sums) for the overall energy efficiency.</p>
+<ul>
+<li><strong>1-D CONV</strong>：</li>
+</ul>
+<blockquote>
+<p>weight stationary inside the RF<br>streams the activations into PE<br>比如下面 S&#x3D;3，W&#x3D;5，U&#x3D;1 的卷积，得到 F&#x3D;3 的 output，需要三个 step<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700134333058.png" alt="任我行"><img src="/2023/11/15/Designing_DNN_Accelerators/1700134346761.png" alt="1700134346761"><img src="/2023/11/15/Designing_DNN_Accelerators/1700134358771.png" alt="1700134358771"><br>值得注意的是，filter 与 input 流进 PE 与 output 流出，都应使用 FIFO 进行正确的时序控制</p>
+</blockquote>
+<ul>
+<li><strong>2-D CONV</strong>：</li>
+</ul>
+<blockquote>
+<p>由 多个 1-D 卷积组成，<br>比如下面 R&#x3D;3, S&#x3D;3, H&#x3D;5, W&#x3D;5, U&#x3D;1 的卷积，得到 E&#x3D;3, F&#x3D;3 的 output<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700135701893.png" alt="任我行"></p>
+</blockquote>
+<hr>
+<blockquote>
+<ol>
+<li>在这个例子中，每一行 output 的产生，仍然需要 3 个 steps</li>
+<li>而每一个 step 所产生的一个 output 像素点，都需要 3 row 的 1-D 卷积同时进行，然后将对应的 psum 相加(accumulated) 得到</li>
+<li>得到所有行的 output 需要进行 3 次上述的操作</li>
+<li><strong>由上述例子可得：每一 Row 的 filter weights 在同一 Row 的 PE 上复用；每一 ROW 的 inputs 则按 相同的 diagnal 复用； 每一 col 的 PE 得到的 psum 要进行相加</strong></li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>Higher-dimensional CONV</strong>:</li>
+</ul>
+<blockquote>
+<p><strong>N, M, C</strong>三个维度<br><strong>Interleaving</strong> or <strong>concatenating</strong><br>有下面三种复用：(a) filter reuse of multiple (<strong>N</strong>) input (b) input reuse of multiple (<strong>M</strong>) filters (c) output reuse of multiple filter weights and inputs (<strong>C</strong>)<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700136845875.png" alt="任我行"><br>对应的techniques可以是：(a) concatenating (b) interleaving (c) interleaving<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700136924461.png" alt="任我行"><br>存在问题：PE 阵列的大小是 fixed 的，应如何将不同 shape 的 DNN layer 映射呢？两大techniques：(a) replication (b) folding<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700137378744.png" alt="任我行"><br>总的思想是：提高 PE 的利用率<br>注意：不使用的 PE 应关上使其耗能减少。</p>
+</blockquote>
+<ul>
+<li><strong>硬件结构支持</strong></li>
+</ul>
+<ol>
+<li>PE array</li>
+<li>Mapping and Configure</li>
+<li>Noc</li>
+<li>Memory hierarchy</li>
+</ol>
+<h3 id="Other-Stationary"><a href="#Other-Stationary" class="headerlink" title="Other Stationary"></a>Other Stationary</h3><blockquote>
+<ul>
+<li>Since the stationariness of a dataflow is only relative to a specific level of memory hierarchy, different stationariness can be used at each level of the memory hierarchy.</li>
+<li>From the perspective ofa loop nest, it involves tiling the various data types into multiple levels and then reordering the loops at different levels to prioritize different data types.</li>
+<li>For example, ifthere are K levels ofmemory hierarchy, both dimension Q and S in the loop nest ofFigure 5.8a can be further divided up into K loops (i.e., for the open ranges [Q0, QK) and [S0 to SK) ) and then reordering the loops independently from loop level 0 to level K - 1.</li>
+<li><strong>This also implies that smaller DNN accelerator designs can be further combined together with a new level ofmemory to form a larger accelerator.</strong></li>
+<li><strong>The key to these designs is to propose flexible NoCs and support various memory access patterns in order to execute different dataflows that have different numbers ofloop levels and loop ordering in the loop nest</strong></li>
+<li>上面的讨论基于一个layer无法在PE中一次就计算完成，然而，若layer足够小，或PE足够大，还需讨论<strong>跨层处理、流水线</strong>等技术</li>
+</ul>
+</blockquote>
+<h2 id="DNN-Accelerator-Buffer-Management-Strategies"><a href="#DNN-Accelerator-Buffer-Management-Strategies" class="headerlink" title="DNN Accelerator Buffer Management Strategies"></a>DNN Accelerator Buffer Management Strategies</h2>
       
     </div>
 
