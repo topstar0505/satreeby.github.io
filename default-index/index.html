@@ -191,10 +191,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-11-15 19:44:54 / Modified: 19:47:27" itemprop="dateCreated datePublished" datetime="2023-11-15T19:44:54+08:00">2023-11-15</time>
+              <time title="Created: 2023-11-15 19:44:54" itemprop="dateCreated datePublished" datetime="2023-11-15T19:44:54+08:00">2023-11-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-18 19:21:45" itemprop="dateModified" datetime="2023-11-18T19:21:45+08:00">2023-11-18</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -218,32 +224,51 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><ul>
-<li>the fundamental computation are <strong>multiply-and-accumulate(MAC)</strong> operations</li>
+          <blockquote>
+<p>credit to Eﬃcient Processing of Deep Neural Networks》</p>
+</blockquote>
+<h2 id="introduction">Introduction</h2>
+<ul>
+<li>the fundamental computation are
+<strong>multiply-and-accumulate(MAC)</strong> operations</li>
 <li>Temporal architecture(CPU, GPU)</li>
 <li>Spatial architecture(ASIC, FPGA)</li>
 </ul>
-<p><img src="/2023/11/15/Kernel_Computation/1700046066156.png" alt="1700046066156"></p>
-<h2 id="Temporal-Arichitecure"><a href="#Temporal-Arichitecure" class="headerlink" title="Temporal Arichitecure"></a>Temporal Arichitecure</h2><p>DNN computations can be formulated as a matrix multiplication</p>
+<figure>
+<img src="/2023/11/15/Kernel_Computation/1700046066156.png" alt="1700046066156">
+<figcaption aria-hidden="true">1700046066156</figcaption>
+</figure>
+<h2 id="temporal-arichitecure">Temporal Arichitecure</h2>
+<p>DNN computations can be formulated as a matrix multiplication</p>
 <ul>
 <li><strong>Toeplitz Matrix</strong></li>
 </ul>
-<p>Example(1):</p>
-<blockquote>
-<p>a FC(full connect) layer:<br><strong>$O_{nm}&#x3D;\sum_{chw} I_{nchw}F_{mchw}$</strong><br><img src="/2023/11/15/Kernel_Computation/1700046522900.png" alt="1700046522900"><br>Turning to the matrix multilplication, means turning one filter into a row vector, one input into a col vector<br><img src="/2023/11/15/Kernel_Computation/1700046639970.png" alt="1700046639970"></p>
-</blockquote>
-<p>Example(2):</p>
-<blockquote>
-<p>a CONV layer:<br><strong>$\begin{aligned}<br>&amp;O[n][m][p][q]&#x3D;((\sum_{c&#x3D;0}^{C-1} \sum_{r&#x3D;0}^{R-1} \sum_{s&#x3D;0}^{S-1}i[n][c][Uq+s]\times f[m][c][r][s])+b[m]).\\<br>&amp;0\leq n\lt N, 0\leq m\lt M, 0\leq p\lt P, 0\leq q\lt Q,\\<br>&amp;P&#x3D;(H-R+U)&#x2F;U, Q&#x3D;(Q-S+U)&#x2F;U.<br>\end{aligned}$</strong><br><img src="/2023/11/15/Kernel_Computation/1700046905051.png" alt="1700046905051"><br>Turning to the matrix multilplication, for example:<br>a 2-D convolution:<br><img src="/2023/11/15/Kernel_Computation/1700047588149.png" alt="1700047588149"><br>higher dimention:<br><img src="/2023/11/15/Kernel_Computation/1700047616484.png" alt="1700047616484"><br>generally speaking:<br><img src="/2023/11/15/Kernel_Computation/1700047791426.png" alt="1700047791426"></p>
-</blockquote>
+<p>Example(1): &gt; a FC(full connect) layer: <strong><span class="math inline">\(O_{nm}=\sum_{chw}
+I_{nchw}F_{mchw}\)</span></strong> <img src="/2023/11/15/Kernel_Computation/1700046522900.png" alt="1700046522900">
+Turning to the matrix multilplication, means turning one filter into a
+row vector, one input into a col vector <img src="/2023/11/15/Kernel_Computation/1700046639970.png" alt="1700046639970"></p>
+<p>Example(2): &gt; a CONV layer: <strong><span class="math inline">\(\begin{aligned}
+&amp;O[n][m][p][q]=((\sum_{c=0}^{C-1} \sum_{r=0}^{R-1}
+\sum_{s=0}^{S-1}i[n][c][Uq+s]\times f[m][c][r][s])+b[m]).\\\\ &amp;0\leq
+n\lt N, 0\leq m\lt M, 0\leq p\lt P, 0\leq q\lt Q,\\\\ &amp;P=(H-R+U)/U,
+Q=(Q-S+U)/U. \end{aligned}\)</span></strong> <img src="/2023/11/15/Kernel_Computation/1700046905051.png" alt="1700046905051">
+Turning to the matrix multilplication, for example: a 2-D convolution:
+<img src="/2023/11/15/Kernel_Computation/1700047588149.png" alt="1700047588149">
+higher dimention: <img src="/2023/11/15/Kernel_Computation/1700047616484.png" alt="1700047616484"> generally speaking: <img src="/2023/11/15/Kernel_Computation/1700047791426.png" alt="1700047791426"></p>
 <ul>
 <li><strong>Tiling Algorithm</strong></li>
 </ul>
-<p><img src="/2023/11/15/Kernel_Computation/1700048102232.png" alt="1700048102232"></p>
-<h2 id="Computation-Transform"><a href="#Computation-Transform" class="headerlink" title="Computation Transform"></a>Computation Transform</h2><p>Objection: to reduce the number of <em><strong>multiplications</strong></em> by increasing the number of <em><strong>additions</strong></em></p>
+<figure>
+<img src="/2023/11/15/Kernel_Computation/1700048102232.png" alt="1700048102232">
+<figcaption aria-hidden="true">1700048102232</figcaption>
+</figure>
+<h2 id="computation-transform">Computation Transform</h2>
+<p>Objection: to reduce the number of
+<strong><em>multiplications</em></strong> by increasing the number of
+<strong><em>additions</em></strong></p>
 <ul>
-<li>Strassen’s algorithm</li>
-<li>Winogard’s algorithm</li>
+<li>Strassen's algorithm</li>
+<li>Winogard's algorithm</li>
 <li>Fast Fourier Transform</li>
 </ul>
 
@@ -296,7 +321,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-17 00:38:17" itemprop="dateModified" datetime="2023-11-17T00:38:17+08:00">2023-11-17</time>
+                <time title="Modified: 2023-11-18 19:21:32" itemprop="dateModified" datetime="2023-11-18T19:21:32+08:00">2023-11-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -321,7 +346,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="key-metrics">Key Metrics</h2>
+          <blockquote>
+<p>credit to Eﬃcient Processing of Deep Neural Networks》</p>
+</blockquote>
+<h2 id="key-metrics">Key Metrics</h2>
 <ul>
 <li><strong>Energy consumption</strong>
 <ol type="1">
@@ -615,41 +643,75 @@ Buffer Management Strategies</h2>
 指的是内存响应和请求是往返的(请求-响应)还是前向的(数据自动推送给使用者)
 <img src="/2023/11/15/Designing_DNN_Accelerators/1700150870447.png" alt="好"></li>
 </ul>
-<blockquote>
+<h3 id="eddoexplicit-decoupled-data-orchestration">EDDO(Explicit
+Decoupled Data Orchestration)</h3>
+<p><strong><em>buffet</em></strong></p>
 <ul>
-<li>In the general-purpose computing community, <strong>caches</strong>
-are the predominant buffering mechanism and are based on load/store
-(i.e., round-trip) operations</li>
-<li>Caches can be characterized as performing implicit data
-orchestration as the load request initiator does not directly control
-the cache hierarchy’s decisions about whether the response data is
-retained at any given level of the storage hierarchy, nor when it is
-removed</li>
-<li>for DNN accelerators, the area and energy overheads for features
-like tag matches and associative sets are high, and so far as we are
-aware no contemporary DNN accelerator incorporate caches</li>
-<li>未完待续。。。</li>
+<li><em>FIFO</em></li>
+<li>fill: from an <em>NoC</em> link into the <em>tail</em></li>
+<li>read: <em>read command</em> + <em>read address</em>(offset of
+<em>head</em>)</li>
+<li>update: <em>read + update command</em> + <em>update
+address</em></li>
+<li>shrink: removes a given number ofvalues from the head of the buffet
+by adjusting the head pointer <img src="/2023/11/15/Designing_DNN_Accelerators/1700190658621.png" alt="1700190658621"></li>
 </ul>
-</blockquote>
-<hr>
-<blockquote>
+<p>比如，实现一维卷积时，读入 input
+数据的序列为：0，1，2；1，2，3；2，3，4…… 而 psum
+的读入并更新的序列应对应为：0，0，0；1，1，1；2，2，2…… <img src="/2023/11/15/Designing_DNN_Accelerators/1700191310508.png" alt="1700191310508"></p>
+<h2 id="flexible-noc-design">Flexible Noc design</h2>
+<p>要考虑的是： &gt; (1) support processing with high parallelism by
+efficiently delivering data between storage and datapaths; (2) exploit
+data reuse to reduce the bandwidth requirement and improve energy
+efficiency; and (3) can be scaled at a reasonable implementation
+cost.</p>
+<figure>
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700192611144.png" alt="1700192611144">
+<figcaption aria-hidden="true">1700192611144</figcaption>
+</figure>
+<p>比如： <img src="/2023/11/15/Designing_DNN_Accelerators/1700195392726.png" alt="1700195392726"></p>
 <ul>
-<li>An alternative to caches is to use <strong>scratchpads</strong>,
-which expose an address range ofa particular staging buffer for loads
-and stores, thereby enabling explicit and precise control over the data
-orchestration.</li>
-<li>A GPU’s shared memory scratchpad [171] is a widespread contemporary
-example ofthis idiomfor explicit data orchestration. The size and
-address range ofthe scratchpad is exposed architecturally, and the
-transfer of data into and out of the scratchpad is managed via explicit
-instructions.</li>
-<li>While scratchpads avoid the hardware overheads of caches, extracting
-memory parallelism—both across fills and overlapping fills and
-accesses—is tedious and errorprone, and as a result they are difficult
-to compose into hierarchie</li>
-<li>未完待续。。。</li>
+<li>每一 row 的 weight 来自不同的 filter (M)，同一 row 中的 weight
+来自不同的 channel(C)，stationary</li>
+<li>每一 col 的 input 来自不同的 channel(C)</li>
+<li>同一 row 的 psum 相加后在传输到 psum buffer</li>
+<li>input activations (iacts) are reused vertically and partial sums
+(psums) are accumulated horizontally</li>
 </ul>
+<figure>
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700195681895.png" alt="1700195681895">
+<figcaption aria-hidden="true">1700195681895</figcaption>
+</figure>
+<ul>
+<li>每一 row 的 weight 来自不同的 filter (M) 或者 同一 filter
+但不同的位置</li>
+<li>每一 col 的 input 都不同空间位置 (H, W)</li>
+<li>input activations (iacts) are reused vertically and weights are
+reused horizontally</li>
+</ul>
+<p>三种通信方式的优缺点： <img src="/2023/11/15/Designing_DNN_Accelerators/1700197338646.png" alt="1700197338646"></p>
+<blockquote>
+<p><strong>Hierarchical Mesh Network</strong></p>
 </blockquote>
+<p>hierarchical mesh network(HM-NoC) <img src="/2023/11/15/Designing_DNN_Accelerators/1700305038591.png" alt="1700305038591"></p>
+<ul>
+<li>2 levels</li>
+<li>4 modes</li>
+</ul>
+<p>例子： <img src="/2023/11/15/Designing_DNN_Accelerators/1700305564774.png" alt="1700305564774"></p>
+<figure>
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700305697758.png" alt="1700305697758">
+<figcaption aria-hidden="true">1700305697758</figcaption>
+</figure>
+<h2 id="mapping">mapping</h2>
+<p>In the processing ofDNNs, the mapper translates the desired DNN layer
+computation (i.e., problem specification) along with its shape and size4
+into a hardware- compatible mapping for execution. <img src="/2023/11/15/Designing_DNN_Accelerators/1700305982329.png" alt="1700305982329"></p>
+<p>类比cpu： <img src="/2023/11/15/Designing_DNN_Accelerators/1700306005539.png" alt="1700306005539"></p>
+<p>mapper 框图： <img src="/2023/11/15/Designing_DNN_Accelerators/1700306053391.png" alt="1700306053391"></p>
+<p>根据 Problem Spec/Shape 以及约束 Dataflow(s)/Constraints 在解集
+mapper space 里面搜索出最优解，然后对 DNN Accelerator 进行配置</p>
+<p>映射的算法可以用 loop nest 来表示，比如 <img src="/2023/11/15/Designing_DNN_Accelerators/1700306283046.png" alt="1700306283046"><img src="/2023/11/15/Designing_DNN_Accelerators/1700306290812.png" alt="1700306290812"></p>
 
       
     </div>
