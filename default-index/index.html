@@ -168,6 +168,190 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/21/reduceing_precisin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="Treeby">
+      <meta itemprop="description" content="La vie est belle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Amusement Park">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/11/21/reduceing_precisin/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-11-21 22:25:51" itemprop="dateCreated datePublished" datetime="2023-11-21T22:25:51+08:00">2023-11-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-26 22:15:59" itemprop="dateModified" datetime="2023-11-26T22:15:59+08:00">2023-11-26</time>
+              </span>
+
+          
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="reducing-precision">Reducing Precision</h1>
+<h2 id="introduction">Introduction</h2>
+<p>优点：</p>
+<ul>
+<li>reduced data movement (i.e., reduce memory bandwidth)</li>
+<li>reduced storage cost (i.e., reduce chip area)</li>
+<li>reduced energy per memory access (due to smaller memories)</li>
+<li>reduced energy and time per MAC operation</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>accuracy</li>
+</ul>
+<p>复杂度：</p>
+<ul>
+<li>乘法器面积与功耗O(<span class="math inline">\(n^2\)</span>)</li>
+<li>乘法器延迟O(n)</li>
+<li>累加器面积与功耗O(n)</li>
+<li>累加器延迟O(n)或O(<span class="math inline">\(\sqrt{n}\)</span>)</li>
+</ul>
+<figure>
+<img src="/2023/11/21/reduceing_precisin/co-redesign/1700577624277.png" alt="1700577624277">
+<figcaption aria-hidden="true">1700577624277</figcaption>
+</figure>
+<p>Reducing the bit width of the fully accumulated partial sum will not
+have a significant impact on accuracy if the distribution of the weights
+and activations are centered near zero with a limited standard
+deviation; batch normalization may help achieve this effect.</p>
+<h2 id="define-the-bit-widths">define the bit-widths</h2>
+<ol type="1">
+<li><p>Quantization</p>
+<p>设量化台阶为 L，量化后的 value 为 <span class="math inline">\(q_i,
+0\leq i \leq L-1\)</span> 原数据为 <span class="math inline">\(x,
+x_{min}\leq x \leq x_{max}\)</span> 则量化后的输出为 <span class="math inline">\(\hat{x}=Q(x)=q_i, d_i \lt x \leq d_{i+1},
+d_{i+1}-d_i=d_i-d_{i-1}\)</span> 量化误差为 <span class="math inline">\(E[(x-\hat{x})^2]=\int_{x_{min}}^{x_{max}}(x-\hat{x})^2\cdot
+p(x)dx\)</span></p></li>
+<li><p>均匀量化</p>
+<p><span class="math inline">\(q_i=ki+b\)</span>
+只有原数据满足均匀分布时，误差才最小</p></li>
+<li><p>非均匀量化</p>
+<p>比如，log 量化 <span class="math inline">\(q_i=2^i\)</span>
+这样好处是 i 到 <span class="math inline">\(q_i\)</span>
+的映射在硬件上为移位，multiplier-free 同时，量化后的 value
+相乘也为简单的移位 而其余的非线性量化，则将 i 映射到 <span class="math inline">\(q_i\)</span> 时，需使用查找表(look-up
+table)或哈希表(hash table)，并且完成计算后转换为均匀区域的值</p></li>
+<li><p>量化步骤</p>
+<ol type="1">
+<li>决定输入 x 的量化 index 值 i</li>
+<li>将 i 映射为 <span class="math inline">\(q_i\)</span></li>
+<li>对映射后的 <span class="math inline">\(q_i\)</span> 完成 MAC 等计算
+<img src="/2023/11/21/reduceing_precisin/co-redesign/1701000226452.png" alt="1701000226452"></li>
+</ol>
+<p>量化方法本质是一个 精确度 与 硬件代价 的 trade-off</p></li>
+</ol>
+<h2 id="standard-component-of-the-bit-width">standard component of the
+bit width</h2>
+<p>一旦量化的值确定，我们就要使用一定的位数以及规则来表示</p>
+<ol type="1">
+<li>规则
+<ol type="1">
+<li>exponent: <span class="math inline">\(n_e\)</span>-bits
+用于表示的数的范围大小为 <span class="math inline">\(2^{e-127}\)</span>，其中，<span class="math inline">\(e\)</span>由<span class="math inline">\(n_e\)</span>-bits的数表示，可正可负</li>
+<li>mantissa: <span class="math inline">\(n_m\)</span>-bits 用于表示
+<span class="math inline">\(2^{n_m}\)</span> values</li>
+<li>sign: <span class="math inline">\(n_s\)</span>=1位</li>
+<li>因此，总位数：<span class="math inline">\(n_s+n_e+n_m\)</span></li>
+</ol>
+<figure>
+<img src="/2023/11/21/reduceing_precisin/co-redesign/1701003270978.png" alt="1701003270978">
+<figcaption aria-hidden="true">1701003270978</figcaption>
+</figure></li>
+<li>几种 StandardNumerical Representations
+<ol type="1">
+<li>Fixed point format(integer): fixed range，也就是不需要 <span class="math inline">\(n_e\)</span>-bits <span class="math inline">\((-1)^s\times m\)</span> <img src="/2023/11/21/reduceing_precisin/co-redesign/1701004153441.png" alt="1701004153441"></li>
+<li>Floating point(FP) format: 对于每个
+value，range可以改变，也就是包含了 <span class="math inline">\(n_e\)</span>bits <span class="math inline">\((-1)^s\times m \times 2^{(e-127)}\)</span> <img src="/2023/11/21/reduceing_precisin/co-redesign/1701004142704.png" alt="1701004142704"></li>
+<li>一般在CPU和GPU里用的是 fp32，而推断时，尝使用8-bit fixed point 或
+16-bit float point进行乘法计算</li>
+</ol></li>
+<li>硬件上实现乘法
+<ol type="1">
+<li>定点数乘法 <img src="/2023/11/21/reduceing_precisin/co-redesign/1701004514496.png" alt="1701004514496"> 当然，改进的一般使用booth乘法器</li>
+<li>浮点数乘法 在定点数乘法上，加入exponent的计算 <img src="/2023/11/21/reduceing_precisin/co-redesign/1701004988205.png" alt="1701004988205"></li>
+<li>目前有许多改进方法，通过 exponent sharing，比如 block floating
+point，dynamic fixed point等等，可看作是介于 floating point 和 fixed
+point 之间</li>
+</ol></li>
+</ol>
+<h2 id="custom-numerical-representations">custom numerical
+representations</h2>
+<p>实际上，是 manitissa(number of unique values) 与 exponent(range)
+之间的 trade-off 比如，fp16中，使用<span class="math inline">\(n_s=1,
+n_e=5, n_m=10\)</span>，而在 bfloat16(brain floating-point
+format)中，<span class="math inline">\(n_s=1, n_e=8, n_m=7\)</span>
+支持更大的范围有利于训练中的梯度求取 又比如，ms-fp8， ms-fp9 等等</p>
+<h2 id="mixed-precision-different-precision-for-different-data-types">mixed
+precision: different precision for different data types</h2>
+<p>对于 inference 来说，数据种类分为 weights, activations, partial sums
+对于 training 来说，数据种类分为 weights, activations, partial sums,
+gradients, and weight updates <strong>Training typically requires higher
+precision than inference since the gradients and weights updates have a
+larger range then the weights andactivations</strong></p>
+<p>这时，硬件 MAC 需要支持位数的变化，因此需要 data-gated MAC <img src="/2023/11/21/reduceing_precisin/co-redesign/1701006475911.png" alt="1701006475911"></p>
+<p>然而，大量计算单元将闲置，造成硬件资源浪费和吞吐量的减少。将
+precision-scable MAC 类比 DNN 的 PE array</p>
+<figure>
+<img src="/2023/11/21/reduceing_precisin/co-redesign/1701008021847.png" alt="1701008021847">
+<figcaption aria-hidden="true">1701008021847</figcaption>
+</figure>
+<figure>
+<img src="/2023/11/21/reduceing_precisin/co-redesign/1701008030342.png" alt="1701008030342">
+<figcaption aria-hidden="true">1701008030342</figcaption>
+</figure>
+<figure>
+<img src="/2023/11/21/reduceing_precisin/co-redesign/1701008069283.png" alt="1701008069283">
+<figcaption aria-hidden="true">1701008069283</figcaption>
+</figure>
+<p>充分利用空闲资源计算需要的psum</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/15/Kernel_Computation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -754,10 +938,16 @@ mapper space 里面搜索出最优解，然后对 DNN Accelerator 进行配置</
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-11-15 00:45:54 / Modified: 00:55:27" itemprop="dateCreated datePublished" datetime="2023-11-15T00:45:54+08:00">2023-11-15</time>
+              <time title="Created: 2023-11-15 00:45:54" itemprop="dateCreated datePublished" datetime="2023-11-15T00:45:54+08:00">2023-11-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-12-18 22:18:30" itemprop="dateModified" datetime="2023-12-18T22:18:30+08:00">2023-12-18</time>
+              </span>
 
           
   
@@ -772,21 +962,44 @@ mapper space 里面搜索出最优解，然后对 DNN Accelerator 进行配置</
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="2023-11-15"><a href="#2023-11-15" class="headerlink" title="2023.11.15"></a>2023.11.15</h2><p>开学十一个星期了，感觉自己过得一塌糊涂。<br>本以为，是以三天数模奋战开始的斗志昂扬的一个学期，结果省三的屑成绩再次证明了自己真的是屑。我是多么期盼，果酱名单上有我们队伍的名字，并写着三个成员均来自二中，但那终究只存在于梦里。</p>
-<p>科研，也是一样。虽说进了所谓的实验室，但是，0项目，0论文，我也不知道在做些啥，现在还在看eyeriss论文和Eﬃcient Processing of Deep Neural Networks一书。</p>
-<p>绩点，上学期3.78&#x2F;4.0，这学期感觉还会往下掉，半器、dsp全靠看网课自学，数集抓不住重点，感觉都是重点，也不知道是不是重点，数据结构似乎学的还可以。通识课被卷死了，经济学原理还没怎么看书。</p>
+          <h2 id="section">2023.11.15</h2>
+<p>开学十一个星期了，感觉自己过得一塌糊涂。
+本以为，是以三天数模奋战开始的斗志昂扬的一个学期，结果省三的屑成绩再次证明了自己真的是屑。我是多么期盼，果酱名单上有我们队伍的名字，并写着三个成员均来自二中，但那终究只存在于梦里。</p>
+<p>科研，也是一样。虽说进了所谓的实验室，但是，0项目，0论文，我也不知道在做些啥，现在还在看eyeriss论文和Eﬃcient
+Processing of Deep Neural Networks一书。</p>
+<p>绩点，上学期3.78/4.0，这学期感觉还会往下掉，半器、dsp全靠看网课自学，数集抓不住重点，感觉都是重点，也不知道是不是重点，数据结构似乎学的还可以。通识课被卷死了，经济学原理还没怎么看书。</p>
 <p>绩点、竞赛、科研，唉，真的一塌糊涂。每次我这样想，我也经常这样想，压力、焦虑……我只是想，明年这个时候，有书读而已。常常想，微电子科学与工程，这个专业，究竟选对了没？虽然，这个问题，可能没有答案。但是，这学期来，我已经因为这些，几次感觉到压抑并且喘不过气来。我不知道会不会是抑郁，但如果没有二中的朋友和音乐，我感觉我真的没法活。</p>
-<p><img src="/2023/11/15/2023%E7%A7%8B/1699979698443.png" alt="焦焦焦"></p>
+<figure>
+<img src="/2023/11/15/2023%E7%A7%8B/1699979698443.png" alt="焦焦焦">
+<figcaption aria-hidden="true">焦焦焦</figcaption>
+</figure>
 <p>还有这段时间，又为感情的琐事纠缠了很久，当然，缘由我起，现在黯然落幕了，也说不了什么。</p>
-<p><img src="/2023/11/15/2023%E7%A7%8B/1699979406940.png" alt="true friends or tree hole？"></p>
+<figure>
+<img src="/2023/11/15/2023%E7%A7%8B/1699979406940.png" alt="true friends or tree hole？">
+<figcaption aria-hidden="true">true friends or tree hole？</figcaption>
+</figure>
 <blockquote>
-<p>即使一生多出一根刺<br>没有刺痛别要知<br>就当共你有剧情没有故事</p>
+<p>即使一生多出一根刺 没有刺痛别要知 就当共你有剧情没有故事</p>
 </blockquote>
-<p><em><strong>像你没来过没去过~</strong></em></p>
+<p><strong><em>像你没来过没去过~</em></strong></p>
 <p>迷茫的树安，现在只能选择继续相信，彼方尚有荣光在。这学期还剩不到两个月，得振作起来了，学业最重要！！！</p>
 <p><strong>提前祝我亲爱的二中，93周年生日快乐！</strong></p>
-<p><img src="/2023/11/15/2023%E7%A7%8B/1699980268904.png" alt="二中！我的二中！"></p>
+<figure>
+<img src="/2023/11/15/2023%E7%A7%8B/1699980268904.png" alt="二中！我的二中！">
+<figcaption aria-hidden="true">二中！我的二中！</figcaption>
+</figure>
 <p><strong>今晚梦里，必归去兮！</strong></p>
+<h2 id="section-1">2023.12.18</h2>
+<p>又自己一个人去唱k了。。。
+没想到还拉扯到昨天，可能是最后一次一起自习吃饭了。但是成年人就是得接受人与人的感情就是会突然变淡的事实。
+还有一个星期考试了，状态千万要回来啊！
+感谢这两个月zr的支持，兄弟才是永远的。</p>
+<p><code>ls -a</code></p>
+<blockquote>
+<p>想讲句一切算了你听不到又怎算 想失也无可失这刻 我也曾赚了温暖
+——《尘埃落定》</p>
+</blockquote>
+<p>祝十天后的树安生日快乐！</p>
 
       
     </div>
@@ -1985,80 +2198,11 @@ Computations</h3>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/28/Life/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="Treeby">
-      <meta itemprop="description" content="La vie est belle">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Amusement Park">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/28/Life/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-06-28 12:28:07" itemprop="dateCreated datePublished" datetime="2023-06-28T12:28:07+08:00">2023-06-28</time>
-            </span>
-
-          
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/default-index/page/2/">2</a><a class="extend next" rel="next" href="/default-index/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -2125,7 +2269,7 @@ Computations</h3>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
