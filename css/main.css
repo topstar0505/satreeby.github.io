@@ -178,7 +178,7 @@ body {
   background: var(--body-bg-color);
   color: var(--text-color);
   font-family: 'Lato', "Noto Serif SC", sans-serif;
-  font-size: 1em;
+  font-size: 0.875em;
   line-height: 2;
 }
 @media (max-width: 991px) {
@@ -1200,7 +1200,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffb5cf;
+  background: #54ba08;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2180,6 +2180,13 @@ ul.breadcrumb li + li:last-child {
 .tag-cloud a:hover {
   color: var(--link-hover-color) !important;
 }
+mjx-container[jax="CHTML"][display="true"],
+.has-jax {
+  overflow: auto hidden;
+}
+mjx-container + br {
+  display: none;
+}
 .header {
   margin: 0 auto;
   position: relative;
@@ -2202,7 +2209,7 @@ ul.breadcrumb li + li:last-child {
 }
 .header-inner {
   background: var(--content-bg-color);
-  border-radius: initial;
+  border-radius: 20px 20px 20px 20px;
   box-shadow: initial;
   overflow: hidden;
   padding: 0;
@@ -2235,7 +2242,7 @@ ul.breadcrumb li + li:last-child {
 }
 .content-wrap {
   background: var(--content-bg-color);
-  border-radius: initial;
+  border-radius: 20px 20px 20px 20px;
   box-shadow: initial;
   box-sizing: border-box;
   padding: 40px;
@@ -2393,7 +2400,7 @@ ul.breadcrumb li + li:last-child {
 }
 .sidebar-inner {
   background: var(--content-bg-color);
-  border-radius: initial;
+  border-radius: 20px;
   box-shadow: initial;
   box-sizing: border-box;
   color: var(--text-color);
@@ -2479,7 +2486,7 @@ ul.breadcrumb li + li:last-child {
   padding: 0;
 }
 .post-block {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 .sidebar {
   background-color: transparent;
@@ -2489,15 +2496,14 @@ ul.breadcrumb li + li:last-child {
   background: rgba(255,255,255,0.5);
 }
 .popup {
-  opacity: 0.8;
+  opacity: 0.7;
 }
 .content-wrap {
-  opacity: 0.9;
+  opacity: 0.8;
 }
 body {
-  background-image: url("/images/background.jpg");
+  background-image: url("/images/background.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
-  color: #000;
 }
