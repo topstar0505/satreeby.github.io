@@ -173,7 +173,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/Stable%20Diffusion/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/Stable_Diffusion/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/author.jpg">
@@ -187,7 +187,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/04/26/Stable%20Diffusion/" class="post-title-link" itemprop="url">Stable Diffusion</a>
+            <a href="/2024/04/26/Stable_Diffusion/" class="post-title-link" itemprop="url">Stable Diffusion</a>
         </h2>
 
         <div class="post-meta">
@@ -198,7 +198,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2024-04-26 21:48:04 / Modified: 22:09:17" itemprop="dateCreated datePublished" datetime="2024-04-26T21:48:04+08:00">2024-04-26</time>
+              <time title="Created: 2024-04-26 21:48:04 / Modified: 23:38:10" itemprop="dateCreated datePublished" datetime="2024-04-26T21:48:04+08:00">2024-04-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -223,10 +223,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="关于">关于</h2>
-<p>本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune
-deploy 实验。</p>
-<h2 id="基本原理">基本原理</h2>
+          <h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune deploy 实验。</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>github: <a target="_blank" rel="noopener" href="https://github.com/CompVis/stable-diffusion">Stable Diffusion v1</a><br>论文地址：<a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2022/papers/Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models_CVPR_2022_paper">Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models</a></p>
+<h3 id="github代码介绍"><a href="#github代码介绍" class="headerlink" title="github代码介绍"></a>github代码介绍</h3><p>先来看文件组织结构：</p>
+<ul>
+<li>LICENSE: 项目的许可证文件，说明了用户可以如何使用和分发该项目。</li>
+<li>setup.py：对整个 project 进行打包，可以看成为下载了一个 python 库到本地，与 pip install 效果相同</li>
+<li>Model_Card.md：模型的“技术规格说明书”，用于提供有关机器学习模型的详细信息，包括其性能、使用案例、潜在的偏差和限制等</li>
+<li>README.md：项目的“欢迎手册”，提供了项目的全面概览和使用指南</li>
+<li>main.py：Python 脚本，项目的入口点，可能包含设置、训练和评估机器学习模型的代码。例如可以使用 Pytorch.lightning 框架等<br><img src="/2024/04/26/Stable_Diffusion/1714145727161.png" alt="pytorch.lightning"></li>
+</ul>
 
       
     </div>
