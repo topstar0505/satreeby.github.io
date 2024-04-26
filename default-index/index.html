@@ -204,7 +204,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-04-27 01:49:21" itemprop="dateModified" datetime="2024-04-27T01:49:21+08:00">2024-04-27</time>
+                <time title="Modified: 2024-04-27 01:50:37" itemprop="dateModified" datetime="2024-04-27T01:50:37+08:00">2024-04-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,12 +256,15 @@ D(\varepsilon(x)), z\in R^{h\times w \times c}\)</span></li>
 <li>Diffision model can be interpreted as an equally weighted sequence
 of denoising autoencoders: <span class="math inline">\(\epsilon_\theta(x_t, t); t=1, 2, \dots,
 T\)</span>，即预测噪声的网络，其中，<span class="math inline">\(x_t\)</span> is a noisy version of the input <span class="math inline">\(x\)</span></li>
-<li>目标损失函数为： $L_{DM}= E_{x, N(0, 1), t uniform(1, 2, ... T)}[||-
-_(x_t, t)||_2^2], $</li>
-<li>LDM中，目标损失函数为： $L_{LDM}:= E_{(x), N(0, 1), t}[||- _(z_t,
-t)||_2^2], $</li>
-<li>再加入 condition 后，目标损失函数为： $L_{LDM}:= E_{(x),y, N(0, 1),
-t}[||- <em>(z_t, t, </em>(y))||_2^2], $</li>
+<li>目标损失函数为：<span class="math inline">\(L_{DM}= E_{x, \epsilon
+\sim N(0, 1), t \sim uniform(1, 2, ... T)}[||\epsilon -
+\epsilon_\theta(x_t, t)||_2^2]\)</span></li>
+<li>LDM中，目标损失函数为：<span class="math inline">\(L_{LDM}:=
+E_{\varepsilon(x), \epsilon \sim N(0, 1), t}[||\epsilon -
+\epsilon_\theta(z_t, t)||_2^2]\)</span></li>
+<li>再加入 condition 后，目标损失函数为：<span class="math inline">\(L_{LDM}:= E_{\varepsilon(x),y, \epsilon \sim N(0,
+1), t}[||\epsilon - \epsilon_\theta(z_t, t,
+\tau_\theta(y))||_2^2]\)</span></li>
 </ul></li>
 <li><p>Unet</p>
 <ul>
