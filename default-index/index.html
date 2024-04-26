@@ -173,6 +173,79 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/Stable%20Diffusion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="Treeby">
+      <meta itemprop="description" content="La vie est belle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Amusement Park">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/26/Stable%20Diffusion/" class="post-title-link" itemprop="url">Stable Diffusion</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-04-26 21:48:04 / Modified: 22:09:17" itemprop="dateCreated datePublished" datetime="2024-04-26T21:48:04+08:00">2024-04-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B9%9D%E5%B0%BE%C2%B7%E4%BB%96%E5%B1%B1/" itemprop="url" rel="index"><span itemprop="name">九尾·他山</span></a>
+                </span>
+            </span>
+
+          
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="关于">关于</h2>
+<p>本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune
+deploy 实验。</p>
+<h2 id="基本原理">基本原理</h2>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/08/2024%E6%98%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -204,8 +277,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-04-15 18:27:06" itemprop="dateModified" datetime="2024-04-15T18:27:06+08:00">2024-04-15</time>
+                <time title="Modified: 2024-04-26 22:13:42" itemprop="dateModified" datetime="2024-04-26T22:13:42+08:00">2024-04-26</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%92%E9%B8%9F%C2%B7%E7%94%9F%E6%B4%BB/" itemprop="url" rel="index"><span itemprop="name">青鸟·生活</span></a>
+                </span>
+            </span>
 
           
   
@@ -220,13 +302,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="2024-4-8"><a href="#2024-4-8" class="headerlink" title="2024.4.8"></a>2024.4.8</h2><p>新的一个学期，很忙，而且有很多不想上的课。前面几个星期都为了卓博的事情很苦恼，因为没有任何科研经历，机会渺茫，但是还是想着试试拿这每年5万块钱。在芯片院听了几次组会，对芯片专业也有了更深的了解。数字ic（ASIC）方面，感存算一体，chiplet，AI，三者结合，确实是主流的大方向了；又或者 AI 的软硬件协同 FPGA 设计，也是不错的方向；有几个星期也在犹豫要不要搞 AI for EDA，但后来想通了，感觉这个其实挺鸡肋的，虽然可以借此转算法，但不是个好选择，因为EDA实在并非自己所感兴趣的。不知道为什么，还是想要读博，芯片设计确实某种程度上吸引着我，设计芯片，也是在创造一件艺术品；当然了，写一手好代码，设计一个好的系统，尽管只是像上学期 DSA 的课程小 pj 一样，我觉得这同样也是一件艺术品。</p>
-<p>这周是第七周，一堆作业还没做，集创赛进度也很缓慢，但我也要抽出一点时间，写下一些想法。下午和工研院做机器人的老师和学长聊了聊，虽然打算不做他们那边的项目了，但还是受益匪浅。关于目前具身智能的发展，主要是两点：（1）机器人要像人一样，主要是思考和理解。大模型赋予了机器人的新一场革命。目前做机器人，他们组基本都是做垂直领域，针对特定任务，基于大模型，做点创新。我感觉这对于创新创业项目来说，确实挺好，但如果对于科研来说，模型的缝合可能不是我想做的。PIE，即Process，Imagine，Execute，是交大一位老师对具身智能的定义。大模型给予了机器人理解能力，特别是多模态大模型。然而，直接调用大模型 API，反应时间是让人无法接受的，这也是瓶颈所在。这又回到了，模型轻量化（算法）与芯片支持（算力）上面。大模型落地机器人，或着往后机器人的发展，还是离不开芯片对算法的加速——专用计算。而关于理解部分，是因为机器人要理解复杂多变的环境（有点像自动驾驶，cv），要与人交互（nlp，多模态），这是机器人大脑算法的核心。（2）灵巧手，弹跳，等等，这些涉及了物理与算法，是另一个瓶颈，但我不是太感兴趣。而关于科研方面，和老师学长也聊了聊，感受最深的两点：（1）师傅领进门，修行靠个人。想出idea是最难的，想清楚哪个方向，创新点有哪些，能不能完成，跟SOTA比怎么样。想要在算法、模型上有所建树，还是得多读论文，有扎深的数学功底。（2）可以针对特定任务，针对特定场景、垂直领域，简单的缝补，是挺水的。</p>
+          <h2 id="section">2024.4.8</h2>
+<p>新的一个学期，很忙，而且有很多不想上的课。前面几个星期都为了卓博的事情很苦恼，因为没有任何科研经历，机会渺茫，但是还是想着试试拿这每年5万块钱。在芯片院听了几次组会，对芯片专业也有了更深的了解。数字ic（ASIC）方面，感存算一体，chiplet，AI，三者结合，确实是主流的大方向了；又或者
+AI 的软硬件协同 FPGA 设计，也是不错的方向；有几个星期也在犹豫要不要搞 AI
+for
+EDA，但后来想通了，感觉这个其实挺鸡肋的，虽然可以借此转算法，但不是个好选择，因为EDA实在并非自己所感兴趣的。不知道为什么，还是想要读博，芯片设计确实某种程度上吸引着我，设计芯片，也是在创造一件艺术品；当然了，写一手好代码，设计一个好的系统，尽管只是像上学期
+DSA 的课程小 pj 一样，我觉得这同样也是一件艺术品。</p>
+<p>这周是第七周，一堆作业还没做，集创赛进度也很缓慢，但我也要抽出一点时间，写下一些想法。下午和工研院做机器人的老师和学长聊了聊，虽然打算不做他们那边的项目了，但还是受益匪浅。关于目前具身智能的发展，主要是两点：（1）机器人要像人一样，主要是思考和理解。大模型赋予了机器人的新一场革命。目前做机器人，他们组基本都是做垂直领域，针对特定任务，基于大模型，做点创新。我感觉这对于创新创业项目来说，确实挺好，但如果对于科研来说，模型的缝合可能不是我想做的。PIE，即Process，Imagine，Execute，是交大一位老师对具身智能的定义。大模型给予了机器人理解能力，特别是多模态大模型。然而，直接调用大模型
+API，反应时间是让人无法接受的，这也是瓶颈所在。这又回到了，模型轻量化（算法）与芯片支持（算力）上面。大模型落地机器人，或着往后机器人的发展，还是离不开芯片对算法的加速——专用计算。而关于理解部分，是因为机器人要理解复杂多变的环境（有点像自动驾驶，cv），要与人交互（nlp，多模态），这是机器人大脑算法的核心。（2）灵巧手，弹跳，等等，这些涉及了物理与算法，是另一个瓶颈，但我不是太感兴趣。而关于科研方面，和老师学长也聊了聊，感受最深的两点：（1）师傅领进门，修行靠个人。想出idea是最难的，想清楚哪个方向，创新点有哪些，能不能完成，跟SOTA比怎么样。想要在算法、模型上有所建树，还是得多读论文，有扎深的数学功底。（2）可以针对特定任务，针对特定场景、垂直领域，简单的缝补，是挺水的。</p>
 <p>不要急于做项目了，降低点期待，能直博就行。越来越卷的环境下，还是得读博。定个小目标：直博芯片院，大四发一篇算法类的顶会，博士专心搞芯片，然后发i。已经开始笑了。</p>
-<h2 id="2024-4-15"><a href="#2024-4-15" class="headerlink" title="2024.4.15"></a>2024.4.15</h2><p>这些天来还是在思考ai or ic？有时候在想，当时究竟选对专业了吗？大一分流选择是否该选择cs？假如当时选了cs，我可能又会想是不是该选微电子。</p>
+<h2 id="section-1">2024.4.15</h2>
+<p>这些天来还是在思考ai or
+ic？有时候在想，当时究竟选对专业了吗？大一分流选择是否该选择cs？假如当时选了cs，我可能又会想是不是该选微电子。</p>
 <p>人总是美化未被选择的另一条道路。</p>
 <p>刚刚实在不想学了，回头审视了一下，高考出分后，选择复旦技科是否正确。往事不堪回首，总是对679的高考分数感到遗憾，对数学14题圆锥曲线感到遗憾，还有化学2分同分异构。7分可能真的能改变很多，学校、专业，肯定都不一样，不过最终是好是坏，也无从得知。还是基于679的分数，297的排名，来看看吧。（还挺有意思的，分数和排名最后两位数刚好对称）</p>
-<p>首先是我旦<br><img src="/2024/04/08/2024%E6%98%A5/1713175743751.png" alt="1713175743751"><br>数学填空题不看错就能去工试了，就不用卷了qaq，不过679就只能是技科了。<br>然后看看交和浙，去交浙的话肯定学cs了，但是分数不够也去不了，大类的话不如还是旦<br><img src="/2024/04/08/2024%E6%98%A5/1713176018016.png" alt="1713176018016"><br><img src="/2024/04/08/2024%E6%98%A5/1713176078888.png" alt="1713176078888"><br>南大和中科大，虽然ai确实也挺强，但是始终有个地理位置的劣势，并且总感觉校风与我不太match<br>最后是人大，人大的高瓴人工智能学院确实也还挺不错的，但它的人工智能也是大类，收到673分，如果报这个志愿感觉有点浪费分数<br><img src="/2024/04/08/2024%E6%98%A5/1713176218209.png" alt="1713176218209"><br>综上所述，不打算出国的话，来旦或去交。如果分数高一点，可能就去交了；但在这个分数下，来旦已是最好的选择。</p>
+<p>首先是我旦 <img src="/2024/04/08/2024%E6%98%A5/1713175743751.png" alt="1713175743751">
+数学填空题不看错就能去工试了，就不用卷了qaq，不过679就只能是技科了。
+然后看看交和浙，去交浙的话肯定学cs了，但是分数不够也去不了，大类的话不如还是旦
+<img src="/2024/04/08/2024%E6%98%A5/1713176018016.png" alt="1713176018016"> <img src="/2024/04/08/2024%E6%98%A5/1713176078888.png" alt="1713176078888">
+南大和中科大，虽然ai确实也挺强，但是始终有个地理位置的劣势，并且总感觉校风与我不太match
+最后是人大，人大的高瓴人工智能学院确实也还挺不错的，但它的人工智能也是大类，收到673分，如果报这个志愿感觉有点浪费分数
+<img src="/2024/04/08/2024%E6%98%A5/1713176218209.png" alt="1713176218209">
+综上所述，不打算出国的话，来旦或去交。如果分数高一点，可能就去交了；但在这个分数下，来旦已是最好的选择。</p>
 
       
     </div>
@@ -277,7 +374,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-18 19:21:32" itemprop="dateModified" datetime="2023-11-18T19:21:32+08:00">2023-11-18</time>
+                <time title="Modified: 2024-04-26 22:09:25" itemprop="dateModified" datetime="2024-04-26T22:09:25+08:00">2024-04-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -285,7 +382,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Notes-of-E%EF%AC%83cient-Processing-of-Deep-Neural-Networks/" itemprop="url" rel="index"><span itemprop="name">Notes of Eﬃcient Processing of Deep Neural Networks</span></a>
+                  <a href="/categories/%E4%B9%9D%E5%B0%BE%C2%B7%E4%BB%96%E5%B1%B1/" itemprop="url" rel="index"><span itemprop="name">九尾·他山</span></a>
                 </span>
             </span>
 
@@ -303,21 +400,25 @@
 
       
           <blockquote>
-<p>credit to Eﬃcient Processing of Deep Neural Networks》</p>
+<p>credit to 《Eﬃcient Processing of Deep Neural Networks》</p>
 </blockquote>
+<h2 id="about-this-paragraph">about this paragraph</h2>
+<p>介绍基本的DNN加速器设计的数据流，主要是对《Eﬃcient Processing of Deep
+Neural Networks》做的笔记总结</p>
 <h2 id="key-metrics">Key Metrics</h2>
 <ul>
-<li><strong>Energy consumption</strong>
+<li><p><strong>Energy consumption</strong></p>
 <ol type="1">
 <li>减少数据的移动(data movement)</li>
 <li>减少移动单位数据的代价</li>
 </ol></li>
-<li><strong>Performance in terms of throughput and latency</strong>
+<li><p><strong>Performance in terms of throughput and
+latency</strong></p>
 <ol type="1">
 <li>增加并行度(parallel)</li>
 <li>减少PE空闲周期数</li>
 </ol></li>
-<li><strong>Area</strong></li>
+<li><p><strong>Area</strong></p></li>
 </ul>
 <h2 id="key-properties-of-dnn-to-leverage">Key Properties of DNN to
 Leverage</h2>
@@ -401,14 +502,14 @@ parallel</strong></p>
 <p>同时需要注意，spatial reuse 需要 Noc 来支持，与 Memory 的层级和带宽
 (bandwidth) 都有关系。</p>
 <ul>
-<li>data reuse 设计关键点
+<li><p>data reuse 设计关键点</p>
 <ol type="1">
 <li>Process order</li>
 <li>Parallel computation</li>
 <li>Data tiling</li>
 <li>同时考虑 bandwidth, Memory hierarchy 等</li>
 </ol></li>
-<li>算法(Algorithm)描述</li>
+<li><p>算法(Algorithm)描述</p></li>
 </ul>
 <blockquote>
 <ul>
@@ -528,9 +629,9 @@ energy efficiency.</p>
 </ul>
 <blockquote>
 <p>由 多个 1-D 卷积组成， 比如下面 R=3, S=3, H=5, W=5, U=1 的卷积，得到
-E=3, F=3 的 output <img src="/2023/11/15/Designing_DNN_Accelerators/1700135701893.png" alt="任我行">
-****</p>
+E=3, F=3 的 output <img src="/2023/11/15/Designing_DNN_Accelerators/1700135701893.png" alt="任我行"></p>
 </blockquote>
+<hr>
 <blockquote>
 <ol type="1">
 <li>在这个例子中，每一行 output 的产生，仍然需要 3 个 steps</li>
@@ -616,11 +717,15 @@ by adjusting the head pointer <img src="/2023/11/15/Designing_DNN_Accelerators/1
 数据的序列为：0，1，2；1，2，3；2，3，4…… 而 psum
 的读入并更新的序列应对应为：0，0，0；1，1，1；2，2，2…… <img src="/2023/11/15/Designing_DNN_Accelerators/1700191310508.png" alt="1700191310508"></p>
 <h2 id="flexible-noc-design">Flexible Noc design</h2>
-<p>要考虑的是： &gt; (1) support processing with high parallelism by
-efficiently delivering data between storage and datapaths; (2) exploit
-data reuse to reduce the bandwidth requirement and improve energy
-efficiency; and (3) can be scaled at a reasonable implementation
-cost.</p>
+<p>要考虑的是：</p>
+<blockquote>
+<ol type="1">
+<li>support processing with high parallelism by efficiently delivering
+data between storage and datapaths; (2) exploit data reuse to reduce the
+bandwidth requirement and improve energy efficiency; and (3) can be
+scaled at a reasonable implementation cost.</li>
+</ol>
+</blockquote>
 <figure>
 <img src="/2023/11/15/Designing_DNN_Accelerators/1700192611144.png" alt="1700192611144">
 <figcaption aria-hidden="true">1700192611144</figcaption>
@@ -718,8 +823,17 @@ mapper space 里面搜索出最优解，然后对 DNN Accelerator 进行配置</
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-20 23:25:35" itemprop="dateModified" datetime="2024-02-20T23:25:35+08:00">2024-02-20</time>
+                <time title="Modified: 2024-04-26 22:10:31" itemprop="dateModified" datetime="2024-04-26T22:10:31+08:00">2024-04-26</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9D%92%E9%B8%9F%C2%B7%E7%94%9F%E6%B4%BB/" itemprop="url" rel="index"><span itemprop="name">青鸟·生活</span></a>
+                </span>
+            </span>
 
           
   
@@ -841,7 +955,7 @@ Altman
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-24 19:06:00" itemprop="dateModified" datetime="2023-10-24T19:06:00+08:00">2023-10-24</time>
+                <time title="Modified: 2024-04-26 22:09:32" itemprop="dateModified" datetime="2024-04-26T22:09:32+08:00">2024-04-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -849,7 +963,7 @@ Altman
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BE%88%E6%B0%B4%E7%9A%84%E8%B0%83%E7%A0%94%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">很水的调研类</span></a>
+                  <a href="/categories/%E4%B9%9D%E5%B0%BE%C2%B7%E4%BB%96%E5%B1%B1/" itemprop="url" rel="index"><span itemprop="name">九尾·他山</span></a>
                 </span>
             </span>
 
@@ -867,422 +981,134 @@ Altman
 
       
           <blockquote>
-<p><strong>credit to</strong> 《人工智能芯片技术白皮书2018，清华大学》《AI 芯片前沿技术与创新未来，张臣雄》 《2022亿库关于中国ai芯片行业的调研》</p>
+<p><strong>credit to</strong>
+《人工智能芯片技术白皮书2018，清华大学》《AI
+芯片前沿技术与创新未来，张臣雄》
+《2022亿库关于中国ai芯片行业的调研》</p>
 </blockquote>
-<p><em><strong>当英伟达成为全球首家市值超过1万亿美元芯片公司时，便意味着AI芯片的的热潮前所未有地席卷各行各业，成为人工智能时代的最重要的物理基石——无芯片，不 AI</strong></em></p>
-<h2 id="什么是-AI-芯片？"><a href="#什么是-AI-芯片？" class="headerlink" title="什么是 AI 芯片？"></a>什么是 AI 芯片？</h2><p><strong>定义</strong>：从广义上讲只要能够运行人工智能算法的芯片都叫作 AI 芯片。但是通常意义上的 AI 芯片指的是针对人工智能算法做了特殊加速设计的芯片，现阶段，这些人工智能算法一般以深度学习算法为主 (比如包括 DNN, CNN, RNN, LSTM, GAN, Transformer)</p>
+<p><strong><em>当英伟达成为全球首家市值超过1万亿美元芯片公司时，便意味着AI芯片的的热潮前所未有地席卷各行各业，成为人工智能时代的最重要的物理基石——无芯片，不
+AI</em></strong></p>
+<h2 id="什么是-ai-芯片">什么是 AI 芯片？</h2>
+<p><strong>定义</strong>：从广义上讲只要能够运行人工智能算法的芯片都叫作
+AI 芯片。但是通常意义上的 AI
+芯片指的是针对人工智能算法做了特殊加速设计的芯片，现阶段，这些人工智能算法一般以深度学习算法为主
+(比如包括 DNN, CNN, RNN, LSTM, GAN, Transformer)</p>
 <ul>
 <li>研究如何设计出高效的硬件友好型的智能算法</li>
 <li>研究如何将这些算法有效可靠地在芯片上实现</li>
 </ul>
-<p><strong>AI 芯片本身处于整个链条的中部，向上为应用和算法提供高效支持，向下对器件和电路、工艺和材料提出需求。</strong></p>
-<p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696787293538.png" alt="Fig1"></p>
-<h2 id="AI-芯片的种类"><a href="#AI-芯片的种类" class="headerlink" title="AI 芯片的种类"></a>AI 芯片的种类</h2><h3 id="按类型"><a href="#按类型" class="headerlink" title="按类型"></a>按类型</h3><ol>
+<p><strong>AI
+芯片本身处于整个链条的中部，向上为应用和算法提供高效支持，向下对器件和电路、工艺和材料提出需求。</strong></p>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696787293538.png" alt="Fig1">
+<figcaption aria-hidden="true">Fig1</figcaption>
+</figure>
+<h2 id="ai-芯片的种类">AI 芯片的种类</h2>
+<h3 id="按类型">按类型</h3>
+<ol type="1">
 <li><p><strong>经过软硬件优化可以高效支持 AI 应用的通用芯片</strong></p>
 <ul>
 <li><p><strong>GPU</strong></p>
-<p>GPU是单指令、多数据处理，采用数量众多的计算单元和超长的流水线，主要处理图像领域的运算加速。GPU是不能单独使用的，它只是处理大数据计算时的能手，必须由CPU进行调用，下达指令才能工作。为此开发的专用编程系统CUDA，能够帮助工程师们运行数万个并发线程和数百个处理器核。<br><strong>高度并行计算，软硬件协同</strong></p>
-</li>
-</ul>
-</li>
-</ol>
-<p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144036046.png" alt="1698144036046"></p>
-<ul>
-<li><strong>TPU, NPU</strong></li>
-</ul>
-<ol start="2">
+<p>GPU是单指令、多数据处理，采用数量众多的计算单元和超长的流水线，主要处理图像领域的运算加速。GPU是不能单独使用的，它只是处理大数据计算时的能手，必须由CPU进行调用，下达指令才能工作。为此开发的专用编程系统CUDA，能够帮助工程师们运行数万个并发线程和数百个处理器核。
+<strong>高度并行计算，软硬件协同</strong> <img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144036046.png" alt="1698144036046"></p></li>
+<li><p><strong>TPU, NPU</strong></p></li>
+</ul></li>
 <li><p><strong>侧重加速机器学习（尤其是神经网络、深度学习）算法的芯片</strong></p>
 <ul>
 <li><p><strong>FPGA</strong></p>
-<p>可编程逻辑门阵列，是一种“可重构”芯片，具有模块化和规则化的架构，主要包含可编程逻辑模块、片上储存器及用于连接逻辑模块的可重构互连层次结构。</p>
-</li>
+<p>可编程逻辑门阵列，是一种“可重构”芯片，具有模块化和规则化的架构，主要包含可编程逻辑模块、片上储存器及用于连接逻辑模块的可重构互连层次结构。</p></li>
 <li><p><strong>ASIC</strong></p>
-<p>特定用户要求和特定电子系统的需要而设计、制造的集成电路。</p>
-</li>
-<li><p><strong>两者对比</strong><br> FPGA具有开发周期短，上市速度快，可配置性等特点，目前被大量的应用在大型企业的线上数据处理中心和军工单位。ASIC一次性成本远远高于FPGA，但由于其量产成本低，应用上就偏向于消费电子，如移动终端等领域。</p>
-</li>
-</ul>
-</li>
-</ol>
-<p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144099559.png" alt="1698144099559"><br><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144177110.png" alt="1698144177110"></p>
-<ol start="3">
+<p>特定用户要求和特定电子系统的需要而设计、制造的集成电路。</p></li>
+<li><p><strong>两者对比</strong>
+FPGA具有开发周期短，上市速度快，可配置性等特点，目前被大量的应用在大型企业的线上数据处理中心和军工单位。ASIC一次性成本远远高于FPGA，但由于其量产成本低，应用上就偏向于消费电子，如移动终端等领域。
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144099559.png" alt="1698144099559"> <img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144177110.png" alt="1698144177110"></p></li>
+</ul></li>
 <li><p><strong>受生物脑启发设计的神经形态计算芯片</strong></p>
 <ul>
 <li><p><strong>类脑芯片</strong></p>
-<p>类脑芯片架构是一款模拟人脑的神经网络模型的新型芯片编程架构，这一系统可以模拟人脑功能进行感知方式、行为方式和思维方式，使用的是脉冲神经网络(SNN)。如，清华大学天机系列芯片。</p>
-</li>
-</ul>
-</li>
+<p>类脑芯片架构是一款模拟人脑的神经网络模型的新型芯片编程架构，这一系统可以模拟人脑功能进行感知方式、行为方式和思维方式，使用的是脉冲神经网络(SNN)。如，清华大学天机系列芯片。
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144682568.png" alt="1698144682568"></p></li>
+</ul></li>
 </ol>
-<p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144682568.png" alt="1698144682568"></p>
-<h3 id="按功能分类"><a href="#按功能分类" class="headerlink" title="按功能分类"></a>按功能分类</h3><p>根据机器学习算法步骤，可分为训练和推断两个环节：</p>
+<h3 id="按功能分类">按功能分类</h3>
+<p>根据机器学习算法步骤，可分为训练和推断两个环节：</p>
 <ul>
 <li><p><strong>训练 (Training)</strong></p>
-<p>训练环节通常需要通过大量的数据输入，训练出一个复杂的深度神经网络模型。训练过程由于涉及海量的训练数据和复杂的深度神经网络结构，运算量巨大，需要庞大的计算规模。训练要求<strong>高精度、高吞吐量、强大的算力</strong>。目前市场上通常使用英伟达的GPU集群，Google的 TPU 来训练。</p>
-</li>
+<p>训练环节通常需要通过大量的数据输入，训练出一个复杂的深度神经网络模型。训练过程由于涉及海量的训练数据和复杂的深度神经网络结构，运算量巨大，需要庞大的计算规模。训练要求<strong>高精度、高吞吐量、强大的算力</strong>。目前市场上通常使用英伟达的GPU集群，Google的
+TPU 来训练。</p></li>
 <li><p><strong>推断 (Inference)</strong></p>
-<p>推断环节是指利用训练好的模型，使用新的数据去“推断”出各种结论。这个环节的计算量相对训练环节少很多，但仍然会涉及到大量的矩阵运算。因此，对于众多应用场景来说，<strong>速度、能效、安全和硬件成本</strong>是考虑的因素。</p>
-</li>
+<p>推断环节是指利用训练好的模型，使用新的数据去“推断”出各种结论。这个环节的计算量相对训练环节少很多，但仍然会涉及到大量的矩阵运算。因此，对于众多应用场景来说，<strong>速度、能效、安全和硬件成本</strong>是考虑的因素。</p></li>
 <li><p><strong>趋势</strong></p>
-<p>在未来的 AI 应用当中，训练（学习）和推断在更多场景下会是交织在一起的。<br>推断放在边缘侧，更低延时，更安全隐私</p>
-</li>
+<p>在未来的 AI
+应用当中，训练（学习）和推断在更多场景下会是交织在一起的。
+推断放在边缘侧，更低延时，更安全隐私</p></li>
 </ul>
-<h3 id="按-AI-部署的位置"><a href="#按-AI-部署的位置" class="headerlink" title="按 AI 部署的位置"></a>按 AI 部署的位置</h3><p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696788206981.png" alt="Fig2"></p>
+<h3 id="按-ai-部署的位置">按 AI 部署的位置</h3>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696788206981.png" alt="Fig2">
+<figcaption aria-hidden="true">Fig2</figcaption>
+</figure>
 <ul>
 <li><p><strong>云端</strong></p>
-<p>云端是指在数据中心或超级计算机，利用海量的数据和庞大而复杂的深度学习算法进行模型训练，也能用作推理。</p>
-</li>
+<p>云端是指在数据中心或超级计算机，利用海量的数据和庞大而复杂的深度学习算法进行模型训练，也能用作推理。</p></li>
 <li><p><strong>边缘侧</strong></p>
-<p>数据中心外的设备，如自动驾驶汽车、机器人、智能手机、物联网设备等，一般用训练好的模型进行推理。</p>
-</li>
+<p>数据中心外的设备，如自动驾驶汽车、机器人、智能手机、物联网设备等，一般用训练好的模型进行推理。</p></li>
 <li><p><strong>趋势</strong></p>
-<p>云的边界也 逐渐向数据的源头推进，未来很可能在传统的终端设备和云端设备直接出现更多的边缘设备，把 AI 处理分布在各种网络设备（比如5G的基站）中，让数据尽量实现本地处理，这样更低延时，更安全隐私。</p>
-</li>
+<p>云的边界也
+逐渐向数据的源头推进，未来很可能在传统的终端设备和云端设备直接出现更多的边缘设备，把
+AI
+处理分布在各种网络设备（比如5G的基站）中，让数据尽量实现本地处理，这样更低延时，更安全隐私。</p></li>
 </ul>
-<h2 id="AI-芯片的技术挑战"><a href="#AI-芯片的技术挑战" class="headerlink" title="AI 芯片的技术挑战"></a>AI 芯片的技术挑战</h2><ul>
+<h2 id="ai-芯片的技术挑战">AI 芯片的技术挑战</h2>
+<ul>
 <li><strong>冯·诺依曼瓶颈</strong></li>
 </ul>
 <p><strong>内存墙</strong>问题。</p>
-<p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696789769571.png" alt="Fig3"></p>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696789769571.png" alt="Fig3">
+<figcaption aria-hidden="true">Fig3</figcaption>
+</figure>
 <ul>
 <li><strong>CMOS工艺和器件瓶颈</strong></li>
 </ul>
-<p><strong>Dennard Scaling定律</strong>已经失效，<strong>Amdahl’s Law</strong>已经达到了极限，<strong>Moore’s Law</strong>也变得越来越难以遵循，而且成本也越来越高，特别是在功率和性能效益下降的情况下。</p>
-<h2 id="AI-芯片的优化方向"><a href="#AI-芯片的优化方向" class="headerlink" title="AI 芯片的优化方向"></a>AI 芯片的优化方向</h2><h3 id="新型计算范式"><a href="#新型计算范式" class="headerlink" title="新型计算范式"></a>新型计算范式</h3><p>目前，AI芯片主要用于DNN模型的训练和推理，计算量非常大，故需从硬件友好方面考虑对算法的改进，降低计算成本。</p>
+<p><strong>Dennard Scaling定律</strong>已经失效，<strong>Amdahl’s
+Law</strong>已经达到了极限，<strong>Moore's
+Law</strong>也变得越来越难以遵循，而且成本也越来越高，特别是在功率和性能效益下降的情况下。</p>
+<h2 id="ai-芯片的优化方向">AI 芯片的优化方向</h2>
+<h3 id="新型计算范式">新型计算范式</h3>
+<p>目前，AI芯片主要用于DNN模型的训练和推理，计算量非常大，故需从硬件友好方面考虑对算法的改进，降低计算成本。</p>
 <ul>
 <li><p><strong>降低数值精度的量化技术</strong></p>
-<p>减少位宽，实现一个精度与硬件开销的 trade-off</p>
-</li>
+<p>减少位宽，实现一个精度与硬件开销的 trade-off</p></li>
 <li><p><strong>压缩网络规模、修剪网络</strong></p>
-<p>在DNN计算中，有许多值是0或接近于0或重复的值，将这些值输入一个MAC进行乘积累加运算没有意义，浪费资源，因此需要压缩和剪枝。</p>
-</li>
+<p>在DNN计算中，有许多值是0或接近于0或重复的值，将这些值输入一个MAC进行乘积累加运算没有意义，浪费资源，因此需要压缩和剪枝。</p></li>
 <li><p><strong>二值、三值神经网络</strong></p>
 <p>BNN: Binary Neural Network</p>
-<p>TNN: Ternary Neural Network</p>
-</li>
+<p>TNN: Ternary Neural Network</p></li>
 <li><p><strong>增加和利用网络稀疏性</strong></p>
-<p>稀疏化数据流感知</p>
-</li>
+<p>稀疏化数据流感知</p></li>
 </ul>
-<h3 id="架构的设计和优化"><a href="#架构的设计和优化" class="headerlink" title="架构的设计和优化"></a>架构的设计和优化</h3><ul>
-<li><p><strong>CPU+GPU+DSA异构并行计算</strong></p>
-</li>
+<h3 id="架构的设计和优化">架构的设计和优化</h3>
+<ul>
+<li><p><strong>CPU+GPU+DSA异构并行计算</strong></p></li>
 <li><p><strong>存算感一体新架构</strong></p>
-<p>有望突破冯·诺依曼架构，存内运算、近内存计算、基于新型存储器的人工神经网络、生物神经网络，等等。</p>
-</li>
+<p>有望突破冯·诺依曼架构，存内运算、近内存计算、基于新型存储器的人工神经网络、生物神经网络，等等。</p></li>
 </ul>
-<h3 id="电路的设计和优化"><a href="#电路的设计和优化" class="headerlink" title="电路的设计和优化"></a>电路的设计和优化</h3><ul>
+<h3 id="电路的设计和优化">电路的设计和优化</h3>
+<ul>
 <li><p><strong>FPGA Overlay技术</strong></p>
-<p>为了提高FPGA的开发效率、更好的利用FPGA的逻辑资源、方便FPGA的大规模部署和应用，需要将FPGA进行一定程度的逻辑抽象，使顶层用户不必太多关注于FPGA硬件逻辑的实现方式与细节。</p>
-</li>
-<li><p><strong>模数混合电路设计MAC</strong></p>
-</li>
+<p>为了提高FPGA的开发效率、更好的利用FPGA的逻辑资源、方便FPGA的大规模部署和应用，需要将FPGA进行一定程度的逻辑抽象，使顶层用户不必太多关注于FPGA硬件逻辑的实现方式与细节。</p></li>
+<li><p><strong>模数混合电路设计MAC</strong></p></li>
 <li><p><strong>软件定义芯片</strong></p>
 <p>可重构计算技术允许硬件架构和功能随软件变化而变化，具备处理器的灵活性和专用集成电路的高性能和低功耗，被认为是突破性的下一代集成电路技术</p>
-<p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696789666625.png" alt="Fig4"></p>
-</li>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696789666625.png" alt="Fig4">
+<figcaption aria-hidden="true">Fig4</figcaption>
+</figure></li>
 </ul>
 <blockquote>
-<p>2023年10月24日，按照李炎原来的说法“调查一下该方向的历史发展啊，研究现状啊”进行了pre，结果被李炎说太宽泛有点水。本来就是自己没说清楚。但是，我觉得他有句话说得对，“像是在半导体大会上做报告”，这是不是说我有做企业高管领导的潜质捏？:stuck_out_tongue_winking_eye:</p>
+<p>2023年10月24日，按照李炎原来的说法“调查一下该方向的历史发展啊，研究现状啊”进行了pre，结果被李炎说太宽泛有点水。本来就是自己没说清楚。但是，我觉得他有句话说得对，“像是在半导体大会上做报告”，这是不是说我有做企业高管领导的潜质捏？😜</p>
 </blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/30/%E5%AE%9E%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="Treeby">
-      <meta itemprop="description" content="La vie est belle">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Amusement Park">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/30/%E5%AE%9E%E4%B9%A0/" class="post-title-link" itemprop="url">2023暑期实习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-30 18:54:56" itemprop="dateCreated datePublished" datetime="2023-07-30T18:54:56+08:00">2023-07-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-05 21:28:20" itemprop="dateModified" datetime="2023-10-05T21:28:20+08:00">2023-10-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%9E%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">实习</span></a>
-                </span>
-            </span>
-
-          
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="2023-7-31"><a href="#2023-7-31" class="headerlink" title="2023.7.31"></a>2023.7.31</h2><ul>
-<li><strong>2023年7月16日11点13分，浙江绍兴，上虞南站。</strong><br>兴奋、期待、忐忑……不知道应该用什么样的词语来形容我此刻的心情，这是我第一次，孤身一人，来到一座陌生的城市。公司环境会是怎样，新舍友怎么样，同事们怎么样，工作究竟会不会做……无数的想法充斥着我的脑海里，但是这是一次全新的体验，因为这意味着第一次走出学校，走进社会。<br>在火车站等公交车等了半小时竟然都等不到一辆，我只好打车来到中芯集成，并在一番折腾后终于拖着重重的箱子，满头大汗并忐忑地敲开了新宿舍的门。<br><strong>“hi~，我是你们的新舍友。”</strong></li>
-<li>我的三个新舍友都是研二的学生，也是暑假来实习的。由于他们都比我大了好几岁，并且我本身就比较内向与社恐，刚开始跟他们交流的时候就显得有点胆怯（可能不止一点），尽管他们都非常的友善。当他们惊叹于我大二就来实习的时候并且是fdu的学生时，我连忙摇头摆手说自己很菜。我从小到大都是这样，过于内敛，害怕被人夸赞，但实际上虽然谦虚是好事，可是有时候就应该大方自信一点。反思过后，我认为再来一次的话应该要这样子回答：<br><em>Q:大二就来实习了吗？</em><br>*A:对，早点来实习长长见识！<br><em>Q:你是fdu的啊？牛逼</em><br><em>A:哈哈哈还行吧，以后还得向你们多多请教呢！</em></li>
-<li>我被安排到的部门是 <em>Technique &amp; Marketing Centre - Design Enablement - Spice Model - HV&#x2F;Anolog SPICE</em>，职位是 <em>HVS</em>。带我的周扬师兄，以及其他所有同事都很热情友善，整个小组氛围也很好。但可能还是因为年龄差的原因，并且我觉得我没有一点工作经验以及对于能否做好实习的工作缺少底气，我和同事们交流的时候还是放不开，不太自然（自己听自己的声音都能明显感觉得到）。唉，树安，下次自信一点，展示一下fdu高材生魅力，how say！</li>
-<li>第一个星期还没配好电脑，于是自己看了看书，复习了一下半物和模电，在b站上学了点强化学习；第二个星期终于等来了电脑，但是周扬师兄让我先看下培训资料，讲的是一些器件原理，仿真、测试原理和流程，公司的工艺平台，等等，还是学到不少东西。</li>
-<li>星期五晚上和同事们一起出去吃顿海鲜自助餐😋😆<br><strong>明天，八月！</strong></li>
-</ul>
-<h2 id="2023-8-6"><a href="#2023-8-6" class="headerlink" title="2023.8.6"></a>2023.8.6</h2><ul>
-<li>上一周学会了如何用hspice仿真电路，学会了看懂一点点网表并且尝试自己写了一下（其实不知道对不对），学会了看版图，学会了Resistance Extraction的流程。In my opinion，写网表和绘版图还是有点技术含量的，但是学会用excel绘图也还是有用的（还没学，下周研究下）。其实有很多测试的原理也没有完全搞懂，但是其实不是很重要，因为这里的很多工作都是非常完善的，无需从原理研究起来，并且来实习也不是为了学原理和技术。</li>
-<li>对于待人接物（对于陌生人和一些不是很熟很交心的朋友）的方式又有了深刻的体会：首先要自信，这意味着，气场要强大，有自己独立思考的能力，有自己的想法，不能显露出自己的情绪，要时刻保持冷静和理性；其次是尊重别人，微笑，gentleman。</li>
-<li>据我猜测，在这个岗位上的正式员工，应该是一两万一个月左右，工作不会很多，压力不会很大，有一定的技术含量，这样一个年能有个二十来万。实习摸鱼的时候，我在思考这样的问题，假设以后毕业出来打工，一年能有五十万，虽然确实已经挺好了，但还是无法十年内全款买房。怎么样，才能实现真正的跨越？我目前想到的只有以下三种方向：<strong>创业&#x2F;从工程师到高管&#x2F;投资</strong>（当然应该在有稳定的较好的工作的基础之上）。前两种的一个前提是，技术本身要够硬，专业知识够强；前两者都要具备创新能力，并且创业更需要创新。第二种则需要很好的管理能力。创业难度大，风险高，需要技术与机遇，综合考虑人脉、市场等因素；而成为企业高管，需要提升自己全方位能力。投资暂未了解。</li>
-<li>ok，上面一段都是瞎jb讲的。</li>
-<li>今天是tfboys十周年之约，虽然我也不完全算是四叶草，但是我感觉他们（无论是团体还是个人）确实都有很多很好听的歌，并且有些歌真的让人充满能量（比如样YOUNG）。十年之前，我也没想到十年之后是怎么样的，我现在也无法设想十年之后，这个世界，身边的人，自己，还有tfboys，都会变成怎么样。</li>
-</ul>
-<h2 id="2023-8-11"><a href="#2023-8-11" class="headerlink" title="2023.8.11"></a>2023.8.11</h2><p>实习终于结束了！明天就回家了！前两天写了篇实习报告给赵总看，听说还被赵总传阅了，树安你是有点东西的。</p>
-<h2 id="实习报告"><a href="#实习报告" class="headerlink" title="实习报告"></a>实习报告</h2><h3 id="实习记录"><a href="#实习记录" class="headerlink" title="实习记录"></a>实习记录</h3><ul>
-<li>2023年7月18日，我来到了绍兴中芯集成电路制造股份有限公司，开启了我人生中的第一次实习。</li>
-<li>7月18日是实习报道日，办理入职手续和参加新员工培训，培训内容包括对公司介绍、总务情况、消防安全等等。</li>
-<li>7月19日，我来到我的工作岗位上正式开始我的实习之旅。我的部门是 Technology &amp; Marketing Center - Design Enablement - SPICE Modeling - HV&#x2F;Analog SPICE，岗位是 HVS，即负责器件的 SPICE 测试，仿真与建模。一开始还没有申请到电脑，于是我看了两三天书，复习了一下半导体器件原理，听了一些培训讲座。</li>
-<li>7月25日申请到电脑后，看了几天公司内部的培训资料，ppt，平台手册等，了解了整个岗位的基本任务和操作。</li>
-<li>7月28日，给电脑安装好工作需要用到的软件后，终于可以开始动手操作，边做边学，如用 Hspice 仿真，进行 Resistor 参数的抽取建模，等等。</li>
-<li>实习期间，还到实验室观摩了带教师兄进行WAT测试，亲眼看到了晶圆的样子。每周开例会我也都参与了，深入理解了我们SPICE MODEL组，甚至可以说是整个公司的工作，皆是以客户需求为核心，以市场为导向。</li>
-</ul>
-<h3 id="实习收获"><a href="#实习收获" class="headerlink" title="实习收获"></a>实习收获</h3><ol>
-<li>扎实的学科基础是做好实习工作的前提条件。比如，进行WAT测试，当然得先知道要进行测试的电学特性都有哪些，并且需要非常熟悉各种半导体器件(如MOS，BIT，Diode等)的基本原理，这样在进行分析与测试时才能熟练地运用上去。这些知识都是在学校里习得的，也就是说专业知识一定要扎实，并且沉淀为自身的“常识”。</li>
-<li>但实习时仅靠在学校里学过的知识是远远不够的，因为工作是一种对知识的运用，并且还会涉及许许多多没有学过的知识。这也是为什么公司要对新员工进行入职的培训。但是工作中会遇到非常多的问题，单靠培训获得的知识也是难以 handle 的，这就需要在整个工作中都要具备汲取新知识的能力，边做边学，学以致用。</li>
-<li>实习第一天，我对于做些什么，为什么要这样做，应该怎么做，没有一点概念。但慢慢的，我逐渐搞明白了这三个问题。从逆向的逻辑来看：我们要做的是SPICE Model的仿真与建模，因为这是芯片设计到物理实现的重要桥梁：芯片设计好后进行物理实现要用到的元器件等，由PDK工具包来提供，而产生PDK前的关键步骤就是进行SPICE Modeling，包括器件的有关方程与参数。那么我们该如何完成这项工作呢？这就需要获得两部分数据：理想的 target 与实测的 value，然后再进行数据分析、拟合并建模。这让我明白了，无论是实习工作，还是处理其他的事情，都需要搞清楚，what, why, how。</li>
-<li>Communication &amp; Corporation。小组内部每周会开一次例会，总结上周工作，提出一些新问题，并布置下周任务；平时同事们也经常探讨问题，发邮件、发信息、打电话联系其他部门的同事，以更好地进行团队合作与工作上的协调。Partnership，是公司文化中四大理念之首，这也是我这段实习中感觉最有收获的地方。因为我一直以来都不太擅长与人沟通，甚至害怕跟陌生人交流。而这次实习给了我一个改变自己的机会，慢慢走出我的 comfort zone，去认识新同事，去向比我年纪大、经验丰富的前辈请教。总之，我明白了待人接物除了要谦虚礼貌外，更要充满自信。当然我还需要更多地锻炼，学习如何更有效地与人沟通交流，进一步学习如何管理好一个团队。</li>
-<li>当然，在整个实习和培训过程中还学习了许多学术上的知识和技能（详见实习笔记部分）：<ul>
-<li>对半导体整个产业链、芯片设计制造封装整个流程，有了更深的认识；</li>
-<li>深入了解了公司的Smec BCD_Platform, 体验了实验室 WAT 测试过程 ，学会了使用hspic进行仿真，KLayout查看版图；</li>
-<li>基本 Device 的电学性能与测试原理，网表、版图的基础知识；</li>
-<li>许许多多的集成电路英文专有名词。</li>
-</ul>
-</li>
-</ol>
-<h3 id="实习感想"><a href="#实习感想" class="headerlink" title="实习感想"></a>实习感想</h3><ol>
-<li>人生中第一次到大厂实习，真的非常开心。特别是当我拿到工牌、坐上属于自己工位的那一刻，顿时感到自身价值倍增。</li>
-<li>这次实习见识到了一个大公司究竟是怎么样的：首先在部门设计上，大概分为 TMC, Supporting Center, 运营中心，等等，分工明确，各司其职，并且内部还分为多个级别，并有相对应的主管；其次是OA系统，支撑着各种事务的正常运作；然后是部门之间的沟通方式多渠道，电脑端 Skype for Business 即使通讯，Outlook 邮件联系，手机端企业微信，还有平时在部门里面能用座机打电话联络，这些都使得一个拥有5000多名员工的大公司内部能够进行正常有效便捷的交流；而最令我印象深刻的是，公司的保密、信息安全工作做得相当严格，个人的笔记本、平板电脑都不能带进工作区域。总而言之，来到国际大公司、大厂上班给我带来的感觉还是相当的震撼。</li>
-<li>公司的饭堂算是比较实惠，菜的品种也较为丰富，价格与复旦饭堂差不多，口味也相当不错。宿舍环境超好，四人间比复旦的宽敞多了，还有独立卫浴，干净舒适，唯一的缺点是没有热水饮用。公司的其他硬件设施也非常完备，但是在环境方面，每到傍晚六点多左右，厂房排出来的废气带着一些异味，空气质量下降，感觉再吸多几个星期会少活那么个几年。</li>
-<li>新人入职培养方面，公司的培训计划与一对一的老带新制度可谓是非常完善和周到，能让新员工快速入门与适应工作。但我觉得培训时间还是太长了点，坐我旁边的一位老哥是新来的应届毕业生，入职一个月了还没什么事情做，还在培训阶段，看各种资料。其实我觉得这个岗位的话一两个星期基本上就能掌握一些核心的原理与操作了，很快就能上手干活，其它的完全可以边做边学。</li>
-<li>在实习中发生了一件让我比较难受的事情。办理离职申请手续需要经过比较多的审核，整个流程很长比较慢，这很正常。但是如果它卡在了一个节点三四天不动，就让人很难受。8月4号13:02:19到信息安全中心进行审核，8月7日下午17:00还没审核完。于是我联系了对应负责人询问情况，问他是否可以快一点，他答应帮我催促一下。第二天早上9点半，审核还是卡在那里一动不动，于是我又在 Skype for business 上发消息给负责人，想问一下审核进行得怎么样。最让人气愤的是，这名负责人状态是在线at work，但是并没有回复消息。我又发了好几条信息恳求他能否帮忙催促一下，并且提出希望他看到信息可以回复一下，结果还是没有答复。我在企业微信和Outlook上联系他依旧不回。我还真不信他这么忙没有看到消息，于是我在OA系统上找到他的主管，和他说明了情况，请他帮忙联系一下。幸运的是那名主管人比较好，立刻在企业微信里面把我们三人拉了个群，并且 @ 那名负责人，那人立刻出现回复说好，并在不到三十分钟内就完成了审核。这很明显就是那人拖着不去审核，明明几十分钟就能完成的事情拖了好几天，办事效率极其低下，如果不是找到主管督促都不知道还要拖几天；关键是态度极差，之前答应说帮忙催促显然就是敷衍，而且看到消息不回素质非常差；这可能也是公司比较大的缘故吧，监管不到位，导致总会有人做事拖拖拉拉的，一定程度上降低了整个公司的办事效率。</li>
-</ol>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总之，非常感激这段实习经历，给我带来的学习上、能力上、生活上的各种收获，得到一次从未有过的人生体验。衷心感谢师兄赵奇总经理给予这样一次提升自我的机会！祝愿中芯集成越做越好！</p>
-<h3 id="附：实习笔记"><a href="#附：实习笔记" class="headerlink" title="附：实习笔记"></a>附：实习笔记</h3><h4 id="PDK"><a href="#PDK" class="headerlink" title="PDK"></a>PDK</h4><ul>
-<li>PDK(Process Design kit) is the bridge between foudary and Design house</li>
-<li>PDK &#x3D; SPICE MODEL + Pcell(Parameterized Cell Library) + Layout Designs + RC&#x2F;PEX(parastic Resistance and Capacitance extraction)</li>
-</ul>
-<h4 id="SPICE-Model"><a href="#SPICE-Model" class="headerlink" title="SPICE Model"></a>SPICE Model</h4><ol>
-<li>SPICE Modeling flow:<br>Testkey Designs(BaseTK(DC数据), ROTK, AC-Cox&#x2F;CGC TK) -&gt; T&#x2F;O and Production -&gt; Measurement(WAT) -&gt; Curve Fitting -&gt; On-target Fitting(LDE Fitting, flicker(1&#x2F;f) noise fitting, mismatch Fitting, corner Fitting) -&gt; Statistic Fitting -&gt; Model Document -&gt; Model release</li>
-<li>SPICE Mdodel content: a series of equation + corresponded parameters<br>eg. MOS model equation + MOS model card</li>
-</ol>
-<h5 id="WAT-Wafer-Acceptance-Test-or-E-Test"><a href="#WAT-Wafer-Acceptance-Test-or-E-Test" class="headerlink" title="WAT(Wafer Acceptance Test or E-Test)"></a>WAT(Wafer Acceptance Test or E-Test)</h5><ol>
-<li>Inline WAT（后段工艺）or Final WAT（全部工艺完成）</li>
-<li>测量的是：DUT(Device under Test)<br>Active Device: MOS BJT Diode<br>Passive Device: RS RC Capacitor<br>Process: Isolation Bridge</li>
-<li>the relationship among WAT, SPICE Model, PDK:<br>TS Device provide golden wafer -&gt; Spice Testing(WAT) -&gt; Spcie Modeling -&gt; Generate PDK -&gt; CTM IP design in (pre&#x2F;post-simulation)</li>
-<li>测试程式：WAT CIM系统 （Test + Prober）<br>Tester: tst(Test condition), lim(Spec), waf(Site location), die(Test key location), prb(PIC to Channel Mapping)<br>Prober: Probe Card Alignment, Wafer Alignment</li>
-<li>测试结构和参数<br>Resistor: RS(Rs Rskv), RC(Rc Rckv)<br>Capacitor:Cap(MIM MOM Varactor), Ileak, Vbd<br>Inductor, Contimuity, Bridge, Isolation(介质隔离, LOCOS隔离, STI, Guard Ring, DNWring, Sealring)<br>Diode: Cg, Leak<br>BJT: Vbe β Vce<br>Mosfet: Vt Id Ioff Bvds Swing Cgg Cgc Cgs DIBL Vhg Rout .etc<br>Cmos: Vtc<br>Ring Oscillator: Freq<br>SRAM: IDDQ SNM WM Iread Iwrite</li>
-<li>先进测试工艺<br>Array-based Test Structure, share pads among DUTs</li>
-<li>DUT<ul>
-<li>Resistance:<br>RS(Resistance Square): to monitor metal&#x2F;dielectric film resistance<br>Film type: Metal(interconection), AA(N+, P+, Salicide), Poly(N, P, Salicide), Well, STI<br>Rm&#x3D;V&#x2F;I&#x3D;(ρ&#x2F;T)<em>(L&#x2F;W), Rs&#x3D;ρ&#x2F;T&#x3D;Rm</em>(L&#x2F;W)  (T:thickness, Rs is for 2-terminal, Rskv is for Kelvin Structure)<br>RC: to monitor the contact&#x2F;via with the under layer</li>
-<li>Capacitor:<br>Cap@ 100kHz, 45mV, VH&#x3D;0V, VL&#x3D;0V, Cap&#x3D;Cap*(1e+15)&#x2F;Area<br>Vbd: Search Vh from 0 to 15V @ Ih&#x3D;4e-8A, H&#x3D; sweep V, L&#x3D; GND<br>Ileak: Ilk@ Vh&#x3D;Vdd</li>
-<li>Continuity: to verify a continuous path in the circuit, if a variance of Rs in the layer or the pattern is open, it can be detected</li>
-<li>Bridge: a bridge means a short between two patterns in the same layer due to an isolation defect(Errors during the mask or etch step)</li>
-<li>Diode: DC current-Voltage characterisic</li>
-<li>BJT: DC, AC caracteristic</li>
-<li>SRAM</li>
-<li>CMOS: DC current-Voltage characterisic, VTC 曲线偏移</li>
-<li>Ring Oscillator: Frequence, 即时钟频率</li>
-<li>MOSFET:<br>DC characteristic: 转移特性，id-Vds<br>Backup Materials: DIBL(Drain insuced barrier lower), Vtsb(Vt @ saturation region wi Body effect), Swing, IDVG, Jginv, GIDL(gate induced drain leak), Idlin, Ioff, Rout, BVDS(击穿电压), Isub(热电子引起基底电流)<br>AC characteristic: cgc, cgb, cgg, 寄生电容等</li>
-</ul>
-</li>
-</ol>
-<h5 id="Corner"><a href="#Corner" class="headerlink" title="Corner"></a>Corner</h5><ol>
-<li>芯片延迟由 PVT(Process, Voltage, Temperature) 影响</li>
-<li>Process corner 工艺角，包括：<ul>
-<li>global variation 全局工艺偏差，同一器件在不同芯片上的误差</li>
-<li>local variation 局部工艺偏差，同一器件在同一芯片上不同区域的误差</li>
-</ul>
-</li>
-<li>global variation: tt(typical nmos and typical pmos), ff, ss, sf, fs （s 代表 slow，电流小；f 代表 fast）</li>
-<li>Corner 仿真实现：STA(Static Timing Analysis)</li>
-<li>Monte Carlo 仿真：在容差内随机运算几千次或更多<br><img src="/2023/07/30/%E5%AE%9E%E4%B9%A0/%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E4%B8%8Ecorner.jpg" alt="蒙特卡洛与corner"></li>
-</ol>
-<h5 id="Hspice-仿真"><a href="#Hspice-仿真" class="headerlink" title="Hspice 仿真"></a>Hspice 仿真</h5><ol>
-<li>是一个电路仿真eda软件，以网表为输入</li>
-<li>网表编写（.sp文件）<ol>
-<li>包括元器件描述语句，输入控制语句，输出控制语句等<ul>
-<li>.DATA</li>
-<li>.DEL LIB</li>
-<li>.INCUDE</li>
-<li>.IC .NODESET</li>
-<li>.LIB</li>
-<li>.MODEL</li>
-<li>.OP</li>
-<li>.OPTION</li>
-<li>.PARAM</li>
-<li>.TEMP</li>
-<li>.TF</li>
-<li>.TRAN .DC .AC</li>
-<li>.PRINT .PLOT .GRAPH .PROBE .MEASURE</li>
-<li>.end</li>
-</ul>
-</li>
-<li>例如 M1 ADDR STG1 GND SBS N1 10u 100u<br>规定了一个名字为M1的MOSFET，漏极、门极、源极、衬底的节点分别命名为ADDR STG1 GND SBS，参考名为N1的Model，width&#x3D;10μ吗，length&#x3D;100μm</li>
-<li>.LIB表示库，连接到.lib文件中，网表里的一些元器件需要从里面找对应的model</li>
-<li>文件结尾为.end</li>
-<li>.TRAN .DC .AC 分别为瞬态，直流，交流分析</li>
-<li>.PARAM 为定义各种参数，可理解为define</li>
-<li>.OPTION设置条件</li>
-<li>等等<br>网表编写可认为是一门语言，需要细细研究</li>
-</ol>
-</li>
-<li><strong>SPICE 测试后得到数据，进行 SPICE 建模，完成后得到器件所有参数，即可打包成一个文档，以库(.lib)和参考模型(.model)的方式提供给所需网表(.sp)供hspice进行仿真</strong></li>
-</ol>
-<h4 id="Resistance-Extraction"><a href="#Resistance-Extraction" class="headerlink" title="Resistance Extraction"></a>Resistance Extraction</h4><ol>
-<li>parameters:<ul>
-<li>Rsh: sheet resistance</li>
-<li>DW, DL: Delta width and length</li>
-<li>TC1R, TC2R: temperature coefficient</li>
-<li>RVC0, RVC1, RVC2: Voltage coefficient</li>
-<li>JC1A, JC1B, JC2A, JC2B: Current density coefficient</li>
-<li>COX, CFOX, CWAPSW, CLOUP: interconnect parastic capacitor</li>
-</ul>
-</li>
-<li>equations:<ul>
-<li>R&#x3D;R0<em>k1</em>k2</li>
-<li>R0&#x3D;Rsh*(L-2DL)&#x2F;(W-2DW)</li>
-<li>k1&#x3D;1.5-1&#x2F;(2+RVC<em>V</em>V), when k1 &gt; 1<br>0.5+1&#x2F;(2+RVC<em>V</em>V), when k1 &lt; 1<br>RVC&#x3D;(RVC0+RVC1<em>W+RVC2</em>L&#x2F;W)&#x2F;(L-2<em>DL)&#x2F;(L-2</em>DL)</li>
-<li>K2&#x3D;R0*(TC2R<em>DT</em>DT+TC1R*DT+1)<br>DT&#x3D;T-T(25°C)</li>
-</ul>
-</li>
-<li>extractions:<ul>
-<li>examine R @ V&#x3D;0.1V, T&#x3D;25°C, then optimize, get Rsh, DL, DW</li>
-<li>examine R @ T&#x3D;25°C, sweep Voltage, get RVC0, RVC1, RVC2</li>
-<li>examine R @ V&#x3D;0.1V, sweep Temperature, get TC1R, TC2R</li>
-<li>mismatch extraction</li>
-<li>corner extraction</li>
-<li>parasitics capacitor extraction</li>
-</ul>
-</li>
-<li>model: .lib .sucket</li>
-</ol>
-<h4 id="Layout-Designs"><a href="#Layout-Designs" class="headerlink" title="Layout Designs"></a>Layout Designs</h4><ol>
-<li>版图将电路映射到硅片，是电路功能和性能的物理实现</li>
-<li>包括基本元器件版图设计，模块设计-&gt;芯片规划-&gt;布局布线，版图检验分析(DRC(design Rules Check), LVS(Layout Versus Schematic), 电学可靠性检查(ERC, ESD))</li>
-<li>绘图层<ul>
-<li>N well</li>
-<li>Active: 有源层，需要进行场氧(Oxide)</li>
-<li>Poly: 多晶硅栅层，互连，生成电阻等</li>
-<li>P select, N select: 注入离子，与有源层形成扩散区</li>
-<li>Contact: 接触孔层，存在一定阻值，用于连接金属层与目标层</li>
-<li>Via: 通孔层</li>
-<li>Metal: 金属层，互连</li>
-<li>Text: 文字标注层</li>
-<li>Pad: 焊盘层，提供芯片内部信号到封装接脚的连接</li>
-</ul>
-</li>
-</ol>
-<h4 id="SMEC-BCD-Platform"><a href="#SMEC-BCD-Platform" class="headerlink" title="SMEC BCD Platform"></a>SMEC BCD Platform</h4><ol>
-<li>工艺平台，high density, high power, high voltage<br>features: 完整的BCD技术，高附加值器件，高车规模质量，专业的设计支持</li>
-<li>IPS: 标准BCD工艺&#x2F;器件 + 嵌入式特色工艺&#x2F;器件(Vertical)<br>180 BCD eflash: 标准BCD工艺&#x2F;器件 + ESFI(3 more masks)<br>BCD-SOI: 使用SOI(Silicon-On-Insulator) Substrate(一种工艺)<br>HVIC: 高压(hig voltage)集成电路</li>
-<li>PDK &amp; IP for Industrial and Automotive<ul>
-<li>SPICE MODEL: environment temperature range for modeling, Mos Aging Model for Simulation</li>
-<li>PDK: DRC &amp; Pcell, EM</li>
-<li>IP: Reliability, Functional, Safety</li>
-<li>Quality: QMS of FTP R&amp;D organization, Quality Manual of QMS for R&amp;V organization</li>
-<li>Readiness: Indurial, Automotive G0&#x2F;G1</li>
-</ul>
-</li>
-<li>180nm BCD 40V SPICE<ul>
-<li>SPICE Model: Spectre&#x2F;Hspice&#x2F;ACPS(即所支持的建模eda工具)</li>
-<li>PDK: Cadence OA PDK</li>
-<li>IP: Standard Cell library, GPIO, Memory Compiler, e-fuse, MTP, OTP, e-flash</li>
-</ul>
-</li>
-<li>document example<ul>
-<li>Title: 0.18μm HVIC 120V platform introduction and charater design mannual</li>
-<li>Purpose: this design mannual defines…</li>
-<li>Scope</li>
-<li>Nomenclature</li>
-<li>Reference</li>
-<li>Responsibility</li>
-<li>Subject Content<ul>
-<li>Introduction: Document Overview, Process Overciew, Supported potentials, Device Size Setting in Model &amp; PDK, Effect in Spice Model</li>
-<li>Device Characterization Summary: Device description, Operation voltage range, Device symbol, layout, Cross section, Spice data vs PCM spec</li>
-</ul>
-</li>
-<li>CMOS, HVMOS(DEMOS, LDMOS, DMOS(VDMOS, DDDMOS)), BJT, Diode, Resistor(DIFF, POLY, NW, Metal), ESD Diode&#x2F;BJT, Capacitor(MIM, MOM, Varactor), IGBT(MOSFET + PNP, VDMOS + PN junction), .etc</li>
-</ul>
-</li>
-</ol>
-<h4 id="半导体行业情况"><a href="#半导体行业情况" class="headerlink" title="半导体行业情况"></a>半导体行业情况</h4><h5 id="半导体产业链全景"><a href="#半导体产业链全景" class="headerlink" title="半导体产业链全景"></a>半导体产业链全景</h5><p><img src="/2023/07/30/%E5%AE%9E%E4%B9%A0/%E5%8D%8A%E5%AF%BC%E4%BD%93%E4%BA%A7%E4%B8%9A%E9%93%BE%E5%85%A8%E6%99%AF.png" alt="半导体产业链全景"></p>
-<h5 id="半导体产业模式"><a href="#半导体产业模式" class="headerlink" title="半导体产业模式"></a>半导体产业模式</h5><ul>
-<li>IDM(Integrated Device Manufacture): Sumsung, Intel</li>
-<li>Fabless: 海思, 联发科</li>
-<li>Foundry: SMIC, 日月光</li>
-</ul>
-<h5 id="半导体PRODUCT市值"><a href="#半导体PRODUCT市值" class="headerlink" title="半导体PRODUCT市值"></a>半导体PRODUCT市值</h5><p>半导体产品（$4688亿）包括 集成电路（$3933亿）+ O-S-D（$755亿），其中，集成电路 包括 模拟电路（$588亿）+ 数字电路（$3345亿）</p>
-<h5 id="IC-Products"><a href="#IC-Products" class="headerlink" title="IC Products"></a>IC Products</h5><ol>
-<li>Memory:<ul>
-<li>voliatile(易失性): SRAM(LPSRAM, HS SRAM, eSRAM), DRAM(FP&#x2F;EDO, SDRAM), DDR(Rmbus, eDRAM)</li>
-<li>non-voliatile: Flash, EPROM&#x2F;EEROM, MaskROM, MRAM, embedded(Smart Card, National ID)</li>
-</ul>
-</li>
-<li>Logic:<ul>
-<li>computing: CPU, MPU, DSP, DPU, Chipset, Graphics, Peripheral, Mem controller</li>
-<li>consumer: PDA, GPS, MPEG, DVD&#x2F;VCD, FPGA, Voice synthesis</li>
-<li>Automotive: MCU, Sensor</li>
-</ul>
-</li>
-<li>Mixual signal:<ul>
-<li>computing: audio processor</li>
-<li>communiting: Switching, Sonet, phone, fax, LAN, Router, Bluetooth, Cellular(GPS, CDMA), Modern(xDSL, Cable)</li>
-</ul>
-</li>
-<li>Photo Electronics:<ul>
-<li>Image Sensor: CCD, CMOS</li>
-<li>Display: LCD driver, LCD controller, μ-Display</li>
-<li>Security: Touch chip</li>
-</ul>
-</li>
-</ol>
 
       
     </div>
@@ -1619,7 +1445,7 @@ Altman
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
