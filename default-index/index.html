@@ -204,7 +204,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-04-27 01:45:09" itemprop="dateModified" datetime="2024-04-27T01:45:09+08:00">2024-04-27</time>
+                <time title="Modified: 2024-04-27 01:47:50" itemprop="dateModified" datetime="2024-04-27T01:47:50+08:00">2024-04-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,79 +229,68 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="关于">关于</h2>
-<p>本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune
-deploy 实验。</p>
-<h2 id="基本原理">基本原理</h2>
-<p>github: <a target="_blank" rel="noopener" href="https://github.com/CompVis/stable-diffusion">Stable
-Diffusion v1</a> 论文地址：<a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2022/papers/Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models_CVPR_2022_paper">Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models</a>
-非常好解读：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_62403633/article/details/131022283">reference</a></p>
+          <h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune deploy 实验。</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>github: <a target="_blank" rel="noopener" href="https://github.com/CompVis/stable-diffusion">Stable Diffusion v1</a></p>
+<p>论文地址：<a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2022/papers/Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models_CVPR_2022_paper">Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models</a></p>
+<p>非常好解读：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_62403633/article/details/131022283">reference</a></p>
 <ul>
-<li>核心：将图片通过一个单独训练的 autoencoder 压缩到潜空间中，再进行
-diffusion model 的训练，能够大大降低计算量（相较于高分辨率对 pixel
-直接进行训练），同时，autoencoder还能用于多种任务中，即该方法对
-image-to-image 和 text-to-image 都有效</li>
+<li>核心：将图片通过一个单独训练的 autoencoder 压缩到潜空间中，再进行 diffusion model 的训练，能够大大降低计算量（相较于高分辨率对 pixel 直接进行训练），同时，autoencoder还能用于多种任务中，即该方法对 image-to-image 和 text-to-image 都有效</li>
 </ul>
-<ol type="1">
+<ol>
 <li><p>Autoencoder</p>
 <ul>
-<li>Encoder: $z=(x), x R^{HW} $</li>
-<li>Decoder: <span class="math inline">\(\tilde{x} = D(z) =
-D(\varepsilon(x)), z\in R^{h\times w \times c}\)</span></li>
+<li>Encoder: $z&#x3D;\varepsilon (x), x \in R^{H\times W\times 3} $</li>
+<li>Decoder: $\tilde{x} &#x3D; D(z) &#x3D; D(\varepsilon(x)), z\in R^{h\times w \times c}$</li>
 <li>训练方法：</li>
-</ul></li>
+</ul>
+</li>
 <li><p>Diffusion Model</p>
 <ul>
-<li>Diffision model can be interpreted as an equally weighted sequence
-of denoising autoencoders: <span class="math inline">\(\epsilon_\theta(x_t, t); t=1, 2, \dots,
-T\)</span>，即预测噪声的网络，其中，<span class="math inline">\(x_t\)</span> is a noisy version of the input <span class="math inline">\(x\)</span></li>
-<li>目标损失函数为： $L_{DM}= _{x, N(0, 1), t uniform(1, 2, ... T)}[||-
-_(x_t, t)||_2^2], $</li>
-<li>LDM中，目标损失函数为： $L_{LDM}:= _{(x), N(0, 1), t}[||- _(z_t,
-t)||_2^2], $</li>
-<li>再加入 condition 后，目标损失函数为： $L_{LDM}:= _{(x),y, N(0, 1),
-t}[||- <em>(z_t, t, </em>(y))||_2^2], $</li>
-</ul></li>
+<li>Diffision model can be interpreted as an equally weighted sequence of denoising autoencoders: $\epsilon_\theta(x_t, t); t&#x3D;1, 2, \dots, T$，即预测噪声的网络，其中，$x_t$ is a noisy version of the input $x$</li>
+<li>目标损失函数为：<br>  $L_{DM}&#x3D; \Epsilon_{x, \epsilon \sim N(0, 1), t \sim uniform(1, 2, … T)}[||\epsilon - \epsilon_\theta(x_t, t)||_2^2], $</li>
+<li>LDM中，目标损失函数为：<br>  $L_{LDM}:&#x3D; \Epsilon_{\varepsilon(x), \epsilon \sim N(0, 1), t}[||\epsilon - \epsilon_\theta(z_t, t)||_2^2], $</li>
+<li>再加入 condition 后，目标损失函数为：<br>  $L_{LDM}:&#x3D; \Epsilon_{\varepsilon(x),y, \epsilon \sim N(0, 1), t}[||\epsilon - \epsilon_\theta(z_t, t, \tau_\theta(y))||_2^2], $</li>
+</ul>
+</li>
 <li><p>Unet</p>
 <ul>
-<li>非常老的分割模型 <img src="/2024/04/26/Stable_Diffusion/1714152485546.png" alt="Unet"></li>
-</ul></li>
+<li>非常老的分割模型<br> <img src="/2024/04/26/Stable_Diffusion/1714152485546.png" alt="Unet"></li>
+</ul>
+</li>
 <li><p>Backbone</p>
 <ul>
-<li>将 Unet 中的 CNN 替换成 transformer <img src="/2024/04/26/Stable_Diffusion/1714152570582.png" alt="Stable Diffusion"></li>
-<li>注意，Attention 为：<span class="math inline">\(Q = W_Q^{(i)}\cdot
-\phi_i(z_t), K = W_K^{(i)}\cdot \tau_\theta(y), V=W_V^{(i)}\cdot
-\tau_\theta(y)\)</span></li>
-</ul></li>
+<li>将 Unet 中的 CNN 替换成 transformer<br> <img src="/2024/04/26/Stable_Diffusion/1714152570582.png" alt="Stable Diffusion"></li>
+<li>注意，Attention 为：$Q &#x3D; W_Q^{(i)}\cdot \phi_i(z_t), K &#x3D; W_K^{(i)}\cdot \tau_\theta(y), V&#x3D;W_V^{(i)}\cdot \tau_\theta(y)$</li>
+</ul>
+</li>
 </ol>
-<h2 id="github代码介绍">github代码介绍</h2>
-<ol type="1">
+<h2 id="github代码介绍"><a href="#github代码介绍" class="headerlink" title="github代码介绍"></a>github代码介绍</h2><ol>
 <li><p>文件组织结构：</p>
 <ul>
-<li><p>LICENSE:
-项目的许可证文件，说明了用户可以如何使用和分发该项目。</p></li>
-<li><p>setup.py：对整个 project 进行打包，可以看成为下载了一个 python
-库到本地，与 pip install 效果相同</p></li>
-<li><p>Model_Card.md：模型的“技术规格说明书”，用于提供有关机器学习模型的详细信息，包括其性能、使用案例、潜在的偏差和限制等</p></li>
-<li><p>README.md：项目的“欢迎手册”，提供了项目的全面概览和使用指南</p></li>
-<li><p>environment.yaml：project 所需要的所有环境依赖配置，可用
-<code>conda env create -f environment.yaml</code>
-直接对所有依赖进行下载</p></li>
-<li><p>main.py：Python
-脚本，项目的入口点，可能包含设置、训练和评估机器学习模型的代码。例如可以使用
-Pytorch.lightning 框架等 <img src="/2024/04/26/Stable_Diffusion/1714145727161.png" alt="pytorch.lightning"></p></li>
-<li><p>configure/：模型，训练，以及推断的配置文件</p></li>
-<li><p>data/：有关数据，由于是文生图，这里包括了训练数据(train)的序号(index)，验证数据(val)的序号，图片的标签(label,
-class)；还有example，等等</p></li>
-<li><p>scripts/：通常包含用于执行特定任务的脚本，如 txt2img.py
-用于文本到图像的采样，img2img.py
-用于图像修改。这些脚本可能允许用户通过命令行接口运行模型并生成图像。</p></li>
-<li><p>models/: 一般包括模型和训练的 .py 代码等，可能也有 .yaml
-配置文件，当然可能这些都放在以模型直接命名的文件夹里</p></li>
-</ul></li>
+<li><p>LICENSE: 项目的许可证文件，说明了用户可以如何使用和分发该项目。</p>
+</li>
+<li><p>setup.py：对整个 project 进行打包，可以看成为下载了一个 python 库到本地，与 pip install 效果相同</p>
+</li>
+<li><p>Model_Card.md：模型的“技术规格说明书”，用于提供有关机器学习模型的详细信息，包括其性能、使用案例、潜在的偏差和限制等</p>
+</li>
+<li><p>README.md：项目的“欢迎手册”，提供了项目的全面概览和使用指南</p>
+</li>
+<li><p>environment.yaml：project 所需要的所有环境依赖配置，可用 <code>conda env create -f environment.yaml</code> 直接对所有依赖进行下载</p>
+</li>
+<li><p>main.py：Python 脚本，项目的入口点，可能包含设置、训练和评估机器学习模型的代码。例如可以使用 Pytorch.lightning 框架等<br> <img src="/2024/04/26/Stable_Diffusion/1714145727161.png" alt="pytorch.lightning"></p>
+</li>
+<li><p>configure&#x2F;：模型，训练，以及推断的配置文件</p>
+</li>
+<li><p>data&#x2F;：有关数据，由于是文生图，这里包括了训练数据(train)的序号(index)，验证数据(val)的序号，图片的标签(label, class)；还有example，等等</p>
+</li>
+<li><p>scripts&#x2F;：通常包含用于执行特定任务的脚本，如 txt2img.py 用于文本到图像的采样，img2img.py 用于图像修改。这些脚本可能允许用户通过命令行接口运行模型并生成图像。</p>
+</li>
+<li><p>models&#x2F;: 一般包括模型和训练的 .py 代码等，可能也有 .yaml 配置文件，当然可能这些都放在以模型直接命名的文件夹里</p>
+</li>
+</ul>
+</li>
 </ol>
-<h2 id="finetune-with-lora">Finetune with Lora</h2>
-
+<h2 id="Finetune-with-Lora"><a href="#Finetune-with-Lora" class="headerlink" title="Finetune with Lora"></a>Finetune with Lora</h2>
       
     </div>
 
