@@ -187,7 +187,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/04/26/Stable_Diffusion/" class="post-title-link" itemprop="url">Stable Diffusion</a>
+            <a href="/2024/04/26/Stable_Diffusion/" class="post-title-link" itemprop="url">Lora of Stable Diffusion</a>
         </h2>
 
         <div class="post-meta">
@@ -204,7 +204,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-04-29 15:20:27" itemprop="dateModified" datetime="2024-04-29T15:20:27+08:00">2024-04-29</time>
+                <time title="Modified: 2024-04-30 10:53:44" itemprop="dateModified" datetime="2024-04-30T10:53:44+08:00">2024-04-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -261,7 +261,8 @@
 <li><p>Backbone</p>
 <ul>
 <li>将 Unet 中的 CNN 替换成 transformer<br> <img src="/2024/04/26/Stable_Diffusion/1714152570582.png" alt="Stable Diffusion"></li>
-<li>注意，Attention 为：$Q &#x3D; W_Q^{(i)}\cdot \phi_i(z_t), K &#x3D; W_K^{(i)}\cdot \tau_\theta(y), V&#x3D;W_V^{(i)}\cdot \tau_\theta(y)$</li>
+<li>注意，有一半 Attention 为 cross attention：$Q &#x3D; W_Q^{(i)}\cdot \phi_i(z_t), K &#x3D; W_K^{(i)}\cdot \tau_\theta(y), V&#x3D;W_V^{(i)}\cdot \tau_\theta(y)$</li>
+<li><img src="/2024/04/26/Stable_Diffusion/1714403808541.png" alt="1714403808541"></li>
 </ul>
 </li>
 </ol>
@@ -290,6 +291,8 @@
 </li>
 </ul>
 </li>
+<li><p>训练脚本解读：</p>
+</li>
 </ol>
 <h2 id="Finetune-with-Lora"><a href="#Finetune-with-Lora" class="headerlink" title="Finetune with Lora"></a>Finetune with Lora</h2><p>Hugging Face: <a target="_blank" rel="noopener" href="https://huggingface.co/blog/lora">Lora for SD reference</a>; <a target="_blank" rel="noopener" href="https://huggingface.co/docs/diffusers/v0.9.0/en/training/text2image">text_to_image finetune</a></p>
 <p>Github script: <a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/blob/main/examples/text_to_image/train_text_to_image_lora.py">train text_to_image lora</a></p>
@@ -298,16 +301,18 @@
 <li>需要注意学习率的设置</li>
 <li>训练脚本包括：参数设置解析，模型、数据、优化器加载配置，精度处理，加速器硬件设置，checkpoint保存，lora适配器微调，推理验证，日志记录，推送至hub，模型保存等等诸多步骤和技术。</li>
 </ol>
-<h2 id="实验一，在服务器上跑lora"><a href="#实验一，在服务器上跑lora" class="headerlink" title="实验一，在服务器上跑lora"></a>实验一，在服务器上跑lora</h2><p>教程：<a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/tree/main/examples/text_to_image">README.md</a></p>
+<h2 id="实验一：在服务器上跑lora"><a href="#实验一：在服务器上跑lora" class="headerlink" title="实验一：在服务器上跑lora"></a>实验一：在服务器上跑lora</h2><p>教程：<a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/tree/main/examples/text_to_image">README.md</a></p>
 <p><strong>先开启 myenv 环境！</strong></p>
 <ol>
 <li>git clone diffusers，网络连接失败时可以直接下载压缩包，解压缩后通过 scp 传到服务器</li>
-<li>安装各种环境以及依赖</li>
-<li>acclerate initializ：使用 hugging face 提供的库，可以简化在各种设备和分布式配置上启动、训练和使用 PyTorch 模型的过程。它支持自动混合精度（包括 fp8），并且易于配置 FSDP（Fully Sharded Data Parallel）和 DeepSpeed 支持。<a target="_blank" rel="noopener" href="https://github.com/huggingface/accelerate/">Accelerate</a>；一些教程<a target="_blank" rel="noopener" href="https://blog.csdn.net/Stanford_Vera/article/details/133359959">Reference</a></li>
+<li>安装各种环境以及依赖（参考教程步骤即可）</li>
+<li>acclerate initializ：使用 hugging face 提供的库，可以简化在各种设备和分布式配置上启动、训练和使用 PyTorch 模型的过程。它支持自动混合精度（包括 fp8），并且易于配置 FSDP（Fully Sharded Data Parallel）和 DeepSpeed 支持。注意：并不是所有配置都支持，实验中全部选择了 no 最后才跑通。<br><a target="_blank" rel="noopener" href="https://github.com/huggingface/accelerate/">Accelerate</a>；<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/Stanford_Vera/article/details/133359959">Reference</a></li>
 <li>登录计算节点 玛卡巴卡 后，需重新开始 mynew 环境</li>
-<li>更换 hugging face mirror 镜像源，使用 huggingface-cli 下载，<a target="_blank" rel="noopener" href="https://blog.csdn.net/lanlinjnc/article/details/136709225">huggingface-cli</a>，模型不小，所以下载需要一定时间，因此可以用 sbatch 提交到计算节点运行程序（不能用srun，srun是交互式的）<br><img src="/2024/04/26/Stable_Diffusion/1714309541109.png" alt="1714309541109">；或者先在本地下载，再传到服务器中；并不是所有的 .bin 模型都要下载，只需要下载用到的即可。</li>
+<li>更换 hugging face mirror 镜像源，使用 huggingface-cli 下载：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lanlinjnc/article/details/136709225">huggingface-cli</a>；模型不小，所以下载需要一定时间，因此可以用 sbatch 提交到计算节点运行程序（不能用srun，srun是交互式的）<br><img src="/2024/04/26/Stable_Diffusion/1714309541109.png" alt="1714309541109"><br>或者先在本地下载，再传到服务器中；并不是所有的 .bin 模型都要下载，只需要下载脚本中用到的即可（可以先不下载大文件，看运行的报错信息，仔一个一个补）。</li>
 <li>注意 .sh 脚本嵌套 .py 脚本，在 .sh 脚本中配置模型路径，数据集路径等参数</li>
-<li>数据集，由于 example 中用到的宝可梦数据集被下架了，在hugging face中找到一个也是 ‘blip-captions’ 的平替数据集 ‘cartoon-captions’；data_path应该设置为 train_data 所在的文件夹</li>
+<li>数据集，由于 example 中用到的宝可梦数据集被下架了，在hugging face中找到一个也是 ‘blip-captions’ 的平替数据集 ‘cartoon-captions’；data_path应该设置为 train_data 所在的文件夹；如果想用自己做的数据集，需要按照一定格式，参照：<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/v2.4.0/en/image_load#imagefolder-with-metadata">tutorials of data</a></li>
+<li>.sh 脚本注意事项：配置好模型、数据集、output 的路径，不推送至 hub，dataloader_num_workers&#x3D;0；环境配置注意事项：不能使用过高版本python，这里 python&#x3D;3.10, torch&#x3D;2.2.2, torchvision&#x3D;0.17.2, peft&#x3D;0.6.1, cuda&#x3D;12.2；其他：提前登录 wandb，这是一个可以记录训练过程的网站：<a target="_blank" rel="noopener" href="https://wandb.ai/home">wandb</a>；image.convert需要更改，具体看脚本，多加一个 convert(image) 函数</li>
+<li>实验结果：<br> <img src="/2024/04/26/Stable_Diffusion/1714444105826.png" alt="1714444105826"><br> <img src="/2024/04/26/Stable_Diffusion/1714444342256.png" alt="1714444342256"><br> <a target="_blank" rel="noopener" href="https://wandb.ai/treeby/text2image-fine-tune/reports/Lora-of-Stable-Diffusion---Vmlldzo3NzUxNDA5">Lora-of-Stable-Diffusion-Report</a></li>
 </ol>
 
       
