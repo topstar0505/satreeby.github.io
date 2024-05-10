@@ -173,6 +173,255 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="Treeby">
+      <meta itemprop="description" content="La vie est belle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Amusement Park">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/" class="post-title-link" itemprop="url">Road 2 Efficient LLM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-05-02 18:02:07 / Modified: 16:57:21" itemprop="dateCreated datePublished" datetime="2024-05-02T18:02:07+08:00">2024-05-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B9%9D%E5%B0%BE%C2%B7%E4%BB%96%E5%B1%B1/" itemprop="url" rel="index"><span itemprop="name">九尾·他山</span></a>
+                </span>
+            </span>
+
+          
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="关于">关于</h2>
+<p>再开新坑，写写 FPGA-Based 的 LLM 加速方法调研，也是 FPGA(H)
+的课程报告</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/02/Efficient_LLM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="Treeby">
+      <meta itemprop="description" content="La vie est belle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Amusement Park">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/02/Efficient_LLM/" class="post-title-link" itemprop="url">Road 2 Efficient LLM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-05-02 14:21:15 / Modified: 16:49:36" itemprop="dateCreated datePublished" datetime="2024-05-02T14:21:15+08:00">2024-05-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B9%9D%E5%B0%BE%C2%B7%E4%BB%96%E5%B1%B1/" itemprop="url" rel="index"><span itemprop="name">九尾·他山</span></a>
+                </span>
+            </span>
+
+          
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="overall-survey">Overall Survey</h2>
+<blockquote>
+<p><strong>credit to</strong> : Efficient Large Language Models: A
+Survey</p>
+</blockquote>
+<figure>
+<img src="/2024/05/02/Efficient_LLM/1714631582088.png" alt="1714631582088">
+<figcaption aria-hidden="true">1714631582088</figcaption>
+</figure>
+<p>这篇综述将加速方法分成三类，如图所示。</p>
+<h3 id="model-centric-methods">Model-Centric Methods</h3>
+<h4 id="model-compression">Model Compression</h4>
+<ol type="1">
+<li><p>Quantization</p>
+<ul>
+<li>将数据从高精度 <span class="math inline">\(X^H\)</span> 转化为
+低精度<span class="math inline">\(X^L\)</span>：</li>
+</ul>
+<p>$X<sup>L=round(X</sup>H) $</p>
+<ul>
+<li>PTQ(post-training quantization)
+<ul>
+<li>分为 Weight-Only Quantization 和 Weight-Activation
+Co-Quantization</li>
+<li>Weight-Only Quantization：将权重量化至
+8bit，4bit，3bit等等，同时一些研究发现需要单独处理一些量化误差较大的权重，所以通常用一些算法对部分权重进行量化，而部分权重保留较高精度。</li>
+<li>Weight-Activation Co-Quantization：由于 activation outliers
+的存在，这种量化会更加困难复杂，容易损失更多的精度，因此分组量化、精度补偿等算法更加重要</li>
+</ul></li>
+<li>QAT(Quantization-Aware Training)
+<ul>
+<li>量化后重新训练，能减小量化精度，但会花费更大的成本</li>
+</ul></li>
+</ul>
+<p>各种具体量化方法后文再介绍，这里仅作提要</p></li>
+<li><p>Parameter Pruning</p>
+<ul>
+<li>丢弃不必要的权重</li>
+<li>Structured Pruning
+<ul>
+<li>剪掉一整行，一整列，一整层，等等，需要根据权重、梯度等信息</li>
+</ul></li>
+<li>Unstructured Pruning
+<ul>
+<li>通常与稀疏化感知一起进行，对权重单独剪枝</li>
+</ul></li>
+</ul></li>
+<li><p>Low-Rank Approximation <span class="math inline">\(W\approx UV^T,
+W\in R^{m\times n}, U\in R^{m\times r}, V\in R^{n\times
+r}\)</span></p></li>
+<li><p>Knowledge Distillation</p>
+<ul>
+<li>KD 通过训练较小的学生模型来模拟 LLM 作为教师模型的性能来压缩
+LLM，从而使学生模型的计算量较小，但仍保持与教师模型类似的高水平性能。</li>
+<li>TODO</li>
+</ul></li>
+</ol>
+<figure>
+<img src="/2024/05/02/Efficient_LLM/1714633043649.png" alt="1714633043649">
+<figcaption aria-hidden="true">1714633043649</figcaption>
+</figure>
+<h4 id="efficient-pre-training">Efficient Pre-Training</h4>
+<ol type="1">
+<li><p>Mixed Precision Acceleration</p>
+<ul>
+<li>使用低精度模型进行前向和后向传播，将计算出的低精度梯度转换为高精度梯度来更新原始高精度权重，从而提高预训练效率</li>
+<li>提高内存效率</li>
+<li>具体各种算法后文再介绍</li>
+</ul></li>
+<li><p>Scaling Models</p></li>
+<li><p>Initialization Techniques</p></li>
+<li><p>Optimization Strategies</p>
+<ul>
+<li>对优化器算法进行改进，以减少内存需求，后文再进行介绍</li>
+</ul></li>
+<li><p>System-Level Pre-Training Efficiency Optimization</p>
+<ul>
+<li>聚焦于分布式训练，以应对内存需求，具体有张量并行，数据并行等，还涉及节点间通信，非常复杂，以后再单独细讲</li>
+</ul></li>
+</ol>
+<figure>
+<img src="/2024/05/02/Efficient_LLM/1714635758045.png" alt="1714635758045">
+<figcaption aria-hidden="true">1714635758045</figcaption>
+</figure>
+<h4 id="efficient-fine-tuning">Efficient Fine-Tuning</h4>
+<ol type="1">
+<li>Parameter-Efficient Fine-Tuning(PEFT)
+<ul>
+<li>Adapter-based Tuning</li>
+<li>Low-Rank Adaptation</li>
+<li>Prefix Tuning</li>
+<li>Prompt Tuning</li>
+</ul></li>
+<li>Memory-Efficient Fine-Tuning(MEFT)
+<ul>
+<li>结合量化感知等算法进行微调，以减少内存需求，经典的有 QLora，QA-Lora
+等</li>
+</ul></li>
+</ol>
+<p>微调算法原理基本如图，不同具体算法的原理与优缺点后文再介绍</p>
+<figure>
+<img src="/2024/05/02/Efficient_LLM/1714638690593.png" alt="1714638690593">
+<figcaption aria-hidden="true">1714638690593</figcaption>
+</figure>
+<h4 id="efficient-inference">Efficient Inference</h4>
+<h3 id="data-centric-methods">Data-Centric Methods</h3>
+<p>TODO</p>
+<h3 id="llm-frameworks">LLM Frameworks</h3>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/Stable_Diffusion/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -204,7 +453,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-04-30 12:10:54" itemprop="dateModified" datetime="2024-04-30T12:10:54+08:00">2024-04-30</time>
+                <time title="Modified: 2024-05-11 01:23:55" itemprop="dateModified" datetime="2024-05-11T01:23:55+08:00">2024-05-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -367,6 +616,42 @@ cuda=12.2；其他：提前登录 wandb，这是一个可以记录训练过程�
 convert(image) 函数</li>
 <li>实验结果： <img src="/2024/04/26/Stable_Diffusion/1714444105826.png" alt="1714444105826"> <img src="/2024/04/26/Stable_Diffusion/1714444342256.png" alt="1714444342256"> <a target="_blank" rel="noopener" href="https://wandb.ai/treeby/text2image-fine-tune/reports/Lora-of-Stable-Diffusion---Vmlldzo3NzUxNDA5">Lora-of-Stable-Diffusion-Report</a></li>
 </ol>
+<h2 id="dit">DiT</h2>
+<p>计划有变，由于UNet部署到芯片上太复杂了，不够规整，还有CNN，所以暂时又换成
+DiT，回旋镖了，本来开学想做了，后面没做，现在又要帮忙做了。</p>
+<h3 id="整体结构">整体结构</h3>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715353514686.png" alt="1715353514686">
+<figcaption aria-hidden="true">1715353514686</figcaption>
+</figure>
+<p>这里意思为，实验发现，左边 modulation attention 比 cross attention
+更好，各种大小的网络信息如下：</p>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715353636493.png" alt="1715353636493">
+<figcaption aria-hidden="true">1715353636493</figcaption>
+</figure>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715353660724.png" alt="1715353660724">
+<figcaption aria-hidden="true">1715353660724</figcaption>
+</figure>
+<p>/2 是指 patch size = 2*2，</p>
+<h3 id="dit-block">DiT Block</h3>
+<ul>
+<li>假设 batch = 1，先忽略</li>
+<li>image space [256, 256, 3] 转到 latent space [32, 32, 4]</li>
+<li>patchfy + posembedded 后，假设 patch = 2*2，则有 input [256,
+d]，其中 d 即为 hidden size</li>
+<li>以 DiT_S_2 为例，DiT Block 输入输出 flow
+如下（画了一整晚，重操旧业了属于是。。。）</li>
+</ul>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715361595687.png" alt="1715361595687">
+<figcaption aria-hidden="true">1715361595687</figcaption>
+</figure>
+<ul>
+<li>Timeembedded，labelembedded，latent encoder，final layer
+分析：TODO</li>
+</ul>
 
       
     </div>
@@ -1874,80 +2159,11 @@ all，真的非常非常非常地感谢隽立，在我每次（其实是每天�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/28/Life/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="Treeby">
-      <meta itemprop="description" content="La vie est belle">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Amusement Park">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/28/Life/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-06-28 12:28:07" itemprop="dateCreated datePublished" datetime="2023-06-28T12:28:07+08:00">2023-06-28</time>
-            </span>
-
-          
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/default-index/page/2/">2</a><a class="extend next" rel="next" href="/default-index/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -2014,7 +2230,7 @@ all，真的非常非常非常地感谢隽立，在我每次（其实是每天�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

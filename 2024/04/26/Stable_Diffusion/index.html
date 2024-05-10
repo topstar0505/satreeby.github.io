@@ -44,8 +44,12 @@
 <meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1714309541109.png">
 <meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1714444105826.png">
 <meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1714444342256.png">
+<meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1715353514686.png">
+<meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1715353636493.png">
+<meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1715353660724.png">
+<meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1715361595687.png">
 <meta property="article:published_time" content="2024-04-26T13:48:04.000Z">
-<meta property="article:modified_time" content="2024-04-30T04:10:54.010Z">
+<meta property="article:modified_time" content="2024-05-10T17:23:55.604Z">
 <meta property="article:author" content="Treeby">
 <meta property="article:tag" content="Study">
 <meta property="article:tag" content="Notes">
@@ -223,7 +227,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-04-30 12:10:54" itemprop="dateModified" datetime="2024-04-30T12:10:54+08:00">2024-04-30</time>
+                <time title="Modified: 2024-05-11 01:23:55" itemprop="dateModified" datetime="2024-05-11T01:23:55+08:00">2024-05-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -398,6 +402,42 @@ cuda=12.2；其他：提前登录 wandb，这是一个可以记录训练过程�
 convert(image) 函数</li>
 <li>实验结果： <img src="/2024/04/26/Stable_Diffusion/1714444105826.png" alt="1714444105826"> <img src="/2024/04/26/Stable_Diffusion/1714444342256.png" alt="1714444342256"> <a target="_blank" rel="noopener" href="https://wandb.ai/treeby/text2image-fine-tune/reports/Lora-of-Stable-Diffusion---Vmlldzo3NzUxNDA5">Lora-of-Stable-Diffusion-Report</a></li>
 </ol>
+<h2 id="dit">DiT</h2>
+<p>计划有变，由于UNet部署到芯片上太复杂了，不够规整，还有CNN，所以暂时又换成
+DiT，回旋镖了，本来开学想做了，后面没做，现在又要帮忙做了。</p>
+<h3 id="整体结构">整体结构</h3>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715353514686.png" alt="1715353514686">
+<figcaption aria-hidden="true">1715353514686</figcaption>
+</figure>
+<p>这里意思为，实验发现，左边 modulation attention 比 cross attention
+更好，各种大小的网络信息如下：</p>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715353636493.png" alt="1715353636493">
+<figcaption aria-hidden="true">1715353636493</figcaption>
+</figure>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715353660724.png" alt="1715353660724">
+<figcaption aria-hidden="true">1715353660724</figcaption>
+</figure>
+<p>/2 是指 patch size = 2*2，</p>
+<h3 id="dit-block">DiT Block</h3>
+<ul>
+<li>假设 batch = 1，先忽略</li>
+<li>image space [256, 256, 3] 转到 latent space [32, 32, 4]</li>
+<li>patchfy + posembedded 后，假设 patch = 2*2，则有 input [256,
+d]，其中 d 即为 hidden size</li>
+<li>以 DiT_S_2 为例，DiT Block 输入输出 flow
+如下（画了一整晚，重操旧业了属于是。。。）</li>
+</ul>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715361595687.png" alt="1715361595687">
+<figcaption aria-hidden="true">1715361595687</figcaption>
+</figure>
+<ul>
+<li>Timeembedded，labelembedded，latent encoder，final layer
+分析：TODO</li>
+</ul>
 
     </div>
 
@@ -426,7 +466,10 @@ convert(image) 函数</li>
     <a href="/2024/04/08/2024%E6%98%A5/" rel="prev" title="2024春">
       <i class="fa fa-chevron-left"></i> 2024春
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2024/05/02/Efficient_LLM/" rel="next" title="Road 2 Efficient LLM">
+      Road 2 Efficient LLM <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -486,7 +529,7 @@ convert(image) 函数</li>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E"><span class="nav-number">1.</span> <span class="nav-text">关于</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github%E4%BB%A3%E7%A0%81%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">github代码介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#finetune-with-lora"><span class="nav-number">4.</span> <span class="nav-text">Finetune with Lora</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E8%B7%91lora"><span class="nav-number">5.</span> <span class="nav-text">实验一：在服务器上跑lora</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E"><span class="nav-number">1.</span> <span class="nav-text">关于</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github%E4%BB%A3%E7%A0%81%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">github代码介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#finetune-with-lora"><span class="nav-number">4.</span> <span class="nav-text">Finetune with Lora</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E8%B7%91lora"><span class="nav-number">5.</span> <span class="nav-text">实验一：在服务器上跑lora</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dit"><span class="nav-number">6.</span> <span class="nav-text">DiT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">6.1.</span> <span class="nav-text">整体结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dit-block"><span class="nav-number">6.2.</span> <span class="nav-text">DiT Block</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -502,7 +545,7 @@ convert(image) 函数</li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
