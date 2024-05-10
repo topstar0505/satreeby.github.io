@@ -25,7 +25,7 @@
 
   <meta name="description" content="关于 本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune deploy 实验。 基本原理 github: Stable Diffusion v1 论文地址：Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models 非常好解读：reference  核">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Lora of Stable Diffusion">
+<meta property="og:title" content="Lora of Stable Diffusion or DiT">
 <meta property="og:url" content="http://example.com/2024/04/26/Stable_Diffusion/index.html">
 <meta property="og:site_name" content="Amusement Park">
 <meta property="og:description" content="关于 本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune deploy 实验。 基本原理 github: Stable Diffusion v1 论文地址：Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models 非常好解读：reference  核">
@@ -49,7 +49,7 @@
 <meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1715353660724.png">
 <meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1715361595687.png">
 <meta property="article:published_time" content="2024-04-26T13:48:04.000Z">
-<meta property="article:modified_time" content="2024-05-10T17:23:55.604Z">
+<meta property="article:modified_time" content="2024-05-10T17:29:31.302Z">
 <meta property="article:author" content="Treeby">
 <meta property="article:tag" content="Study">
 <meta property="article:tag" content="Notes">
@@ -69,7 +69,7 @@
   };
 </script>
 
-  <title>Lora of Stable Diffusion | Amusement Park</title>
+  <title>Lora of Stable Diffusion or DiT | Amusement Park</title>
   
 
 
@@ -210,7 +210,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Lora of Stable Diffusion
+          Lora of Stable Diffusion or DiT
         </h1>
 
         <div class="post-meta">
@@ -227,7 +227,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-11 01:23:55" itemprop="dateModified" datetime="2024-05-11T01:23:55+08:00">2024-05-11</time>
+                <time title="Modified: 2024-05-11 01:29:31" itemprop="dateModified" datetime="2024-05-11T01:29:31+08:00">2024-05-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -321,26 +321,25 @@ E_{\varepsilon(x), \epsilon \sim N(0, 1), t}[||\epsilon -
 <ol type="1">
 <li><p>文件组织结构：</p>
 <ul>
-<li><p>LICENSE:
-项目的许可证文件，说明了用户可以如何使用和分发该项目。</p></li>
-<li><p>setup.py：对整个 project 进行打包，可以看成为下载了一个 python
-库到本地，与 pip install 效果相同</p></li>
-<li><p>Model_Card.md：模型的“技术规格说明书”，用于提供有关机器学习模型的详细信息，包括其性能、使用案例、潜在的偏差和限制等</p></li>
-<li><p>README.md：项目的“欢迎手册”，提供了项目的全面概览和使用指南</p></li>
-<li><p>environment.yaml：project 所需要的所有环境依赖配置，可用
+<li>LICENSE: 项目的许可证文件，说明了用户可以如何使用和分发该项目。</li>
+<li>setup.py：对整个 project 进行打包，可以看成为下载了一个 python
+库到本地，与 pip install 效果相同</li>
+<li>Model_Card.md：模型的“技术规格说明书”，用于提供有关机器学习模型的详细信息，包括其性能、使用案例、潜在的偏差和限制等</li>
+<li>README.md：项目的“欢迎手册”，提供了项目的全面概览和使用指南</li>
+<li>environment.yaml：project 所需要的所有环境依赖配置，可用
 <code>conda env create -f environment.yaml</code>
-直接对所有依赖进行下载</p></li>
-<li><p>main.py：Python
+直接对所有依赖进行下载</li>
+<li>main.py：Python
 脚本，项目的入口点，可能包含设置、训练和评估机器学习模型的代码。例如可以使用
-Pytorch.lightning 框架等 <img src="/2024/04/26/Stable_Diffusion/1714145727161.png" alt="pytorch.lightning"></p></li>
-<li><p>configure/：模型，训练，以及推断的配置文件</p></li>
-<li><p>data/：有关数据，由于是文生图，这里包括了训练数据(train)的序号(index)，验证数据(val)的序号，图片的标签(label,
-class)；还有example，等等</p></li>
-<li><p>scripts/：通常包含用于执行特定任务的脚本，如 txt2img.py
+Pytorch.lightning 框架等 <img src="/2024/04/26/Stable_Diffusion/1714145727161.png" alt="pytorch.lightning"></li>
+<li>configure/：模型，训练，以及推断的配置文件</li>
+<li>data/：有关数据，由于是文生图，这里包括了训练数据(train)的序号(index)，验证数据(val)的序号，图片的标签(label,
+class)；还有example，等等</li>
+<li>scripts/：通常包含用于执行特定任务的脚本，如 txt2img.py
 用于文本到图像的采样，img2img.py
-用于图像修改。这些脚本可能允许用户通过命令行接口运行模型并生成图像。</p></li>
-<li><p>models/: 一般包括模型和训练的 .py 代码等，可能也有 .yaml
-配置文件，当然可能这些都放在以模型直接命名的文件夹里</p></li>
+用于图像修改。这些脚本可能允许用户通过命令行接口运行模型并生成图像。</li>
+<li>models/: 一般包括模型和训练的 .py 代码等，可能也有 .yaml
+配置文件，当然可能这些都放在以模型直接命名的文件夹里</li>
 </ul></li>
 </ol>
 <h2 id="finetune-with-lora">Finetune with Lora</h2>
