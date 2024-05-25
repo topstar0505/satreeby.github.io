@@ -204,7 +204,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-26 01:21:48" itemprop="dateModified" datetime="2024-05-26T01:21:48+08:00">2024-05-26</time>
+                <time title="Modified: 2024-05-26 01:30:21" itemprop="dateModified" datetime="2024-05-26T01:30:21+08:00">2024-05-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,7 +229,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>再开新坑，写写 FPGA-Based 的 LLM 加速方法调研，也是 FPGA(H) 的课程报告<br>主要围绕：《Adaptable Butterfly Accelerator for Attention-based NNs via Hardware and Algorithm Co-design》</p>
+          <h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>再开新坑，写写 FPGA-Based 的 LLM 加速方法调研，也是 FPGA(H) 的课程报告啦<br>主要围绕：《Adaptable Butterfly Accelerator for Attention-based NNs via Hardware and Algorithm Co-design》</p>
 <h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>已有的 Sparsity pattern 基本包括以下五种<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716616579837.png" alt="1716616579837"></p>
 <h3 id="Low-rank"><a href="#Low-rank" class="headerlink" title="Low rank"></a>Low rank</h3><p>比如论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.04768">Linformer: Self-Attention with Linear Complexity</a> 中，实验发现 self attention 中的矩阵 P 在seq-length维度上是低秩的<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716617331673.png" alt="1716617331673"><br>对 k 和 v 进行低秩投影，从 n × d 到 n × k，<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716618343836.png" alt="1716618343836"><br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716618566505.png" alt="1716618566505"></p>
 <p>还有：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2009.14794">Rethinking Attention with Performers</a></p>
@@ -244,18 +244,17 @@
 <li>FFT: 分奇偶后使用递归进行计算<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716653766726.png" alt="1716653766726"></li>
 <li>由此，矩阵乘法可拆解成递归形式：</li>
 </ul>
-<p>$$<br> X&#x3D;F_Nx&#x3D;\begin{bmatrix}<br>   F_{\frac{N}{2}}x_{even}+\Omega_{\frac{N}{2}}F_{\frac{N}{2}}x_{odd}\<br>   F_{\frac{N}{2}}x_{even}-\Omega_{\frac{N}{2}}F_{\frac{N}{2}}x_{odd}<br>  \end{bmatrix}<br>$$<br>$x_{even}&#x3D;[x_0, x_2, \dots, x_{N-2}], x_{odd}&#x3D;[x_1, x_3, \dots, x_{N-1}] $<br>$$<br>\Omega_{\frac{N}{2}}&#x3D;\begin{bmatrix}<br>1 &amp; 0 &amp; \cdots &amp; 0 \<br>0 &amp; \omega_{N}^{-1} &amp; \cdots &amp; 0 \<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>0 &amp; 0 &amp; \cdots &amp; \omega_{N}^{-(\frac{N}{2}-1)} \<br>\end{bmatrix}<br>$$</p>
+<p>$<br>X&#x3D;F_Nx&#x3D;\begin{bmatrix}<br>   F_{\frac{N}{2}}x_{even}+\Omega_{\frac{N}{2}}F_{\frac{N}{2}}x_{odd}\<br>   F_{\frac{N}{2}}x_{even}-\Omega_{\frac{N}{2}}F_{\frac{N}{2}}x_{odd}<br>  \end{bmatrix}<br>$</p>
+<p>$x_{even}&#x3D;[x_0, x_2, \dots, x_{N-2}], x_{odd}&#x3D;[x_1, x_3, \dots, x_{N-1}] $</p>
+<p>$<br>\Omega_{\frac{N}{2}}&#x3D;\begin{bmatrix}<br>1 &amp; 0 &amp; \cdots &amp; 0 \<br>0 &amp; \omega_{N}^{-1} &amp; \cdots &amp; 0 \<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>0 &amp; 0 &amp; \cdots &amp; \omega_{N}^{-(\frac{N}{2}-1)} \<br>\end{bmatrix}<br>$</p>
 <ul>
 <li>因此，矩阵 $F_N$ 可以写成：</li>
 </ul>
-<p>$$<br>F_N&#x3D;\begin{bmatrix}<br>I_{\frac{N}{2}} &amp; \Omega_{\frac{N}{2}}\<br>I_{\frac{N}{2}} &amp; -\Omega_{\frac{N}{2}}\<br>\end{bmatrix} \begin{bmatrix}<br>F_{\frac{N}{2}} &amp; 0 \<br>0 &amp; F_{\frac{N}{2}}<br>\end{bmatrix} \begin{bmatrix}<br>Sort &amp; the &amp; even \<br>and &amp; odd &amp; indices \<br>\end{bmatrix}<br>$$</p>
+<p>$<br>F_N&#x3D;\begin{bmatrix}<br>I_{\frac{N}{2}} &amp; \Omega_{\frac{N}{2}}\<br>I_{\frac{N}{2}} &amp; -\Omega_{\frac{N}{2}}\<br>\end{bmatrix} \begin{bmatrix}<br>F_{\frac{N}{2}} &amp; 0 \<br>0 &amp; F_{\frac{N}{2}}<br>\end{bmatrix} \begin{bmatrix}<br>Sort &amp; the &amp; even \<br>and &amp; odd &amp; indices \<br>\end{bmatrix}<br>$</p>
 <ul>
-<li><p>递归后：<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716655533911.png" alt="1716655533911"></p>
-</li>
-<li><p>蝶形因子如图所示：<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716655484870.png" alt="1716655484870"></p>
-</li>
-<li><p>Definition of B_N:<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716656419164.png" alt="1716656419164"></p>
-</li>
+<li>递归后：<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716655533911.png" alt="1716655533911"></li>
+<li>蝶形因子如图所示：<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716655484870.png" alt="1716655484870"></li>
+<li>Definition of B_N:<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716656419164.png" alt="1716656419164"></li>
 </ul>
 <p>-Definitions of Kaleidoscope hierarchy, kaleidoscope matrices<br><img src="/2024/05/02/FPGA-Based%20Acceleration%20for%20LLM/1716657148920.png" alt="1716657148920"></p>
 <ul>
