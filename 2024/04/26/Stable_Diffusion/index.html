@@ -23,12 +23,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs | buttons","Available values":"disqus | changyan | disqus | disqusjs | gitalk | livere | valine","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="关于 本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune deploy 实验。 基本原理 github: Stable Diffusion v1 论文地址：Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models 非常好解读：reference  核">
+  <meta name="description" content="关于本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune deploy 实验。 基本原理github: Stable Diffusion v1 论文地址：Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models 非常好解读：reference  核心：将图片通过一个单独">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lora of Stable Diffusion or DiT">
 <meta property="og:url" content="http://example.com/2024/04/26/Stable_Diffusion/index.html">
 <meta property="og:site_name" content="Amusement Park">
-<meta property="og:description" content="关于 本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune deploy 实验。 基本原理 github: Stable Diffusion v1 论文地址：Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models 非常好解读：reference  核">
+<meta property="og:description" content="关于本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune deploy 实验。 基本原理github: Stable Diffusion v1 论文地址：Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models 非常好解读：reference  核心：将图片通过一个单独">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1714152485546.png">
 <meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1714152570582.png">
@@ -53,7 +53,7 @@
 <meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1715455631555.png">
 <meta property="og:image" content="http://example.com/2024/04/26/Stable_Diffusion/1715455724370.png">
 <meta property="article:published_time" content="2024-04-26T13:48:04.000Z">
-<meta property="article:modified_time" content="2024-05-11T20:05:28.365Z">
+<meta property="article:modified_time" content="2024-05-15T14:12:28.057Z">
 <meta property="article:author" content="Treeby">
 <meta property="article:tag" content="Study">
 <meta property="article:tag" content="Notes">
@@ -231,7 +231,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-12 04:05:28" itemprop="dateModified" datetime="2024-05-12T04:05:28+08:00">2024-05-12</time>
+                <time title="Modified: 2024-05-15 22:12:28" itemprop="dateModified" datetime="2024-05-15T22:12:28+08:00">2024-05-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,246 +268,179 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="关于">关于</h2>
-<p>本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune
-deploy 实验。</p>
-<h2 id="基本原理">基本原理</h2>
-<p>github: <a target="_blank" rel="noopener" href="https://github.com/CompVis/stable-diffusion">Stable
-Diffusion v1</a></p>
+        <h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune deploy 实验。</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>github: <a target="_blank" rel="noopener" href="https://github.com/CompVis/stable-diffusion">Stable Diffusion v1</a></p>
 <p>论文地址：<a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2022/papers/Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models_CVPR_2022_paper">Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models</a></p>
 <p>非常好解读：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_62403633/article/details/131022283">reference</a></p>
 <ul>
-<li>核心：将图片通过一个单独训练的 autoencoder 压缩到潜空间中，再进行
-diffusion model 的训练，能够大大降低计算量（相较于高分辨率对 pixel
-直接进行训练），同时，autoencoder还能用于多种任务中，即该方法对
-image-to-image 和 text-to-image 都有效</li>
+<li>核心：将图片通过一个单独训练的 autoencoder 压缩到潜空间中，再进行 diffusion model 的训练，能够大大降低计算量（相较于高分辨率对 pixel 直接进行训练），同时，autoencoder还能用于多种任务中，即该方法对 image-to-image 和 text-to-image 都有效</li>
 </ul>
-<ol type="1">
+<ol>
 <li><p>Autoencoder</p>
 <ul>
-<li>Encoder: $z=(x), x R^{HW} $</li>
-<li>Decoder: <span class="math inline">\(\tilde{x} = D(z) =
-D(\varepsilon(x)), z\in R^{h\times w \times c}\)</span></li>
+<li>Encoder: $z&#x3D;\varepsilon (x), x \in R^{H\times W\times 3} $</li>
+<li>Decoder: $\tilde{x} &#x3D; D(z) &#x3D; D(\varepsilon(x)), z\in R^{h\times w \times c}$</li>
 <li>textencoder：使用的是 CLIP model</li>
 <li>训练方法：</li>
-</ul></li>
+</ul>
+</li>
 <li><p>Diffusion Model</p>
 <ul>
-<li>Diffision model can be interpreted as an equally weighted sequence
-of denoising autoencoders: <span class="math inline">\(\epsilon_\theta(x_t, t); t=1, 2, \dots,
-T\)</span>，即预测噪声的网络，其中，<span class="math inline">\(x_t\)</span> is a noisy version of the input <span class="math inline">\(x\)</span></li>
-<li>目标损失函数为：<span class="math inline">\(L_{DM}= E_{x, \epsilon
-\sim N(0, 1), t \sim uniform(1, 2, ... T)}[||\epsilon -
-\epsilon_\theta(x_t, t)||_2^2]\)</span></li>
-<li>LDM中，目标损失函数为：<span class="math inline">\(L_{LDM}:=
-E_{\varepsilon(x), \epsilon \sim N(0, 1), t}[||\epsilon -
-\epsilon_\theta(z_t, t)||_2^2]\)</span></li>
-<li>再加入 condition 后，目标损失函数为：<span class="math inline">\(L_{LDM}:= E_{\varepsilon(x),y, \epsilon \sim N(0,
-1), t}[||\epsilon - \epsilon_\theta(z_t, t,
-\tau_\theta(y))||_2^2]\)</span></li>
-</ul></li>
+<li>Diffision model can be interpreted as an equally weighted sequence of denoising autoencoders: $\epsilon_\theta(x_t, t); t&#x3D;1, 2, \dots, T$，即预测噪声的网络，其中，$x_t$ is a noisy version of the input $x$</li>
+<li>目标损失函数为：$L_{DM}&#x3D; E_{x, \epsilon \sim N(0, 1), t \sim uniform(1, 2, … T)}[||\epsilon - \epsilon_\theta(x_t, t)||_2^2]$</li>
+<li>LDM中，目标损失函数为：$L_{LDM}:&#x3D; E_{\varepsilon(x), \epsilon \sim N(0, 1), t}[||\epsilon - \epsilon_\theta(z_t, t)||_2^2]$</li>
+<li>再加入 condition 后，目标损失函数为：$L_{LDM}:&#x3D; E_{\varepsilon(x),y, \epsilon \sim N(0, 1), t}[||\epsilon - \epsilon_\theta(z_t, t, \tau_\theta(y))||_2^2]$</li>
+</ul>
+</li>
 <li><p>Unet</p>
 <ul>
-<li>非常老的分割模型 <img src="/2024/04/26/Stable_Diffusion/1714152485546.png" alt="Unet"></li>
-</ul></li>
+<li>非常老的分割模型<br><img src="/2024/04/26/Stable_Diffusion/1714152485546.png" alt="Unet"></li>
+</ul>
+</li>
 <li><p>Backbone</p>
 <ul>
-<li>将 Unet 中的 CNN 替换成 transformer <img src="/2024/04/26/Stable_Diffusion/1714152570582.png" alt="Stable Diffusion"></li>
-<li>注意，有一半 Attention 为 cross attention：<span class="math inline">\(Q = W_Q^{(i)}\cdot \phi_i(z_t), K = W_K^{(i)}\cdot
-\tau_\theta(y), V=W_V^{(i)}\cdot \tau_\theta(y)\)</span></li>
-<li><figure>
-<img src="/2024/04/26/Stable_Diffusion/1714403808541.png" alt="1714403808541">
-<figcaption aria-hidden="true">1714403808541</figcaption>
-</figure></li>
-</ul></li>
+<li>将 Unet 中的 CNN 替换成 transformer<br><img src="/2024/04/26/Stable_Diffusion/1714152570582.png" alt="Stable Diffusion"></li>
+<li>注意，有一半 Attention 为 cross attention：$Q &#x3D; W_Q^{(i)}\cdot \phi_i(z_t), K &#x3D; W_K^{(i)}\cdot \tau_\theta(y), V&#x3D;W_V^{(i)}\cdot \tau_\theta(y)$</li>
+<li><img src="/2024/04/26/Stable_Diffusion/1714403808541.png" alt="1714403808541"></li>
+</ul>
+</li>
 </ol>
-<h2 id="github代码介绍">github代码介绍</h2>
-<ol type="1">
+<h2 id="github代码介绍"><a href="#github代码介绍" class="headerlink" title="github代码介绍"></a>github代码介绍</h2><ol>
 <li><p>文件组织结构：</p>
 <ul>
 <li>LICENSE: 项目的许可证文件，说明了用户可以如何使用和分发该项目。</li>
-<li>setup.py：对整个 project 进行打包，可以看成为下载了一个 python
-库到本地，与 pip install 效果相同</li>
+<li>setup.py：对整个 project 进行打包，可以看成为下载了一个 python 库到本地，与 pip install 效果相同</li>
 <li>Model_Card.md：模型的“技术规格说明书”，用于提供有关机器学习模型的详细信息，包括其性能、使用案例、潜在的偏差和限制等</li>
 <li>README.md：项目的“欢迎手册”，提供了项目的全面概览和使用指南</li>
-<li>environment.yaml：project 所需要的所有环境依赖配置，可用
-<code>conda env create -f environment.yaml</code>
-直接对所有依赖进行下载</li>
-<li>main.py：Python
-脚本，项目的入口点，可能包含设置、训练和评估机器学习模型的代码。例如可以使用
-Pytorch.lightning 框架等 <img src="/2024/04/26/Stable_Diffusion/1714145727161.png" alt="pytorch.lightning"></li>
-<li>configure/：模型，训练，以及推断的配置文件</li>
-<li>data/：有关数据，由于是文生图，这里包括了训练数据(train)的序号(index)，验证数据(val)的序号，图片的标签(label,
-class)；还有example，等等</li>
-<li>scripts/：通常包含用于执行特定任务的脚本，如 txt2img.py
-用于文本到图像的采样，img2img.py
-用于图像修改。这些脚本可能允许用户通过命令行接口运行模型并生成图像。</li>
-<li>models/: 一般包括模型和训练的 .py 代码等，可能也有 .yaml
-配置文件，当然可能这些都放在以模型直接命名的文件夹里</li>
-</ul></li>
+<li>environment.yaml：project 所需要的所有环境依赖配置，可用 <code>conda env create -f environment.yaml</code> 直接对所有依赖进行下载</li>
+<li>main.py：Python 脚本，项目的入口点，可能包含设置、训练和评估机器学习模型的代码。例如可以使用 Pytorch.lightning 框架等<br><img src="/2024/04/26/Stable_Diffusion/1714145727161.png" alt="pytorch.lightning"></li>
+<li>configure&#x2F;：模型，训练，以及推断的配置文件</li>
+<li>data&#x2F;：有关数据，由于是文生图，这里包括了训练数据(train)的序号(index)，验证数据(val)的序号，图片的标签(label, class)；还有example，等等</li>
+<li>scripts&#x2F;：通常包含用于执行特定任务的脚本，如 txt2img.py 用于文本到图像的采样，img2img.py 用于图像修改。这些脚本可能允许用户通过命令行接口运行模型并生成图像。</li>
+<li>models&#x2F;: 一般包括模型和训练的 .py 代码等，可能也有 .yaml 配置文件，当然可能这些都放在以模型直接命名的文件夹里</li>
+</ul>
+</li>
 </ol>
-<h2 id="finetune-with-lora">Finetune with Lora</h2>
-<p>Hugging Face: <a target="_blank" rel="noopener" href="https://huggingface.co/blog/lora">Lora for SD
-reference</a>; <a target="_blank" rel="noopener" href="https://huggingface.co/docs/diffusers/v0.9.0/en/training/text2image">text_to_image
-finetune</a></p>
-<p>Github script: <a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/blob/main/examples/text_to_image/train_text_to_image_lora.py">train
-text_to_image lora</a></p>
-<p>加噪训练：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.09556">ICCV_Efficient
-Diffusion Training via Min-SNR Weighting Strategy</a></p>
-<ol type="1">
+<h2 id="Finetune-with-Lora"><a href="#Finetune-with-Lora" class="headerlink" title="Finetune with Lora"></a>Finetune with Lora</h2><p>Hugging Face: <a target="_blank" rel="noopener" href="https://huggingface.co/blog/lora">Lora for SD reference</a>; <a target="_blank" rel="noopener" href="https://huggingface.co/docs/diffusers/v0.9.0/en/training/text2image">text_to_image finetune</a></p>
+<p>Github script: <a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/blob/main/examples/text_to_image/train_text_to_image_lora.py">train text_to_image lora</a></p>
+<p>加噪训练：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.09556">ICCV_Efficient Diffusion Training via Min-SNR Weighting Strategy</a></p>
+<ol>
 <li>需要注意学习率的设置</li>
 <li>训练脚本包括：参数设置解析，模型、数据、优化器加载配置，精度处理，加速器硬件设置，checkpoint保存，lora适配器微调，推理验证，日志记录，推送至hub，模型保存等等诸多步骤和技术。</li>
-<li>.py 关键代码解读如下：
-<ul>
-<li><code>args = parse_args()</code>：先解析参数，其中参数要在脚本 .sh
-中设置，如下图所示： <img src="/2024/04/26/Stable_Diffusion/1714446567472.png" alt="1714446567472">
-这里参数包括：<code>--pretrained_model_name_or_path</code>,
-<code>--dataset_name</code>, <code>--resolution</code>
-等等，参数定义的格式为： <img src="/2024/04/26/Stable_Diffusion/1714446813378.png" alt="1714446813378"></li>
-<li>log
-日志记录，通常用于多进程或分布式训练的场景，以避免日志输出过多而导致的混乱。它确保只有主进程会记录INFO级别的日志，而其他进程则只记录更高级别的日志。
-<img src="/2024/04/26/Stable_Diffusion/1714447969551.png" alt="1714447969551"></li>
-<li>使用 Lora finetune 时冻结权重以及 Lora adapter
-添加，同时设定训练精度，等等 <img src="/2024/04/26/Stable_Diffusion/1714448148761.png" alt="1714448148761"> <img src="/2024/04/26/Stable_Diffusion/1714448319335.png" alt="1714448319335"> <img src="/2024/04/26/Stable_Diffusion/1714448933666.png" alt="1714448933666"></li>
-<li><code>lora_layers = filter(lambda p: p.requires_grad, unet.parameters())</code>：filter函数将只传递那些满足requires_grad为True的参数给lambda函数，最终返回一个迭代器，其中包含了所有需要梯度更新的参数。最终优化器如下：
-<img src="/2024/04/26/Stable_Diffusion/1714449226579.png" alt="1714449226579"></li>
+<li>.py 关键代码解读如下：<ul>
+<li><code>args = parse_args()</code>：先解析参数，其中参数要在脚本 .sh 中设置，如下图所示：<br><img src="/2024/04/26/Stable_Diffusion/1714446567472.png" alt="1714446567472"><br>这里参数包括：<code>--pretrained_model_name_or_path</code>, <code>--dataset_name</code>, <code>--resolution</code> 等等，参数定义的格式为：<br><img src="/2024/04/26/Stable_Diffusion/1714446813378.png" alt="1714446813378"></li>
+<li>log 日志记录，通常用于多进程或分布式训练的场景，以避免日志输出过多而导致的混乱。它确保只有主进程会记录INFO级别的日志，而其他进程则只记录更高级别的日志。<br><img src="/2024/04/26/Stable_Diffusion/1714447969551.png" alt="1714447969551"></li>
+<li>使用 Lora finetune 时冻结权重以及 Lora adapter 添加，同时设定训练精度，等等<br><img src="/2024/04/26/Stable_Diffusion/1714448148761.png" alt="1714448148761"><br><img src="/2024/04/26/Stable_Diffusion/1714448319335.png" alt="1714448319335"><br><img src="/2024/04/26/Stable_Diffusion/1714448933666.png" alt="1714448933666"></li>
+<li><code>lora_layers = filter(lambda p: p.requires_grad, unet.parameters())</code>：filter函数将只传递那些满足requires_grad为True的参数给lambda函数，最终返回一个迭代器，其中包含了所有需要梯度更新的参数。最终优化器如下：<br><img src="/2024/04/26/Stable_Diffusion/1714449226579.png" alt="1714449226579"></li>
 <li>TODO：实在写不动了</li>
-</ul></li>
+</ul>
+</li>
 </ol>
-<h2 id="实验一在服务器上跑lora">实验一：在服务器上跑lora</h2>
-<p>教程：<a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/tree/main/examples/text_to_image">README.md</a></p>
+<h2 id="实验一：在服务器上跑lora"><a href="#实验一：在服务器上跑lora" class="headerlink" title="实验一：在服务器上跑lora"></a>实验一：在服务器上跑lora</h2><p>教程：<a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/tree/main/examples/text_to_image">README.md</a></p>
 <p><strong>先开启 myenv 环境！</strong></p>
-<ol type="1">
-<li>git clone diffusers，网络连接失败时可以直接下载压缩包，解压缩后通过
-scp 传到服务器</li>
+<ol>
+<li>git clone diffusers，网络连接失败时可以直接下载压缩包，解压缩后通过 scp 传到服务器</li>
 <li>安装各种环境以及依赖（参考教程步骤即可）</li>
-<li>acclerate initializ：使用 hugging face
-提供的库，可以简化在各种设备和分布式配置上启动、训练和使用 PyTorch
-模型的过程。它支持自动混合精度（包括 fp8），并且易于配置 FSDP（Fully
-Sharded Data Parallel）和 DeepSpeed
-支持。注意：并不是所有配置都支持，实验中全部选择了 no 最后才跑通。 <a target="_blank" rel="noopener" href="https://github.com/huggingface/accelerate/">Accelerate</a>； <a target="_blank" rel="noopener" href="https://blog.csdn.net/Stanford_Vera/article/details/133359959">Reference</a></li>
+<li>acclerate initializ：使用 hugging face 提供的库，可以简化在各种设备和分布式配置上启动、训练和使用 PyTorch 模型的过程。它支持自动混合精度（包括 fp8），并且易于配置 FSDP（Fully Sharded Data Parallel）和 DeepSpeed 支持。注意：并不是所有配置都支持，实验中全部选择了 no 最后才跑通。<br><a target="_blank" rel="noopener" href="https://github.com/huggingface/accelerate/">Accelerate</a>；<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/Stanford_Vera/article/details/133359959">Reference</a></li>
 <li>登录计算节点 玛卡巴卡 后，需重新开始 mynew 环境</li>
-<li>更换 hugging face mirror 镜像源，使用 huggingface-cli 下载：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lanlinjnc/article/details/136709225">huggingface-cli</a>；模型不小，所以下载需要一定时间，因此可以用
-sbatch 提交到计算节点运行程序（不能用srun，srun是交互式的） <img src="/2024/04/26/Stable_Diffusion/1714309541109.png" alt="1714309541109">
-或者先在本地下载，再传到服务器中；并不是所有的 .bin
-模型都要下载，只需要下载脚本中用到的即可（可以先不下载大文件，看运行的报错信息，仔一个一个补）。</li>
-<li>注意 .sh 脚本嵌套 .py 脚本，在 .sh
-脚本中配置模型路径，数据集路径等参数</li>
-<li>数据集，由于 example 中用到的宝可梦数据集被下架了，在hugging
-face中找到一个也是 'blip-captions' 的平替数据集
-'cartoon-captions'；data_path应该设置为 train_data
-所在的文件夹；如果想用自己做的数据集，需要按照一定格式，参照：<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/v2.4.0/en/image_load#imagefolder-with-metadata">tutorials
-of data</a></li>
-<li>.sh 脚本注意事项：配置好模型、数据集、output 的路径，不推送至
-hub，dataloader_num_workers=0；环境配置注意事项：不能使用过高版本python，这里
-python=3.10, torch=2.2.2, torchvision=0.17.2, peft=0.6.1,
-cuda=12.2；其他：提前登录 wandb，这是一个可以记录训练过程的网站：<a target="_blank" rel="noopener" href="https://wandb.ai/home">wandb</a>；image.convert需要更改，具体看脚本，多加一个
-convert(image) 函数</li>
-<li>实验结果： <img src="/2024/04/26/Stable_Diffusion/1714444105826.png" alt="1714444105826"> <img src="/2024/04/26/Stable_Diffusion/1714444342256.png" alt="1714444342256"> <a target="_blank" rel="noopener" href="https://wandb.ai/treeby/text2image-fine-tune/reports/Lora-of-Stable-Diffusion---Vmlldzo3NzUxNDA5">Lora-of-Stable-Diffusion-Report</a></li>
+<li>更换 hugging face mirror 镜像源，使用 huggingface-cli 下载：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lanlinjnc/article/details/136709225">huggingface-cli</a>；模型不小，所以下载需要一定时间，因此可以用 sbatch 提交到计算节点运行程序（不能用srun，srun是交互式的）<br><img src="/2024/04/26/Stable_Diffusion/1714309541109.png" alt="1714309541109"><br>或者先在本地下载，再传到服务器中；并不是所有的 .bin 模型都要下载，只需要下载脚本中用到的即可（可以先不下载大文件，看运行的报错信息，仔一个一个补）。</li>
+<li>注意 .sh 脚本嵌套 .py 脚本，在 .sh 脚本中配置模型路径，数据集路径等参数</li>
+<li>数据集，由于 example 中用到的宝可梦数据集被下架了，在hugging face中找到一个也是 ‘blip-captions’ 的平替数据集 ‘cartoon-captions’；data_path应该设置为 train_data 所在的文件夹；如果想用自己做的数据集，需要按照一定格式，参照：<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/v2.4.0/en/image_load#imagefolder-with-metadata">tutorials of data</a></li>
+<li>.sh 脚本注意事项：配置好模型、数据集、output 的路径，不推送至 hub，dataloader_num_workers&#x3D;0；环境配置注意事项：不能使用过高版本python，这里 python&#x3D;3.10, torch&#x3D;2.2.2, torchvision&#x3D;0.17.2, peft&#x3D;0.6.1, cuda&#x3D;12.2；其他：提前登录 wandb，这是一个可以记录训练过程的网站：<a target="_blank" rel="noopener" href="https://wandb.ai/home">wandb</a>；image.convert需要更改，具体看脚本，多加一个 convert(image) 函数</li>
+<li>实验结果：<br><img src="/2024/04/26/Stable_Diffusion/1714444105826.png" alt="1714444105826"><br><img src="/2024/04/26/Stable_Diffusion/1714444342256.png" alt="1714444342256"><br><a target="_blank" rel="noopener" href="https://wandb.ai/treeby/text2image-fine-tune/reports/Lora-of-Stable-Diffusion---Vmlldzo3NzUxNDA5">Lora-of-Stable-Diffusion-Report</a></li>
 </ol>
-<h2 id="dit">DiT</h2>
-<p>计划有变，由于UNet部署到芯片上太复杂了，不够规整，还有CNN，所以暂时又换成
-DiT，回旋镖了，本来开学想做了，后面没做，现在又要帮忙做了。</p>
-<h3 id="整体结构">整体结构</h3>
-<figure>
-<img src="/2024/04/26/Stable_Diffusion/1715353514686.png" alt="1715353514686">
-<figcaption aria-hidden="true">1715353514686</figcaption>
-</figure>
-<p>这里意思为，实验发现，左边 modulation attention 比 cross attention
-更好，各种大小的网络信息如下：</p>
-<figure>
-<img src="/2024/04/26/Stable_Diffusion/1715353636493.png" alt="1715353636493">
-<figcaption aria-hidden="true">1715353636493</figcaption>
-</figure>
-<figure>
-<img src="/2024/04/26/Stable_Diffusion/1715353660724.png" alt="1715353660724">
-<figcaption aria-hidden="true">1715353660724</figcaption>
-</figure>
-<p>/2 是指 patch size = 2*2，</p>
-<h3 id="dit-block">DiT Block</h3>
-<ul>
-<li>假设 batch = 1，先忽略</li>
+<h2 id="DiT"><a href="#DiT" class="headerlink" title="DiT"></a>DiT</h2><p>计划有变，由于UNet部署到芯片上太复杂了，不够规整，还有CNN，所以暂时又换成 DiT，回旋镖了，本来开学想做了，后面没做，现在又要帮忙做了。</p>
+<h3 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h3><p><img src="/2024/04/26/Stable_Diffusion/1715353514686.png" alt="1715353514686"></p>
+<p>这里意思为，实验发现，左边 modulation attention 比 cross attention 更好，各种大小的网络信息如下：</p>
+<p><img src="/2024/04/26/Stable_Diffusion/1715353636493.png" alt="1715353636493"></p>
+<p><img src="/2024/04/26/Stable_Diffusion/1715353660724.png" alt="1715353660724"></p>
+<p>&#x2F;2 是指 patch size &#x3D; 2*2，</p>
+<h3 id="DiT-Block"><a href="#DiT-Block" class="headerlink" title="DiT Block"></a>DiT Block</h3><ul>
+<li>假设 batch &#x3D; 1，先忽略</li>
 <li>image space [256, 256, 3] 转到 latent space [32, 32, 4]</li>
-<li>patchfy + posembedded 后，假设 patch = 2*2，则有 input [256,
-d]，其中 d 即为 hidden size</li>
-<li>以 DiT_S_2 为例，DiT Block 输入输出 flow
-如下（画了一整晚，重操旧业了属于是。。。）</li>
+<li>patchfy + posembedded 后，假设 patch &#x3D; 2*2，则有 input [256, d]，其中 d 即为 hidden size</li>
+<li>以 DiT_S_2 为例，DiT Block 输入输出 flow 如下（画了一整晚，重操旧业了属于是。。。）</li>
 </ul>
-<figure>
-<img src="/2024/04/26/Stable_Diffusion/1715361595687.png" alt="1715361595687">
-<figcaption aria-hidden="true">1715361595687</figcaption>
-</figure>
+<p><img src="/2024/04/26/Stable_Diffusion/1715361595687.png" alt="1715361595687"></p>
 <ul>
-<li>Timeembedded，labelembedded，latent encoder，final layer
-分析：TODO</li>
+<li>Timeembedded，labelembedded，latent encoder，final layer 分析：TODO</li>
 </ul>
-<h2 id="dit-training">DiT training</h2>
-<p>github上已有训练脚本代码，先简单解读一下<strong>部分内容</strong>:</p>
-<h3 id="分布式训练">分布式训练</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setup DDP:</span></span><br><span class="line">   dist.init_process_group(<span class="string">&quot;nccl&quot;</span>)</span><br><span class="line">   <span class="keyword">assert</span> args.global_batch_size % dist.get_world_size() == <span class="number">0</span>, <span class="string">f&quot;Batch size must be divisible by world size.&quot;</span></span><br><span class="line">   rank = dist.get_rank()</span><br><span class="line">   device = rank % torch.cuda.device_count()</span><br><span class="line">   seed = args.global_seed * dist.get_world_size() + rank</span><br><span class="line">   torch.manual_seed(seed)</span><br><span class="line">   torch.cuda.set_device(device)</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">f&quot;Starting rank=<span class="subst">&#123;rank&#125;</span>, seed=<span class="subst">&#123;seed&#125;</span>, world_size=<span class="subst">&#123;dist.get_world_size()&#125;</span>.&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="DiT-training"><a href="#DiT-training" class="headerlink" title="DiT training"></a>DiT training</h2><p>github上已有训练脚本代码，先简单解读一下<strong>部分内容</strong>:</p>
+<h3 id="分布式训练"><a href="#分布式训练" class="headerlink" title="分布式训练"></a>分布式训练</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setup DDP:</span></span><br><span class="line">   dist.init_process_group(<span class="string">&quot;nccl&quot;</span>)</span><br><span class="line">   <span class="keyword">assert</span> args.global_batch_size % dist.get_world_size() == <span class="number">0</span>, <span class="string">f&quot;Batch size must be divisible by world size.&quot;</span></span><br><span class="line">   rank = dist.get_rank()</span><br><span class="line">   device = rank % torch.cuda.device_count()</span><br><span class="line">   seed = args.global_seed * dist.get_world_size() + rank</span><br><span class="line">   torch.manual_seed(seed)</span><br><span class="line">   torch.cuda.set_device(device)</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">f&quot;Starting rank=<span class="subst">&#123;rank&#125;</span>, seed=<span class="subst">&#123;seed&#125;</span>, world_size=<span class="subst">&#123;dist.get_world_size()&#125;</span>.&quot;</span>)</span><br></pre></td></tr></table></figure>
+
 <p>这段代码是用于设置PyTorch的分布式数据并行（DDP）环境的。DDP是一种用于在多个GPU上并行训练深度学习模型的技术。以下是代码的详细解释：</p>
-<ol type="1">
-<li><p><code>dist.init_process_group("nccl")</code>：初始化进程组，这是DDP的基础。<code>"nccl"</code>是NVIDIA
-Collective Communications
-Library的缩写，它是一个用于在GPU之间进行高效通信的库。</p></li>
-<li><p><code>assert args.global_batch_size % dist.get_world_size() == 0</code>：确保全局批处理大小可以被进程数整除。这是必要的，因为DDP将全局批处理大小平均分配给每个进程。</p></li>
-<li><p><code>rank = dist.get_rank()</code>：获取当前进程的排名。在DDP中，每个进程都有一个唯一的排名，用于区分不同的进程。</p></li>
-<li><p><code>device = rank % torch.cuda.device_count()</code>：确定当前进程应该使用哪个GPU。这里通过取余操作来分配GPU，确保所有进程都能均匀地使用可用的GPU资源。</p></li>
-<li><p><code>seed = args.global_seed * dist.get_world_size() + rank</code>：设置随机种子。为了确保可复现性，通常会为每个进程设置一个唯一的随机种子。这里使用全局种子乘以进程数再加上进程的排名来生成每个进程的种子。</p></li>
-<li><p><code>torch.manual_seed(seed)</code>：设置PyTorch的随机种子，以确保当前进程中的随机操作（如参数初始化、数据洗牌等）是确定的。</p></li>
-<li><p><code>torch.cuda.set_device(device)</code>：告诉PyTorch当前进程应该使用指定的GPU。</p></li>
-<li><p><code>print(f"Starting rank=&#123;rank&#125;, seed=&#123;seed&#125;, world_size=&#123;dist.get_world_size()&#125;.")</code>：打印出当前进程的排名、种子和总的进程数，以便于监控和调试。</p></li>
+<ol>
+<li><p><code>dist.init_process_group(&quot;nccl&quot;)</code>：初始化进程组，这是DDP的基础。<code>&quot;nccl&quot;</code>是NVIDIA Collective Communications Library的缩写，它是一个用于在GPU之间进行高效通信的库。</p>
+</li>
+<li><p><code>assert args.global_batch_size % dist.get_world_size() == 0</code>：确保全局批处理大小可以被进程数整除。这是必要的，因为DDP将全局批处理大小平均分配给每个进程。</p>
+</li>
+<li><p><code>rank = dist.get_rank()</code>：获取当前进程的排名。在DDP中，每个进程都有一个唯一的排名，用于区分不同的进程。</p>
+</li>
+<li><p><code>device = rank % torch.cuda.device_count()</code>：确定当前进程应该使用哪个GPU。这里通过取余操作来分配GPU，确保所有进程都能均匀地使用可用的GPU资源。</p>
+</li>
+<li><p><code>seed = args.global_seed * dist.get_world_size() + rank</code>：设置随机种子。为了确保可复现性，通常会为每个进程设置一个唯一的随机种子。这里使用全局种子乘以进程数再加上进程的排名来生成每个进程的种子。</p>
+</li>
+<li><p><code>torch.manual_seed(seed)</code>：设置PyTorch的随机种子，以确保当前进程中的随机操作（如参数初始化、数据洗牌等）是确定的。</p>
+</li>
+<li><p><code>torch.cuda.set_device(device)</code>：告诉PyTorch当前进程应该使用指定的GPU。</p>
+</li>
+<li><p><code>print(f&quot;Starting rank=&#123;rank&#125;, seed=&#123;seed&#125;, world_size=&#123;dist.get_world_size()&#125;.&quot;)</code>：打印出当前进程的排名、种子和总的进程数，以便于监控和调试。</p>
+</li>
 </ol>
 <p>通过这段代码，可以为DDP训练准备环境，确保每个进程都能够正确地使用GPU资源，并进行独立的随机操作。这对于在多个GPU上并行训练大型模型非常关键。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setup an experiment folder:</span></span><br><span class="line">    <span class="keyword">if</span> rank == <span class="number">0</span>:</span><br><span class="line">        os.makedirs(args.results_dir, exist_ok=<span class="literal">True</span>)  <span class="comment"># Make results folder (holds all experiment subfolders)</span></span><br><span class="line">        experiment_index = <span class="built_in">len</span>(glob(<span class="string">f&quot;<span class="subst">&#123;args.results_dir&#125;</span>/*&quot;</span>))</span><br><span class="line">        model_string_name = args.model.replace(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;-&quot;</span>)  <span class="comment"># e.g., DiT-XL/2 --&gt; DiT-XL-2 (for naming folders)</span></span><br><span class="line">        experiment_dir = <span class="string">f&quot;<span class="subst">&#123;args.results_dir&#125;</span>/<span class="subst">&#123;experiment_index:03d&#125;</span>-<span class="subst">&#123;model_string_name&#125;</span>&quot;</span>  <span class="comment"># Create an experiment folder</span></span><br><span class="line">        checkpoint_dir = <span class="string">f&quot;<span class="subst">&#123;experiment_dir&#125;</span>/checkpoints&quot;</span>  <span class="comment"># Stores saved model checkpoints</span></span><br><span class="line">        os.makedirs(checkpoint_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">        logger = create_logger(experiment_dir)</span><br><span class="line">        logger.info(<span class="string">f&quot;Experiment directory created at <span class="subst">&#123;experiment_dir&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        logger = create_logger(<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
 <p>这段代码负责设置实验文件夹，它执行以下操作：</p>
-<ol type="1">
-<li><p><strong>检查进程排名</strong>：只有当<code>rank</code>等于0，即主进程时，才会执行创建文件夹的代码。这确保了实验文件夹和日志文件只被创建一次，避免了在分布式训练中由多个进程创建重复的文件夹或文件。</p></li>
-<li><p><strong>创建结果目录</strong>：使用<code>os.makedirs</code>创建一个名为<code>args.results_dir</code>的文件夹，该文件夹用于存储所有实验的子文件夹。<code>exist_ok=True</code>参数表示如果文件夹已存在，不会抛出错误。</p></li>
-<li><p><strong>计算实验索引</strong>：通过计算在<code>args.results_dir</code>路径下已有的文件和文件夹的数量来确定新的实验索引。<code>glob(f"&#123;args.results_dir&#125;/*")</code>会获取该目录下所有的文件和文件夹，然后通过<code>len()</code>计算数量。</p></li>
-<li><p><strong>格式化模型名称</strong>：将命令行参数<code>args.model</code>中的斜杠<code>/</code>替换为短横线<code>-</code>，以便于构建文件夹名称。</p></li>
-<li><p><strong>创建实验文件夹</strong>：使用计算出的索引和格式化后的模型名称创建一个新的实验文件夹。索引是三位数，如果小于100，前面会用0填充。</p></li>
-<li><p><strong>创建检查点文件夹</strong>：在实验文件夹内创建一个名为<code>checkpoints</code>的子文件夹，用于存储模型训练过程中的检查点。</p></li>
-<li><p><strong>创建日志记录器</strong>：调用<code>create_logger</code>函数创建一个日志记录器，如果<code>rank</code>不为0，则传递<code>None</code>作为参数，这意味着不会创建实际的日志文件。</p></li>
-<li><p><strong>记录信息</strong>：如果<code>rank</code>为0，使用日志记录器记录实验文件夹的创建信息。</p></li>
+<ol>
+<li><p><strong>检查进程排名</strong>：只有当<code>rank</code>等于0，即主进程时，才会执行创建文件夹的代码。这确保了实验文件夹和日志文件只被创建一次，避免了在分布式训练中由多个进程创建重复的文件夹或文件。</p>
+</li>
+<li><p><strong>创建结果目录</strong>：使用<code>os.makedirs</code>创建一个名为<code>args.results_dir</code>的文件夹，该文件夹用于存储所有实验的子文件夹。<code>exist_ok=True</code>参数表示如果文件夹已存在，不会抛出错误。</p>
+</li>
+<li><p><strong>计算实验索引</strong>：通过计算在<code>args.results_dir</code>路径下已有的文件和文件夹的数量来确定新的实验索引。<code>glob(f&quot;&#123;args.results_dir&#125;/*&quot;)</code>会获取该目录下所有的文件和文件夹，然后通过<code>len()</code>计算数量。</p>
+</li>
+<li><p><strong>格式化模型名称</strong>：将命令行参数<code>args.model</code>中的斜杠<code>/</code>替换为短横线<code>-</code>，以便于构建文件夹名称。</p>
+</li>
+<li><p><strong>创建实验文件夹</strong>：使用计算出的索引和格式化后的模型名称创建一个新的实验文件夹。索引是三位数，如果小于100，前面会用0填充。</p>
+</li>
+<li><p><strong>创建检查点文件夹</strong>：在实验文件夹内创建一个名为<code>checkpoints</code>的子文件夹，用于存储模型训练过程中的检查点。</p>
+</li>
+<li><p><strong>创建日志记录器</strong>：调用<code>create_logger</code>函数创建一个日志记录器，如果<code>rank</code>不为0，则传递<code>None</code>作为参数，这意味着不会创建实际的日志文件。</p>
+</li>
+<li><p><strong>记录信息</strong>：如果<code>rank</code>为0，使用日志记录器记录实验文件夹的创建信息。</p>
+</li>
 </ol>
 <p>这段代码的目的是为训练过程创建一个结构化的文件系统，其中可以存储模型的检查点、日志和其他相关数据。这有助于实验的组织和管理，尤其是在进行多次实验或使用分布式训练时。</p>
-<h3 id="创建模型并配置">创建模型并配置</h3>
-<p>除了普通的DiT，还需要将其包装在 EMA
-中，同时还要加载创建扩散模型，以及 VAE 编码器</p>
+<h3 id="创建模型并配置"><a href="#创建模型并配置" class="headerlink" title="创建模型并配置"></a>创建模型并配置</h3><p>除了普通的DiT，还需要将其包装在 EMA 中，同时还要加载创建扩散模型，以及 VAE 编码器</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Note that parameter initialization is done within the DiT constructor</span></span><br><span class="line">    ema = deepcopy(model).to(device)  <span class="comment"># Create an EMA of the model for use after training</span></span><br><span class="line">    requires_grad(ema, <span class="literal">False</span>)</span><br><span class="line">    model = DDP(model.to(device), device_ids=[rank])</span><br><span class="line">    diffusion = create_diffusion(timestep_respacing=<span class="string">&quot;&quot;</span>)  <span class="comment"># default: 1000 steps, linear noise schedule</span></span><br><span class="line">    vae = AutoencoderKL.from_pretrained(<span class="string">f&quot;stabilityai/sd-vae-ft-<span class="subst">&#123;args.vae&#125;</span>&quot;</span>).to(device)</span><br><span class="line">    logger.info(<span class="string">f&quot;DiT Parameters: <span class="subst">&#123;<span class="built_in">sum</span>(p.numel() <span class="keyword">for</span> p <span class="keyword">in</span> model.parameters()):,&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="数据加载处理">数据加载处理</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setup data:</span></span><br><span class="line">    transform = transforms.Compose([</span><br><span class="line">        transforms.Lambda(<span class="keyword">lambda</span> pil_image: center_crop_arr(pil_image, args.image_size)),</span><br><span class="line">        transforms.RandomHorizontalFlip(),</span><br><span class="line">        transforms.ToTensor(),</span><br><span class="line">        transforms.Normalize(mean=[<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>], std=[<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>], inplace=<span class="literal">True</span>)</span><br><span class="line">    ])</span><br><span class="line">    dataset = ImageFolder(args.data_path, transform=transform)</span><br><span class="line">    sampler = DistributedSampler(</span><br><span class="line">        dataset,</span><br><span class="line">        num_replicas=dist.get_world_size(),</span><br><span class="line">        rank=rank,</span><br><span class="line">        shuffle=<span class="literal">True</span>,</span><br><span class="line">        seed=args.global_seed</span><br><span class="line">    )</span><br><span class="line">    loader = DataLoader(</span><br><span class="line">        dataset,</span><br><span class="line">        batch_size=<span class="built_in">int</span>(args.global_batch_size // dist.get_world_size()),</span><br><span class="line">        shuffle=<span class="literal">False</span>,</span><br><span class="line">        sampler=sampler,</span><br><span class="line">        num_workers=args.num_workers,</span><br><span class="line">        pin_memory=<span class="literal">True</span>,</span><br><span class="line">        drop_last=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">    logger.info(<span class="string">f&quot;Dataset contains <span class="subst">&#123;<span class="built_in">len</span>(dataset):,&#125;</span> images (<span class="subst">&#123;args.data_path&#125;</span>)&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据加载处理"><a href="#数据加载处理" class="headerlink" title="数据加载处理"></a>数据加载处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setup data:</span></span><br><span class="line">    transform = transforms.Compose([</span><br><span class="line">        transforms.Lambda(<span class="keyword">lambda</span> pil_image: center_crop_arr(pil_image, args.image_size)),</span><br><span class="line">        transforms.RandomHorizontalFlip(),</span><br><span class="line">        transforms.ToTensor(),</span><br><span class="line">        transforms.Normalize(mean=[<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>], std=[<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>], inplace=<span class="literal">True</span>)</span><br><span class="line">    ])</span><br><span class="line">    dataset = ImageFolder(args.data_path, transform=transform)</span><br><span class="line">    sampler = DistributedSampler(</span><br><span class="line">        dataset,</span><br><span class="line">        num_replicas=dist.get_world_size(),</span><br><span class="line">        rank=rank,</span><br><span class="line">        shuffle=<span class="literal">True</span>,</span><br><span class="line">        seed=args.global_seed</span><br><span class="line">    )</span><br><span class="line">    loader = DataLoader(</span><br><span class="line">        dataset,</span><br><span class="line">        batch_size=<span class="built_in">int</span>(args.global_batch_size // dist.get_world_size()),</span><br><span class="line">        shuffle=<span class="literal">False</span>,</span><br><span class="line">        sampler=sampler,</span><br><span class="line">        num_workers=args.num_workers,</span><br><span class="line">        pin_memory=<span class="literal">True</span>,</span><br><span class="line">        drop_last=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">    logger.info(<span class="string">f&quot;Dataset contains <span class="subst">&#123;<span class="built_in">len</span>(dataset):,&#125;</span> images (<span class="subst">&#123;args.data_path&#125;</span>)&quot;</span>)</span><br></pre></td></tr></table></figure>
+
 <p>这段代码设置了训练过程中使用的数据加载和预处理流程。以下是每个步骤的详细解释：</p>
-<ol type="1">
-<li><strong>定义数据转换</strong> (<code>transform</code>):
+<ol>
+<li><p><strong>定义数据转换</strong> (<code>transform</code>):</p>
 <ul>
 <li>使用<code>transforms.Compose</code>将多个转换操作组合在一起，用于对数据集中的每个图像进行预处理。</li>
-<li><code>transforms.Lambda</code>:
-应用一个lambda函数<code>center_crop_arr</code>进行中心裁剪，确保图像大小符合<code>args.image_size</code>要求。</li>
-<li><code>transforms.RandomHorizontalFlip</code>:
-随机水平翻转图像，增加数据多样性。</li>
-<li><code>transforms.ToTensor</code>: 将PIL图像或NumPy
-<code>ndarray</code>转换为<code>FloatTensor</code>，并将图像的像素值从[0,
-255]归一化到[0.0, 1.0]。</li>
-<li><code>transforms.Normalize</code>:
-对图像张量进行标准化处理，给出均值<code>mean</code>和标准差<code>std</code>，这里设置的均值和标准差都是[0.5,
-0.5,
-0.5]，并且指定<code>inplace=True</code>表示直接修改输入张量，而不是返回一个新的张量。</li>
-</ul></li>
-<li><strong>创建数据集</strong> (<code>dataset</code>):
+<li><code>transforms.Lambda</code>: 应用一个lambda函数<code>center_crop_arr</code>进行中心裁剪，确保图像大小符合<code>args.image_size</code>要求。</li>
+<li><code>transforms.RandomHorizontalFlip</code>: 随机水平翻转图像，增加数据多样性。</li>
+<li><code>transforms.ToTensor</code>: 将PIL图像或NumPy <code>ndarray</code>转换为<code>FloatTensor</code>，并将图像的像素值从[0, 255]归一化到[0.0, 1.0]。</li>
+<li><code>transforms.Normalize</code>: 对图像张量进行标准化处理，给出均值<code>mean</code>和标准差<code>std</code>，这里设置的均值和标准差都是[0.5, 0.5, 0.5]，并且指定<code>inplace=True</code>表示直接修改输入张量，而不是返回一个新的张量。</li>
+</ul>
+</li>
+<li><p><strong>创建数据集</strong> (<code>dataset</code>):</p>
 <ul>
 <li>使用<code>ImageFolder</code>类加载数据集，它会自动将文件夹中的每个子文件夹视为一个类别，并将图像加载为数据集中的一个样本。</li>
-</ul></li>
-<li><strong>创建分布式采样器</strong> (<code>sampler</code>):
+</ul>
+</li>
+<li><p><strong>创建分布式采样器</strong> (<code>sampler</code>):</p>
 <ul>
 <li><code>DistributedSampler</code>用于在分布式训练中确保每个进程只处理数据集的一部分，以提高效率并避免数据重复。</li>
 <li><code>num_replicas</code>是参与训练的进程总数。</li>
 <li><code>rank</code>是当前进程的索引。</li>
 <li><code>shuffle</code>表示是否在每个epoch开始时对数据进行洗牌。</li>
 <li><code>seed</code>用于确保在不同进程中洗牌的一致性。</li>
-</ul></li>
-<li><strong>创建数据加载器</strong> (<code>loader</code>):
+</ul>
+</li>
+<li><p><strong>创建数据加载器</strong> (<code>loader</code>):</p>
 <ul>
 <li>使用<code>DataLoader</code>类来加载数据集，并提供给训练循环使用。</li>
 <li><code>batch_size</code>是每个进程应处理的批量大小，通过将全局批量大小除以进程数来计算。</li>
@@ -516,23 +449,21 @@ Library的缩写，它是一个用于在GPU之间进行高效通信的库。</p>
 <li><code>num_workers</code>是用于数据加载的工作进程数。</li>
 <li><code>pin_memory</code>表示是否将数据加载到CUDA固定内存中，这可以加快数据传输到GPU的速度。</li>
 <li><code>drop_last</code>表示是否丢弃最后一个不完整的批次，这通常用于确保每个批次的大小一致。</li>
-</ul></li>
-<li><strong>记录数据集大小</strong>:
+</ul>
+</li>
+<li><p><strong>记录数据集大小</strong>:</p>
 <ul>
 <li>使用<code>logger</code>记录数据集的大小，这有助于监控和调试。</li>
-</ul></li>
+</ul>
+</li>
 </ol>
 <p>通过这些步骤，代码完成了数据加载和预处理的设置，为模型训练提供了必要的数据输入。使用分布式采样器和数据加载器确保了在分布式训练环境中，每个进程只处理数据集的一部分，从而提高了训练的效率。</p>
-<h2 id="实验二dit-training">实验二：DiT training</h2>
-<p>原论文中数据集使用的是 Imagenet
-1k，100G，太大了，捣鼓了很久，忽然发现，服务器里已经下好了数据集。。。
-<img src="/2024/04/26/Stable_Diffusion/1715447646942.png" alt="1715447646942">
-开冲！！！ 还是写个bash脚本吧 <img src="/2024/04/26/Stable_Diffusion/1715448391178.png" alt="1715448391178">
-注意：有个坑，hugging face连接不上，要先把vae下载到本地 <img src="/2024/04/26/Stable_Diffusion/1715455631555.png" alt="1715455631555"> imagnet
-太大了，需要四个gpu才能装下batch size=256 的训练 <img src="/2024/04/26/Stable_Diffusion/1715455724370.png" alt="1715455724370">
-四个RTX3090一起训练，速度也并不快，算了下需要81天才能训完！！！哈人。。。
-重新调整一下，训练周期 epoch=80，training steps 应该等于
-400,436，假如1step/seconds，也需要4.63天</p>
+<h2 id="实验二：DiT-training"><a href="#实验二：DiT-training" class="headerlink" title="实验二：DiT training"></a>实验二：DiT training</h2><p>原论文中数据集使用的是 Imagenet 1k，100G，太大了，捣鼓了很久，忽然发现，服务器里已经下好了数据集。。。<br><img src="/2024/04/26/Stable_Diffusion/1715447646942.png" alt="1715447646942"><br>开冲！！！<br>还是写个bash脚本吧<br><img src="/2024/04/26/Stable_Diffusion/1715448391178.png" alt="1715448391178"><br>注意：有个坑，hugging face连接不上，要先把vae下载到本地<br><img src="/2024/04/26/Stable_Diffusion/1715455631555.png" alt="1715455631555"><br>imagnet 太大了，需要四个gpu才能装下batch size&#x3D;256 的训练<br><img src="/2024/04/26/Stable_Diffusion/1715455724370.png" alt="1715455724370"><br>四个RTX3090一起训练，速度也并不快，算了下需要81天才能训完！！！哈人。。。<br>重新调整一下，训练周期 epoch&#x3D;80，training steps 应该等于 400,436，假如1step&#x2F;seconds，也需要4.63天</p>
+<h2 id="实验三：Lora-finetune"><a href="#实验三：Lora-finetune" class="headerlink" title="实验三：Lora finetune"></a>实验三：Lora finetune</h2><p>使用 peft 库进行 finetune <a target="_blank" rel="noopener" href="https://github.com/huggingface/peft/blob/main/examples/conditional_generation/peft_lora_seq2seq.ipynb">huggingface</a></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/docs/peft/main/en/package_reference/lora#peft.LoraConfig">lora_config</a><br>TODO</li>
+</ol>
+<h2 id="实验四：quantization"><a href="#实验四：quantization" class="headerlink" title="实验四：quantization"></a>实验四：quantization</h2><p>参考<a target="_blank" rel="noopener" href="https://github.com/zhutmost/lsq-net">zhumost github</a></p>
 
     </div>
 
@@ -624,7 +555,7 @@ Library的缩写，它是一个用于在GPU之间进行高效通信的库。</p>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E"><span class="nav-number">1.</span> <span class="nav-text">关于</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github%E4%BB%A3%E7%A0%81%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">github代码介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#finetune-with-lora"><span class="nav-number">4.</span> <span class="nav-text">Finetune with Lora</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E8%B7%91lora"><span class="nav-number">5.</span> <span class="nav-text">实验一：在服务器上跑lora</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dit"><span class="nav-number">6.</span> <span class="nav-text">DiT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">6.1.</span> <span class="nav-text">整体结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dit-block"><span class="nav-number">6.2.</span> <span class="nav-text">DiT Block</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dit-training"><span class="nav-number">7.</span> <span class="nav-text">DiT training</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83"><span class="nav-number">7.1.</span> <span class="nav-text">分布式训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9E%8B%E5%B9%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">7.2.</span> <span class="nav-text">创建模型并配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%A4%84%E7%90%86"><span class="nav-number">7.3.</span> <span class="nav-text">数据加载处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8Cdit-training"><span class="nav-number">8.</span> <span class="nav-text">实验二：DiT training</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E"><span class="nav-number">1.</span> <span class="nav-text">关于</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github%E4%BB%A3%E7%A0%81%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">github代码介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Finetune-with-Lora"><span class="nav-number">4.</span> <span class="nav-text">Finetune with Lora</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80%EF%BC%9A%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E8%B7%91lora"><span class="nav-number">5.</span> <span class="nav-text">实验一：在服务器上跑lora</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DiT"><span class="nav-number">6.</span> <span class="nav-text">DiT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">6.1.</span> <span class="nav-text">整体结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DiT-Block"><span class="nav-number">6.2.</span> <span class="nav-text">DiT Block</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DiT-training"><span class="nav-number">7.</span> <span class="nav-text">DiT training</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83"><span class="nav-number">7.1.</span> <span class="nav-text">分布式训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9E%8B%E5%B9%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">7.2.</span> <span class="nav-text">创建模型并配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%A4%84%E7%90%86"><span class="nav-number">7.3.</span> <span class="nav-text">数据加载处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C%EF%BC%9ADiT-training"><span class="nav-number">8.</span> <span class="nav-text">实验二：DiT training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89%EF%BC%9ALora-finetune"><span class="nav-number">9.</span> <span class="nav-text">实验三：Lora finetune</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B%EF%BC%9Aquantization"><span class="nav-number">10.</span> <span class="nav-text">实验四：quantization</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -23,12 +23,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs | buttons","Available values":"disqus | changyan | disqus | disqusjs | gitalk | livere | valine","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Overall Survey  credit to : Efficient Large Language Models: A Survey    1714631582088  这篇综述将加速方法分成三类，如图所示。 Model-Centric Methods Model Compression  Quantization  将数据从高精度 \(X^H\) 转化为 低">
+  <meta name="description" content="Overall Survey credit to : Efficient Large Language Models: A Survey   这篇综述将加速方法分成三类，如图所示。 Model-Centric MethodsModel Compression Quantization  将数据从高精度 $X^H$ 转化为 低精度$X^L$：   $X^L&#x3D;round(\frac{absm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Road 2 Efficient LLM">
 <meta property="og:url" content="http://example.com/2024/05/02/Efficient_LLM/index.html">
 <meta property="og:site_name" content="Amusement Park">
-<meta property="og:description" content="Overall Survey  credit to : Efficient Large Language Models: A Survey    1714631582088  这篇综述将加速方法分成三类，如图所示。 Model-Centric Methods Model Compression  Quantization  将数据从高精度 \(X^H\) 转化为 低">
+<meta property="og:description" content="Overall Survey credit to : Efficient Large Language Models: A Survey   这篇综述将加速方法分成三类，如图所示。 Model-Centric MethodsModel Compression Quantization  将数据从高精度 $X^H$ 转化为 低精度$X^L$：   $X^L&#x3D;round(\frac{absm">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2024/05/02/Efficient_LLM/1714631582088.png">
 <meta property="og:image" content="http://example.com/2024/05/02/Efficient_LLM/1714633043649.png">
@@ -244,115 +244,95 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="overall-survey">Overall Survey</h2>
-<blockquote>
-<p><strong>credit to</strong> : Efficient Large Language Models: A
-Survey</p>
+        <h2 id="Overall-Survey"><a href="#Overall-Survey" class="headerlink" title="Overall Survey"></a>Overall Survey</h2><blockquote>
+<p><strong>credit to</strong> : Efficient Large Language Models: A Survey</p>
 </blockquote>
-<figure>
-<img src="/2024/05/02/Efficient_LLM/1714631582088.png" alt="1714631582088">
-<figcaption aria-hidden="true">1714631582088</figcaption>
-</figure>
+<p><img src="/2024/05/02/Efficient_LLM/1714631582088.png" alt="1714631582088"></p>
 <p>这篇综述将加速方法分成三类，如图所示。</p>
-<h3 id="model-centric-methods">Model-Centric Methods</h3>
-<h4 id="model-compression">Model Compression</h4>
-<ol type="1">
+<h3 id="Model-Centric-Methods"><a href="#Model-Centric-Methods" class="headerlink" title="Model-Centric Methods"></a>Model-Centric Methods</h3><h4 id="Model-Compression"><a href="#Model-Compression" class="headerlink" title="Model Compression"></a>Model Compression</h4><ol>
 <li><p>Quantization</p>
 <ul>
-<li>将数据从高精度 <span class="math inline">\(X^H\)</span> 转化为
-低精度<span class="math inline">\(X^L\)</span>：</li>
+<li>将数据从高精度 $X^H$ 转化为 低精度$X^L$：</li>
 </ul>
-<p>$X<sup>L=round(X</sup>H) $</p>
+<p> $X^L&#x3D;round(\frac{absmax(X^L)}{absmax(X^H)}\cdot X^H) $</p>
 <ul>
-<li>PTQ(post-training quantization)
-<ul>
-<li>分为 Weight-Only Quantization 和 Weight-Activation
-Co-Quantization</li>
-<li>Weight-Only Quantization：将权重量化至
-8bit，4bit，3bit等等，同时一些研究发现需要单独处理一些量化误差较大的权重，所以通常用一些算法对部分权重进行量化，而部分权重保留较高精度。</li>
-<li>Weight-Activation Co-Quantization：由于 activation outliers
-的存在，这种量化会更加困难复杂，容易损失更多的精度，因此分组量化、精度补偿等算法更加重要</li>
-</ul></li>
-<li>QAT(Quantization-Aware Training)
-<ul>
+<li>PTQ(post-training quantization)<ul>
+<li>分为 Weight-Only Quantization 和 Weight-Activation Co-Quantization</li>
+<li>Weight-Only Quantization：将权重量化至 8bit，4bit，3bit等等，同时一些研究发现需要单独处理一些量化误差较大的权重，所以通常用一些算法对部分权重进行量化，而部分权重保留较高精度。</li>
+<li>Weight-Activation Co-Quantization：由于 activation outliers 的存在，这种量化会更加困难复杂，容易损失更多的精度，因此分组量化、精度补偿等算法更加重要</li>
+</ul>
+</li>
+<li>QAT(Quantization-Aware Training)<ul>
 <li>量化后重新训练，能减小量化精度，但会花费更大的成本</li>
-</ul></li>
 </ul>
-<p>各种具体量化方法后文再介绍，这里仅作提要</p></li>
+</li>
+</ul>
+<p> 各种具体量化方法后文再介绍，这里仅作提要</p>
+</li>
 <li><p>Parameter Pruning</p>
 <ul>
 <li>丢弃不必要的权重</li>
-<li>Structured Pruning
-<ul>
+<li>Structured Pruning<ul>
 <li>剪掉一整行，一整列，一整层，等等，需要根据权重、梯度等信息</li>
-</ul></li>
-<li>Unstructured Pruning
-<ul>
+</ul>
+</li>
+<li>Unstructured Pruning<ul>
 <li>通常与稀疏化感知一起进行，对权重单独剪枝</li>
-</ul></li>
-</ul></li>
-<li><p>Low-Rank Approximation <span class="math inline">\(W\approx UV^T,
-W\in R^{m\times n}, U\in R^{m\times r}, V\in R^{n\times
-r}\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Low-Rank Approximation<br>$W\approx UV^T, W\in R^{m\times n}, U\in R^{m\times r}, V\in R^{n\times r}$</p>
+</li>
 <li><p>Knowledge Distillation</p>
 <ul>
-<li>KD 通过训练较小的学生模型来模拟 LLM 作为教师模型的性能来压缩
-LLM，从而使学生模型的计算量较小，但仍保持与教师模型类似的高水平性能。</li>
+<li>KD 通过训练较小的学生模型来模拟 LLM 作为教师模型的性能来压缩 LLM，从而使学生模型的计算量较小，但仍保持与教师模型类似的高水平性能。</li>
 <li>TODO</li>
-</ul></li>
+</ul>
+</li>
 </ol>
-<figure>
-<img src="/2024/05/02/Efficient_LLM/1714633043649.png" alt="1714633043649">
-<figcaption aria-hidden="true">1714633043649</figcaption>
-</figure>
-<h4 id="efficient-pre-training">Efficient Pre-Training</h4>
-<ol type="1">
+<p><img src="/2024/05/02/Efficient_LLM/1714633043649.png" alt="1714633043649"></p>
+<h4 id="Efficient-Pre-Training"><a href="#Efficient-Pre-Training" class="headerlink" title="Efficient Pre-Training"></a>Efficient Pre-Training</h4><ol>
 <li><p>Mixed Precision Acceleration</p>
 <ul>
 <li>使用低精度模型进行前向和后向传播，将计算出的低精度梯度转换为高精度梯度来更新原始高精度权重，从而提高预训练效率</li>
 <li>提高内存效率</li>
 <li>具体各种算法后文再介绍</li>
-</ul></li>
-<li><p>Scaling Models</p></li>
-<li><p>Initialization Techniques</p></li>
+</ul>
+</li>
+<li><p>Scaling Models</p>
+</li>
+<li><p>Initialization Techniques</p>
+</li>
 <li><p>Optimization Strategies</p>
 <ul>
 <li>对优化器算法进行改进，以减少内存需求，后文再进行介绍</li>
-</ul></li>
+</ul>
+</li>
 <li><p>System-Level Pre-Training Efficiency Optimization</p>
 <ul>
 <li>聚焦于分布式训练，以应对内存需求，具体有张量并行，数据并行等，还涉及节点间通信，非常复杂，以后再单独细讲</li>
-</ul></li>
+</ul>
+</li>
 </ol>
-<figure>
-<img src="/2024/05/02/Efficient_LLM/1714635758045.png" alt="1714635758045">
-<figcaption aria-hidden="true">1714635758045</figcaption>
-</figure>
-<h4 id="efficient-fine-tuning">Efficient Fine-Tuning</h4>
-<ol type="1">
-<li>Parameter-Efficient Fine-Tuning(PEFT)
-<ul>
+<p><img src="/2024/05/02/Efficient_LLM/1714635758045.png" alt="1714635758045"></p>
+<h4 id="Efficient-Fine-Tuning"><a href="#Efficient-Fine-Tuning" class="headerlink" title="Efficient Fine-Tuning"></a>Efficient Fine-Tuning</h4><ol>
+<li>Parameter-Efficient Fine-Tuning(PEFT)<ul>
 <li>Adapter-based Tuning</li>
 <li>Low-Rank Adaptation</li>
 <li>Prefix Tuning</li>
 <li>Prompt Tuning</li>
-</ul></li>
-<li>Memory-Efficient Fine-Tuning(MEFT)
-<ul>
-<li>结合量化感知等算法进行微调，以减少内存需求，经典的有 QLora，QA-Lora
-等</li>
-</ul></li>
+</ul>
+</li>
+<li>Memory-Efficient Fine-Tuning(MEFT)<ul>
+<li>结合量化感知等算法进行微调，以减少内存需求，经典的有 QLora，QA-Lora 等</li>
+</ul>
+</li>
 </ol>
 <p>微调算法原理基本如图，不同具体算法的原理与优缺点后文再介绍</p>
-<figure>
-<img src="/2024/05/02/Efficient_LLM/1714638690593.png" alt="1714638690593">
-<figcaption aria-hidden="true">1714638690593</figcaption>
-</figure>
-<h4 id="efficient-inference">Efficient Inference</h4>
-<h3 id="data-centric-methods">Data-Centric Methods</h3>
-<p>TODO</p>
-<h3 id="llm-frameworks">LLM Frameworks</h3>
-
+<p><img src="/2024/05/02/Efficient_LLM/1714638690593.png" alt="1714638690593"></p>
+<h4 id="Efficient-Inference"><a href="#Efficient-Inference" class="headerlink" title="Efficient Inference"></a>Efficient Inference</h4><h3 id="Data-Centric-Methods"><a href="#Data-Centric-Methods" class="headerlink" title="Data-Centric Methods"></a>Data-Centric Methods</h3><p>TODO</p>
+<h3 id="LLM-Frameworks"><a href="#LLM-Frameworks" class="headerlink" title="LLM Frameworks"></a>LLM Frameworks</h3>
     </div>
 
     
@@ -443,7 +423,7 @@ LLM，从而使学生模型的计算量较小，但仍保持与教师模型类�
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overall-survey"><span class="nav-number">1.</span> <span class="nav-text">Overall Survey</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#model-centric-methods"><span class="nav-number">1.1.</span> <span class="nav-text">Model-Centric Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#model-compression"><span class="nav-number">1.1.1.</span> <span class="nav-text">Model Compression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#efficient-pre-training"><span class="nav-number">1.1.2.</span> <span class="nav-text">Efficient Pre-Training</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#efficient-fine-tuning"><span class="nav-number">1.1.3.</span> <span class="nav-text">Efficient Fine-Tuning</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#efficient-inference"><span class="nav-number">1.1.4.</span> <span class="nav-text">Efficient Inference</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-centric-methods"><span class="nav-number">1.2.</span> <span class="nav-text">Data-Centric Methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#llm-frameworks"><span class="nav-number">1.3.</span> <span class="nav-text">LLM Frameworks</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overall-Survey"><span class="nav-number">1.</span> <span class="nav-text">Overall Survey</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model-Centric-Methods"><span class="nav-number">1.1.</span> <span class="nav-text">Model-Centric Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Model-Compression"><span class="nav-number">1.1.1.</span> <span class="nav-text">Model Compression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Efficient-Pre-Training"><span class="nav-number">1.1.2.</span> <span class="nav-text">Efficient Pre-Training</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Efficient-Fine-Tuning"><span class="nav-number">1.1.3.</span> <span class="nav-text">Efficient Fine-Tuning</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Efficient-Inference"><span class="nav-number">1.1.4.</span> <span class="nav-text">Efficient Inference</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Centric-Methods"><span class="nav-number">1.2.</span> <span class="nav-text">Data-Centric Methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LLM-Frameworks"><span class="nav-number">1.3.</span> <span class="nav-text">LLM Frameworks</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
