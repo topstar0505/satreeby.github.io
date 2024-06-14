@@ -173,197 +173,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/02/FPGA_Based_Acceleration_for_LLM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="Treeby">
-      <meta itemprop="description" content="La vie est belle">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Amusement Park">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/05/02/FPGA_Based_Acceleration_for_LLM/" class="post-title-link" itemprop="url">FPGA-Based Acceleration for LLM</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-05-02 18:02:07" itemprop="dateCreated datePublished" datetime="2024-05-02T18:02:07+08:00">2024-05-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-27 00:11:02" itemprop="dateModified" datetime="2024-05-27T00:11:02+08:00">2024-05-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B9%9D%E5%B0%BE%C2%B7%E4%BB%96%E5%B1%B1/" itemprop="url" rel="index"><span itemprop="name">九尾·他山</span></a>
-                </span>
-            </span>
-
-          
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="关于">关于</h2>
-<p>再开新坑，写写 FPGA-Based 的 LLM 加速方法调研，也是 FPGA(H)
-的课程报告啦 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2209.09570">Adaptable
-Butterfly Accelerator for Attention-based NNs via Hardware and Algorithm
-Co-design</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/SamsungLabs/Butterfly_Acc">github</a></p>
-<h2 id="algorithm">Algorithm</h2>
-<p>已有的 Sparsity pattern 基本包括以下五种 <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716616579837.png" alt="1716616579837"></p>
-<h3 id="low-rank">Low rank</h3>
-<p>比如论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.04768">Linformer:
-Self-Attention with Linear Complexity</a> 中，实验发现 self attention
-中的矩阵 P 在seq-length维度上是低秩的 <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716617331673.png" alt="1716617331673"> 对 k 和 v 进行低秩投影，从 n × d 到 n × k， <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716618343836.png" alt="1716618343836"> <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716618566505.png" alt="1716618566505"></p>
-<p>还有：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2009.14794">Rethinking Attention
-with Performers</a></p>
-<h3 id="block-wise">Block-wise</h3>
-<p>比如论文：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2001.04451">Reformer</a>
-中，softmax(QKT) 的结果，实际上取决于最大的几个 softmax 值，也就是说 Q
-和 KT
-中相似性最大的几个向量。找出这些最相似的向量，并只计算他们的乘累加，可以大大简化
-N 带来的复杂度。论文里使用 LSH
-算法找出相似性高的向量，哈希后将相似性高的向量排列得更相邻。 <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716620064405.png" alt="1716620064405"> <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716620075251.png" alt="1716620075251"></p>
-<h3 id="window-attention">window attention</h3>
-<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2004.05150">Longformer</a> <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2007.14062">BigBird</a></p>
-<h3 id="butterfly-matrix">butterfly matrix</h3>
-<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2105.03824">FNet</a>; <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2012.14966">Kaleidoscope: An Efficient,
-Learnable Representation For All Structured Linear Maps</a>; <a target="_blank" rel="noopener" href="https://dawn.cs.stanford.edu/2019/06/13/butterfly/">butterfly is
-all you need</a></p>
-<ul>
-<li>DFT: 实际上为实向量 <span class="math inline">\(\boldsymbol{x}=[x_0,
-x_1, \dots, x_{N-1}]\)</span> 到复向量 <span class="math inline">\(\boldsymbol{X}=[X_0, X_1, \dots, X_{N-1}]\)</span>
-的一种映射函数 f</li>
-</ul>
-<p><span class="math inline">\(X[k]=\sum_{n=0}^{N-1}x[n]\cdot
-e^{-\frac{2\pi i}{N}kn}, k=0, 1, 2, \dots, N-1, N=2^m\)</span> <span class="math inline">\(X=F_Nx, X\in C^{N\times 1}, F_N\in C^{N\times N},
-x\in C^{N\times N}, (F_N)_{kn}=e^{-\frac{2\pi
-i}{N}kn}=\omega_N^{-kn}\)</span></p>
-<ul>
-<li>FFT: 分奇偶后使用递归进行计算 <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716653766726.png" alt="1716653766726"></li>
-<li>由此，矩阵乘法可拆解成递归形式：</li>
-</ul>
-<p><span class="math inline">\(X=F_Nx=\)</span> <span class="math display">\[
-\begin{bmatrix}
-   F_{\frac{N}{2}}x_{even}+\Omega_{\frac{N}{2}}F_{\frac{N}{2}}x_{odd}\\
-   F_{\frac{N}{2}}x_{even}-\Omega_{\frac{N}{2}}F_{\frac{N}{2}}x_{odd}\end{bmatrix}
-\]</span></p>
-<p>$x_{even}=[x_0, x_2, , x_{N-2}], x_{odd}=[x_1, x_3, , x_{N-1}] $</p>
-<p><span class="math inline">\(\Omega_{\frac{N}{2}}=\)</span> <span class="math display">\[
-\begin{bmatrix}
-1 &amp; 0 &amp; \cdots &amp; 0 \\
-0 &amp; \omega_{N}^{-1} &amp; \cdots &amp; 0 \\
-\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
-0 &amp; 0 &amp; \cdots &amp; \omega_{N}^{-(\frac{N}{2}-1)}\end{bmatrix}
-\]</span></p>
-<ul>
-<li>因此，矩阵 <span class="math inline">\(F_N\)</span> 可以写成：</li>
-</ul>
-<p><span class="math inline">\(F_N=\)</span> <span class="math display">\[
-\begin{bmatrix}
-I_{\frac{N}{2}} &amp; \Omega_{\frac{N}{2}}\\
-I_{\frac{N}{2}} &amp; -\Omega_{\frac{N}{2}}\\
-\end{bmatrix} \begin{bmatrix}
-F_{\frac{N}{2}} &amp; 0 \\
-0 &amp; F_{\frac{N}{2}}
-\end{bmatrix} \begin{bmatrix}
-Sort &amp; the &amp; even \\
-and &amp; odd &amp; indices \\\end{bmatrix}
-\]</span></p>
-<ul>
-<li>递归后： <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716655533911.png" alt="1716655533911"></li>
-<li>蝶形因子如图所示： <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716655484870.png" alt="1716655484870"></li>
-<li>Definition of B_N: <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716656419164.png" alt="1716656419164"></li>
-</ul>
-<p>-Definitions of Kaleidoscope hierarchy, kaleidoscope matrices <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716657148920.png" alt="1716657148920"></p>
-<ul>
-<li>硬件友好的理论 <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716657413560.png" alt="1716657413560"> （证明太复杂了，有空再看）</li>
-</ul>
-<h3 id="this-paper">this paper</h3>
-<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2204.00595">Monarch</a> <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2112.00029">Pixelated Butterfly</a></p>
-<p>这两篇文章中，皆使用 butterfly matrix
-进行优化，但并非软硬件结合，也不是 structed 的稀疏性。</p>
-<p>fabnet <img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716736483001.png" alt="1716736483001"> 部分transformer block中，2d 傅里叶变换代替
-attention，butterfly ffn 代替 ffn，剩下的transformer
-block中，只将mlp替换为 butterfly linear，attention
-操作保留，这是一个精度和速度的trade off</p>
-<h2 id="hardware-accelerator">Hardware Accelerator</h2>
-<h3 id="architecture-overview">Architecture overview</h3>
-<figure>
-<img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716736689746.png" alt="1716736689746">
-<figcaption aria-hidden="true">1716736689746</figcaption>
-</figure>
-<h3 id="adaptable-butterfly-engine">Adaptable Butterfly Engine</h3>
-<figure>
-<img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716736903896.png" alt="1716736903896">
-<figcaption aria-hidden="true">1716736903896</figcaption>
-</figure>
-<p>支持 butterfly linear 和 fft （可选择）</p>
-<figure>
-<img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716737948840.png" alt="1716737948840">
-<figcaption aria-hidden="true">1716737948840</figcaption>
-</figure>
-<p>读写冲突：一个row代表一个bank，每个bank在一个周期内只能读出一个值
-解决方法： TODO</p>
-<h3 id="memory-sharing-in-butterfly-buffers">Memory Sharing in Butterfly
-Buffers</h3>
-<p>TODO</p>
-<h3 id="fine-grained-pipelining-between-bp-and-ap">Fine-Grained
-Pipelining between BP and AP</h3>
-<p><img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716738297483.png" alt="1716738297483"> 先计算 KV，再计算 Q 时，无需等待 Q 算完，即可进行
-<span class="math inline">\(QK^T\)</span></p>
-<h2 id="co-design">Co-design</h2>
-<p><img src="/2024/05/02/FPGA_Based_Acceleration_for_LLM/1716738484499.png" alt="1716738484499"> 设计空间：包括算法空间和硬件空间
-性能评估：每个设计点的性能需要通过评估算法性能（例如准确度）、延迟和资源消耗来确定，通过hardware
-simulator仿真器模拟
-给定目标数据集、FPGA设备以及算法和硬件性能约束，使用穷尽式网格搜索遍历联合设计空间，找到算法和硬件参数的Pareto最优解集。</p>
-<h2 id="results">Results</h2>
-<p>TODO</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/02/Efficient_LLM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2378,11 +2187,85 @@ all，真的非常非常非常地感谢隽立，在我每次（其实是每天�
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/28/Life/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="Treeby">
+      <meta itemprop="description" content="La vie est belle">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Amusement Park">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/28/Life/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-06-28 12:28:07" itemprop="dateCreated datePublished" datetime="2023-06-28T12:28:07+08:00">2023-06-28</time>
+            </span>
+
+          
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very
+first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for
+more info. If you get any problems when using Hexo, you can find the
+answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or
+you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/default-index/page/2/">2</a><a class="extend next" rel="next" href="/default-index/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
-  </nav>
 
 
 
@@ -2449,7 +2332,7 @@ all，真的非常非常非常地感谢隽立，在我每次（其实是每天�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
