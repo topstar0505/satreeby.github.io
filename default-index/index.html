@@ -223,95 +223,115 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Overall-Survey"><a href="#Overall-Survey" class="headerlink" title="Overall Survey"></a>Overall Survey</h2><blockquote>
-<p><strong>credit to</strong> : Efficient Large Language Models: A Survey</p>
+          <h2 id="overall-survey">Overall Survey</h2>
+<blockquote>
+<p><strong>credit to</strong> : Efficient Large Language Models: A
+Survey</p>
 </blockquote>
-<p><img src="/2024/05/02/Efficient_LLM/1714631582088.png" alt="1714631582088"></p>
+<figure>
+<img src="/2024/05/02/Efficient_LLM/1714631582088.png" alt="1714631582088">
+<figcaption aria-hidden="true">1714631582088</figcaption>
+</figure>
 <p>这篇综述将加速方法分成三类，如图所示。</p>
-<h3 id="Model-Centric-Methods"><a href="#Model-Centric-Methods" class="headerlink" title="Model-Centric Methods"></a>Model-Centric Methods</h3><h4 id="Model-Compression"><a href="#Model-Compression" class="headerlink" title="Model Compression"></a>Model Compression</h4><ol>
+<h3 id="model-centric-methods">Model-Centric Methods</h3>
+<h4 id="model-compression">Model Compression</h4>
+<ol type="1">
 <li><p>Quantization</p>
 <ul>
-<li>将数据从高精度 $X^H$ 转化为 低精度$X^L$：</li>
+<li>将数据从高精度 <span class="math inline">\(X^H\)</span> 转化为
+低精度<span class="math inline">\(X^L\)</span>：</li>
 </ul>
-<p> $X^L&#x3D;round(\frac{absmax(X^L)}{absmax(X^H)}\cdot X^H) $</p>
+<p>$X<sup>L=round(X</sup>H) $</p>
 <ul>
-<li>PTQ(post-training quantization)<ul>
-<li>分为 Weight-Only Quantization 和 Weight-Activation Co-Quantization</li>
-<li>Weight-Only Quantization：将权重量化至 8bit，4bit，3bit等等，同时一些研究发现需要单独处理一些量化误差较大的权重，所以通常用一些算法对部分权重进行量化，而部分权重保留较高精度。</li>
-<li>Weight-Activation Co-Quantization：由于 activation outliers 的存在，这种量化会更加困难复杂，容易损失更多的精度，因此分组量化、精度补偿等算法更加重要</li>
-</ul>
-</li>
-<li>QAT(Quantization-Aware Training)<ul>
+<li>PTQ(post-training quantization)
+<ul>
+<li>分为 Weight-Only Quantization 和 Weight-Activation
+Co-Quantization</li>
+<li>Weight-Only Quantization：将权重量化至
+8bit，4bit，3bit等等，同时一些研究发现需要单独处理一些量化误差较大的权重，所以通常用一些算法对部分权重进行量化，而部分权重保留较高精度。</li>
+<li>Weight-Activation Co-Quantization：由于 activation outliers
+的存在，这种量化会更加困难复杂，容易损失更多的精度，因此分组量化、精度补偿等算法更加重要</li>
+</ul></li>
+<li>QAT(Quantization-Aware Training)
+<ul>
 <li>量化后重新训练，能减小量化精度，但会花费更大的成本</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p> 各种具体量化方法后文再介绍，这里仅作提要</p>
-</li>
+<p>各种具体量化方法后文再介绍，这里仅作提要</p></li>
 <li><p>Parameter Pruning</p>
 <ul>
 <li>丢弃不必要的权重</li>
-<li>Structured Pruning<ul>
+<li>Structured Pruning
+<ul>
 <li>剪掉一整行，一整列，一整层，等等，需要根据权重、梯度等信息</li>
-</ul>
-</li>
-<li>Unstructured Pruning<ul>
+</ul></li>
+<li>Unstructured Pruning
+<ul>
 <li>通常与稀疏化感知一起进行，对权重单独剪枝</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Low-Rank Approximation<br>$W\approx UV^T, W\in R^{m\times n}, U\in R^{m\times r}, V\in R^{n\times r}$</p>
-</li>
+</ul></li>
+</ul></li>
+<li><p>Low-Rank Approximation <span class="math inline">\(W\approx UV^T,
+W\in R^{m\times n}, U\in R^{m\times r}, V\in R^{n\times
+r}\)</span></p></li>
 <li><p>Knowledge Distillation</p>
 <ul>
-<li>KD 通过训练较小的学生模型来模拟 LLM 作为教师模型的性能来压缩 LLM，从而使学生模型的计算量较小，但仍保持与教师模型类似的高水平性能。</li>
+<li>KD 通过训练较小的学生模型来模拟 LLM 作为教师模型的性能来压缩
+LLM，从而使学生模型的计算量较小，但仍保持与教师模型类似的高水平性能。</li>
 <li>TODO</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<p><img src="/2024/05/02/Efficient_LLM/1714633043649.png" alt="1714633043649"></p>
-<h4 id="Efficient-Pre-Training"><a href="#Efficient-Pre-Training" class="headerlink" title="Efficient Pre-Training"></a>Efficient Pre-Training</h4><ol>
+<figure>
+<img src="/2024/05/02/Efficient_LLM/1714633043649.png" alt="1714633043649">
+<figcaption aria-hidden="true">1714633043649</figcaption>
+</figure>
+<h4 id="efficient-pre-training">Efficient Pre-Training</h4>
+<ol type="1">
 <li><p>Mixed Precision Acceleration</p>
 <ul>
 <li>使用低精度模型进行前向和后向传播，将计算出的低精度梯度转换为高精度梯度来更新原始高精度权重，从而提高预训练效率</li>
 <li>提高内存效率</li>
 <li>具体各种算法后文再介绍</li>
-</ul>
-</li>
-<li><p>Scaling Models</p>
-</li>
-<li><p>Initialization Techniques</p>
-</li>
+</ul></li>
+<li><p>Scaling Models</p></li>
+<li><p>Initialization Techniques</p></li>
 <li><p>Optimization Strategies</p>
 <ul>
 <li>对优化器算法进行改进，以减少内存需求，后文再进行介绍</li>
-</ul>
-</li>
+</ul></li>
 <li><p>System-Level Pre-Training Efficiency Optimization</p>
 <ul>
 <li>聚焦于分布式训练，以应对内存需求，具体有张量并行，数据并行等，还涉及节点间通信，非常复杂，以后再单独细讲</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<p><img src="/2024/05/02/Efficient_LLM/1714635758045.png" alt="1714635758045"></p>
-<h4 id="Efficient-Fine-Tuning"><a href="#Efficient-Fine-Tuning" class="headerlink" title="Efficient Fine-Tuning"></a>Efficient Fine-Tuning</h4><ol>
-<li>Parameter-Efficient Fine-Tuning(PEFT)<ul>
+<figure>
+<img src="/2024/05/02/Efficient_LLM/1714635758045.png" alt="1714635758045">
+<figcaption aria-hidden="true">1714635758045</figcaption>
+</figure>
+<h4 id="efficient-fine-tuning">Efficient Fine-Tuning</h4>
+<ol type="1">
+<li>Parameter-Efficient Fine-Tuning(PEFT)
+<ul>
 <li>Adapter-based Tuning</li>
 <li>Low-Rank Adaptation</li>
 <li>Prefix Tuning</li>
 <li>Prompt Tuning</li>
-</ul>
-</li>
-<li>Memory-Efficient Fine-Tuning(MEFT)<ul>
-<li>结合量化感知等算法进行微调，以减少内存需求，经典的有 QLora，QA-Lora 等</li>
-</ul>
-</li>
+</ul></li>
+<li>Memory-Efficient Fine-Tuning(MEFT)
+<ul>
+<li>结合量化感知等算法进行微调，以减少内存需求，经典的有 QLora，QA-Lora
+等</li>
+</ul></li>
 </ol>
 <p>微调算法原理基本如图，不同具体算法的原理与优缺点后文再介绍</p>
-<p><img src="/2024/05/02/Efficient_LLM/1714638690593.png" alt="1714638690593"></p>
-<h4 id="Efficient-Inference"><a href="#Efficient-Inference" class="headerlink" title="Efficient Inference"></a>Efficient Inference</h4><h3 id="Data-Centric-Methods"><a href="#Data-Centric-Methods" class="headerlink" title="Data-Centric Methods"></a>Data-Centric Methods</h3><p>TODO</p>
-<h3 id="LLM-Frameworks"><a href="#LLM-Frameworks" class="headerlink" title="LLM Frameworks"></a>LLM Frameworks</h3>
+<figure>
+<img src="/2024/05/02/Efficient_LLM/1714638690593.png" alt="1714638690593">
+<figcaption aria-hidden="true">1714638690593</figcaption>
+</figure>
+<h4 id="efficient-inference">Efficient Inference</h4>
+<h3 id="data-centric-methods">Data-Centric Methods</h3>
+<p>TODO</p>
+<h3 id="llm-frameworks">LLM Frameworks</h3>
+
       
     </div>
 
@@ -386,179 +406,246 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune deploy 实验。</p>
-<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p>github: <a target="_blank" rel="noopener" href="https://github.com/CompVis/stable-diffusion">Stable Diffusion v1</a></p>
+          <h2 id="关于">关于</h2>
+<p>本篇 blog 简要介绍 stable diffusion 相关知识以及在加速器上的 finetune
+deploy 实验。</p>
+<h2 id="基本原理">基本原理</h2>
+<p>github: <a target="_blank" rel="noopener" href="https://github.com/CompVis/stable-diffusion">Stable
+Diffusion v1</a></p>
 <p>论文地址：<a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2022/papers/Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models_CVPR_2022_paper">Rombach_High-Resolution_Image_Synthesis_With_Latent_Diffusion_Models</a></p>
 <p>非常好解读：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_62403633/article/details/131022283">reference</a></p>
 <ul>
-<li>核心：将图片通过一个单独训练的 autoencoder 压缩到潜空间中，再进行 diffusion model 的训练，能够大大降低计算量（相较于高分辨率对 pixel 直接进行训练），同时，autoencoder还能用于多种任务中，即该方法对 image-to-image 和 text-to-image 都有效</li>
+<li>核心：将图片通过一个单独训练的 autoencoder 压缩到潜空间中，再进行
+diffusion model 的训练，能够大大降低计算量（相较于高分辨率对 pixel
+直接进行训练），同时，autoencoder还能用于多种任务中，即该方法对
+image-to-image 和 text-to-image 都有效</li>
 </ul>
-<ol>
+<ol type="1">
 <li><p>Autoencoder</p>
 <ul>
-<li>Encoder: $z&#x3D;\varepsilon (x), x \in R^{H\times W\times 3} $</li>
-<li>Decoder: $\tilde{x} &#x3D; D(z) &#x3D; D(\varepsilon(x)), z\in R^{h\times w \times c}$</li>
+<li>Encoder: $z=(x), x R^{HW} $</li>
+<li>Decoder: <span class="math inline">\(\tilde{x} = D(z) =
+D(\varepsilon(x)), z\in R^{h\times w \times c}\)</span></li>
 <li>textencoder：使用的是 CLIP model</li>
 <li>训练方法：</li>
-</ul>
-</li>
+</ul></li>
 <li><p>Diffusion Model</p>
 <ul>
-<li>Diffision model can be interpreted as an equally weighted sequence of denoising autoencoders: $\epsilon_\theta(x_t, t); t&#x3D;1, 2, \dots, T$，即预测噪声的网络，其中，$x_t$ is a noisy version of the input $x$</li>
-<li>目标损失函数为：$L_{DM}&#x3D; E_{x, \epsilon \sim N(0, 1), t \sim uniform(1, 2, … T)}[||\epsilon - \epsilon_\theta(x_t, t)||_2^2]$</li>
-<li>LDM中，目标损失函数为：$L_{LDM}:&#x3D; E_{\varepsilon(x), \epsilon \sim N(0, 1), t}[||\epsilon - \epsilon_\theta(z_t, t)||_2^2]$</li>
-<li>再加入 condition 后，目标损失函数为：$L_{LDM}:&#x3D; E_{\varepsilon(x),y, \epsilon \sim N(0, 1), t}[||\epsilon - \epsilon_\theta(z_t, t, \tau_\theta(y))||_2^2]$</li>
-</ul>
-</li>
+<li>Diffision model can be interpreted as an equally weighted sequence
+of denoising autoencoders: <span class="math inline">\(\epsilon_\theta(x_t, t); t=1, 2, \dots,
+T\)</span>，即预测噪声的网络，其中，<span class="math inline">\(x_t\)</span> is a noisy version of the input <span class="math inline">\(x\)</span></li>
+<li>目标损失函数为：<span class="math inline">\(L_{DM}= E_{x, \epsilon
+\sim N(0, 1), t \sim uniform(1, 2, ... T)}[||\epsilon -
+\epsilon_\theta(x_t, t)||_2^2]\)</span></li>
+<li>LDM中，目标损失函数为：<span class="math inline">\(L_{LDM}:=
+E_{\varepsilon(x), \epsilon \sim N(0, 1), t}[||\epsilon -
+\epsilon_\theta(z_t, t)||_2^2]\)</span></li>
+<li>再加入 condition 后，目标损失函数为：<span class="math inline">\(L_{LDM}:= E_{\varepsilon(x),y, \epsilon \sim N(0,
+1), t}[||\epsilon - \epsilon_\theta(z_t, t,
+\tau_\theta(y))||_2^2]\)</span></li>
+</ul></li>
 <li><p>Unet</p>
 <ul>
-<li>非常老的分割模型<br><img src="/2024/04/26/Stable_Diffusion/1714152485546.png" alt="Unet"></li>
-</ul>
-</li>
+<li>非常老的分割模型 <img src="/2024/04/26/Stable_Diffusion/1714152485546.png" alt="Unet"></li>
+</ul></li>
 <li><p>Backbone</p>
 <ul>
-<li>将 Unet 中的 CNN 替换成 transformer<br><img src="/2024/04/26/Stable_Diffusion/1714152570582.png" alt="Stable Diffusion"></li>
-<li>注意，有一半 Attention 为 cross attention：$Q &#x3D; W_Q^{(i)}\cdot \phi_i(z_t), K &#x3D; W_K^{(i)}\cdot \tau_\theta(y), V&#x3D;W_V^{(i)}\cdot \tau_\theta(y)$</li>
-<li><img src="/2024/04/26/Stable_Diffusion/1714403808541.png" alt="1714403808541"></li>
-</ul>
-</li>
+<li>将 Unet 中的 CNN 替换成 transformer <img src="/2024/04/26/Stable_Diffusion/1714152570582.png" alt="Stable Diffusion"></li>
+<li>注意，有一半 Attention 为 cross attention：<span class="math inline">\(Q = W_Q^{(i)}\cdot \phi_i(z_t), K = W_K^{(i)}\cdot
+\tau_\theta(y), V=W_V^{(i)}\cdot \tau_\theta(y)\)</span></li>
+<li><figure>
+<img src="/2024/04/26/Stable_Diffusion/1714403808541.png" alt="1714403808541">
+<figcaption aria-hidden="true">1714403808541</figcaption>
+</figure></li>
+</ul></li>
 </ol>
-<h2 id="github代码介绍"><a href="#github代码介绍" class="headerlink" title="github代码介绍"></a>github代码介绍</h2><ol>
+<h2 id="github代码介绍">github代码介绍</h2>
+<ol type="1">
 <li><p>文件组织结构：</p>
 <ul>
 <li>LICENSE: 项目的许可证文件，说明了用户可以如何使用和分发该项目。</li>
-<li>setup.py：对整个 project 进行打包，可以看成为下载了一个 python 库到本地，与 pip install 效果相同</li>
+<li>setup.py：对整个 project 进行打包，可以看成为下载了一个 python
+库到本地，与 pip install 效果相同</li>
 <li>Model_Card.md：模型的“技术规格说明书”，用于提供有关机器学习模型的详细信息，包括其性能、使用案例、潜在的偏差和限制等</li>
 <li>README.md：项目的“欢迎手册”，提供了项目的全面概览和使用指南</li>
-<li>environment.yaml：project 所需要的所有环境依赖配置，可用 <code>conda env create -f environment.yaml</code> 直接对所有依赖进行下载</li>
-<li>main.py：Python 脚本，项目的入口点，可能包含设置、训练和评估机器学习模型的代码。例如可以使用 Pytorch.lightning 框架等<br><img src="/2024/04/26/Stable_Diffusion/1714145727161.png" alt="pytorch.lightning"></li>
-<li>configure&#x2F;：模型，训练，以及推断的配置文件</li>
-<li>data&#x2F;：有关数据，由于是文生图，这里包括了训练数据(train)的序号(index)，验证数据(val)的序号，图片的标签(label, class)；还有example，等等</li>
-<li>scripts&#x2F;：通常包含用于执行特定任务的脚本，如 txt2img.py 用于文本到图像的采样，img2img.py 用于图像修改。这些脚本可能允许用户通过命令行接口运行模型并生成图像。</li>
-<li>models&#x2F;: 一般包括模型和训练的 .py 代码等，可能也有 .yaml 配置文件，当然可能这些都放在以模型直接命名的文件夹里</li>
-</ul>
-</li>
+<li>environment.yaml：project 所需要的所有环境依赖配置，可用
+<code>conda env create -f environment.yaml</code>
+直接对所有依赖进行下载</li>
+<li>main.py：Python
+脚本，项目的入口点，可能包含设置、训练和评估机器学习模型的代码。例如可以使用
+Pytorch.lightning 框架等 <img src="/2024/04/26/Stable_Diffusion/1714145727161.png" alt="pytorch.lightning"></li>
+<li>configure/：模型，训练，以及推断的配置文件</li>
+<li>data/：有关数据，由于是文生图，这里包括了训练数据(train)的序号(index)，验证数据(val)的序号，图片的标签(label,
+class)；还有example，等等</li>
+<li>scripts/：通常包含用于执行特定任务的脚本，如 txt2img.py
+用于文本到图像的采样，img2img.py
+用于图像修改。这些脚本可能允许用户通过命令行接口运行模型并生成图像。</li>
+<li>models/: 一般包括模型和训练的 .py 代码等，可能也有 .yaml
+配置文件，当然可能这些都放在以模型直接命名的文件夹里</li>
+</ul></li>
 </ol>
-<h2 id="Finetune-with-Lora"><a href="#Finetune-with-Lora" class="headerlink" title="Finetune with Lora"></a>Finetune with Lora</h2><p>Hugging Face: <a target="_blank" rel="noopener" href="https://huggingface.co/blog/lora">Lora for SD reference</a>; <a target="_blank" rel="noopener" href="https://huggingface.co/docs/diffusers/v0.9.0/en/training/text2image">text_to_image finetune</a></p>
-<p>Github script: <a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/blob/main/examples/text_to_image/train_text_to_image_lora.py">train text_to_image lora</a></p>
-<p>加噪训练：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.09556">ICCV_Efficient Diffusion Training via Min-SNR Weighting Strategy</a></p>
-<ol>
+<h2 id="finetune-with-lora">Finetune with Lora</h2>
+<p>Hugging Face: <a target="_blank" rel="noopener" href="https://huggingface.co/blog/lora">Lora for SD
+reference</a>; <a target="_blank" rel="noopener" href="https://huggingface.co/docs/diffusers/v0.9.0/en/training/text2image">text_to_image
+finetune</a></p>
+<p>Github script: <a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/blob/main/examples/text_to_image/train_text_to_image_lora.py">train
+text_to_image lora</a></p>
+<p>加噪训练：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.09556">ICCV_Efficient
+Diffusion Training via Min-SNR Weighting Strategy</a></p>
+<ol type="1">
 <li>需要注意学习率的设置</li>
 <li>训练脚本包括：参数设置解析，模型、数据、优化器加载配置，精度处理，加速器硬件设置，checkpoint保存，lora适配器微调，推理验证，日志记录，推送至hub，模型保存等等诸多步骤和技术。</li>
-<li>.py 关键代码解读如下：<ul>
-<li><code>args = parse_args()</code>：先解析参数，其中参数要在脚本 .sh 中设置，如下图所示：<br><img src="/2024/04/26/Stable_Diffusion/1714446567472.png" alt="1714446567472"><br>这里参数包括：<code>--pretrained_model_name_or_path</code>, <code>--dataset_name</code>, <code>--resolution</code> 等等，参数定义的格式为：<br><img src="/2024/04/26/Stable_Diffusion/1714446813378.png" alt="1714446813378"></li>
-<li>log 日志记录，通常用于多进程或分布式训练的场景，以避免日志输出过多而导致的混乱。它确保只有主进程会记录INFO级别的日志，而其他进程则只记录更高级别的日志。<br><img src="/2024/04/26/Stable_Diffusion/1714447969551.png" alt="1714447969551"></li>
-<li>使用 Lora finetune 时冻结权重以及 Lora adapter 添加，同时设定训练精度，等等<br><img src="/2024/04/26/Stable_Diffusion/1714448148761.png" alt="1714448148761"><br><img src="/2024/04/26/Stable_Diffusion/1714448319335.png" alt="1714448319335"><br><img src="/2024/04/26/Stable_Diffusion/1714448933666.png" alt="1714448933666"></li>
-<li><code>lora_layers = filter(lambda p: p.requires_grad, unet.parameters())</code>：filter函数将只传递那些满足requires_grad为True的参数给lambda函数，最终返回一个迭代器，其中包含了所有需要梯度更新的参数。最终优化器如下：<br><img src="/2024/04/26/Stable_Diffusion/1714449226579.png" alt="1714449226579"></li>
-<li>TODO：实在写不动了</li>
-</ul>
-</li>
-</ol>
-<h2 id="实验一：在服务器上跑lora"><a href="#实验一：在服务器上跑lora" class="headerlink" title="实验一：在服务器上跑lora"></a>实验一：在服务器上跑lora</h2><p>教程：<a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/tree/main/examples/text_to_image">README.md</a></p>
-<p><strong>先开启 myenv 环境！</strong></p>
-<ol>
-<li>git clone diffusers，网络连接失败时可以直接下载压缩包，解压缩后通过 scp 传到服务器</li>
-<li>安装各种环境以及依赖（参考教程步骤即可）</li>
-<li>acclerate initializ：使用 hugging face 提供的库，可以简化在各种设备和分布式配置上启动、训练和使用 PyTorch 模型的过程。它支持自动混合精度（包括 fp8），并且易于配置 FSDP（Fully Sharded Data Parallel）和 DeepSpeed 支持。注意：并不是所有配置都支持，实验中全部选择了 no 最后才跑通。<br><a target="_blank" rel="noopener" href="https://github.com/huggingface/accelerate/">Accelerate</a>；<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/Stanford_Vera/article/details/133359959">Reference</a></li>
-<li>登录计算节点 玛卡巴卡 后，需重新开始 mynew 环境</li>
-<li>更换 hugging face mirror 镜像源，使用 huggingface-cli 下载：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lanlinjnc/article/details/136709225">huggingface-cli</a>；模型不小，所以下载需要一定时间，因此可以用 sbatch 提交到计算节点运行程序（不能用srun，srun是交互式的）<br><img src="/2024/04/26/Stable_Diffusion/1714309541109.png" alt="1714309541109"><br>或者先在本地下载，再传到服务器中；并不是所有的 .bin 模型都要下载，只需要下载脚本中用到的即可（可以先不下载大文件，看运行的报错信息，仔一个一个补）。</li>
-<li>注意 .sh 脚本嵌套 .py 脚本，在 .sh 脚本中配置模型路径，数据集路径等参数</li>
-<li>数据集，由于 example 中用到的宝可梦数据集被下架了，在hugging face中找到一个也是 ‘blip-captions’ 的平替数据集 ‘cartoon-captions’；data_path应该设置为 train_data 所在的文件夹；如果想用自己做的数据集，需要按照一定格式，参照：<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/v2.4.0/en/image_load#imagefolder-with-metadata">tutorials of data</a></li>
-<li>.sh 脚本注意事项：配置好模型、数据集、output 的路径，不推送至 hub，dataloader_num_workers&#x3D;0；环境配置注意事项：不能使用过高版本python，这里 python&#x3D;3.10, torch&#x3D;2.2.2, torchvision&#x3D;0.17.2, peft&#x3D;0.6.1, cuda&#x3D;12.2；其他：提前登录 wandb，这是一个可以记录训练过程的网站：<a target="_blank" rel="noopener" href="https://wandb.ai/home">wandb</a>；image.convert需要更改，具体看脚本，多加一个 convert(image) 函数</li>
-<li>实验结果：<br><img src="/2024/04/26/Stable_Diffusion/1714444105826.png" alt="1714444105826"><br><img src="/2024/04/26/Stable_Diffusion/1714444342256.png" alt="1714444342256"><br><a target="_blank" rel="noopener" href="https://wandb.ai/treeby/text2image-fine-tune/reports/Lora-of-Stable-Diffusion---Vmlldzo3NzUxNDA5">Lora-of-Stable-Diffusion-Report</a></li>
-</ol>
-<h2 id="DiT"><a href="#DiT" class="headerlink" title="DiT"></a>DiT</h2><p>计划有变，由于UNet部署到芯片上太复杂了，不够规整，还有CNN，所以暂时又换成 DiT，回旋镖了，本来开学想做了，后面没做，现在又要帮忙做了。</p>
-<h3 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h3><p><img src="/2024/04/26/Stable_Diffusion/1715353514686.png" alt="1715353514686"></p>
-<p>这里意思为，实验发现，左边 modulation attention 比 cross attention 更好，各种大小的网络信息如下：</p>
-<p><img src="/2024/04/26/Stable_Diffusion/1715353636493.png" alt="1715353636493"></p>
-<p><img src="/2024/04/26/Stable_Diffusion/1715353660724.png" alt="1715353660724"></p>
-<p>&#x2F;2 是指 patch size &#x3D; 2*2，</p>
-<h3 id="DiT-Block"><a href="#DiT-Block" class="headerlink" title="DiT Block"></a>DiT Block</h3><ul>
-<li>假设 batch &#x3D; 1，先忽略</li>
-<li>image space [256, 256, 3] 转到 latent space [32, 32, 4]</li>
-<li>patchfy + posembedded 后，假设 patch &#x3D; 2*2，则有 input [256, d]，其中 d 即为 hidden size</li>
-<li>以 DiT_S_2 为例，DiT Block 输入输出 flow 如下（画了一整晚，重操旧业了属于是。。。）</li>
-</ul>
-<p><img src="/2024/04/26/Stable_Diffusion/1715361595687.png" alt="1715361595687"></p>
+<li>.py 关键代码解读如下：
 <ul>
-<li>Timeembedded，labelembedded，latent encoder，final layer 分析：TODO</li>
+<li><code>args = parse_args()</code>：先解析参数，其中参数要在脚本 .sh
+中设置，如下图所示： <img src="/2024/04/26/Stable_Diffusion/1714446567472.png" alt="1714446567472">
+这里参数包括：<code>--pretrained_model_name_or_path</code>,
+<code>--dataset_name</code>, <code>--resolution</code>
+等等，参数定义的格式为： <img src="/2024/04/26/Stable_Diffusion/1714446813378.png" alt="1714446813378"></li>
+<li>log
+日志记录，通常用于多进程或分布式训练的场景，以避免日志输出过多而导致的混乱。它确保只有主进程会记录INFO级别的日志，而其他进程则只记录更高级别的日志。
+<img src="/2024/04/26/Stable_Diffusion/1714447969551.png" alt="1714447969551"></li>
+<li>使用 Lora finetune 时冻结权重以及 Lora adapter
+添加，同时设定训练精度，等等 <img src="/2024/04/26/Stable_Diffusion/1714448148761.png" alt="1714448148761"> <img src="/2024/04/26/Stable_Diffusion/1714448319335.png" alt="1714448319335"> <img src="/2024/04/26/Stable_Diffusion/1714448933666.png" alt="1714448933666"></li>
+<li><code>lora_layers = filter(lambda p: p.requires_grad, unet.parameters())</code>：filter函数将只传递那些满足requires_grad为True的参数给lambda函数，最终返回一个迭代器，其中包含了所有需要梯度更新的参数。最终优化器如下：
+<img src="/2024/04/26/Stable_Diffusion/1714449226579.png" alt="1714449226579"></li>
+<li>TODO：实在写不动了</li>
+</ul></li>
+</ol>
+<h2 id="实验一在服务器上跑lora">实验一：在服务器上跑lora</h2>
+<p>教程：<a target="_blank" rel="noopener" href="https://github.com/huggingface/diffusers/tree/main/examples/text_to_image">README.md</a></p>
+<p><strong>先开启 myenv 环境！</strong></p>
+<ol type="1">
+<li>git clone diffusers，网络连接失败时可以直接下载压缩包，解压缩后通过
+scp 传到服务器</li>
+<li>安装各种环境以及依赖（参考教程步骤即可）</li>
+<li>acclerate initializ：使用 hugging face
+提供的库，可以简化在各种设备和分布式配置上启动、训练和使用 PyTorch
+模型的过程。它支持自动混合精度（包括 fp8），并且易于配置 FSDP（Fully
+Sharded Data Parallel）和 DeepSpeed
+支持。注意：并不是所有配置都支持，实验中全部选择了 no 最后才跑通。 <a target="_blank" rel="noopener" href="https://github.com/huggingface/accelerate/">Accelerate</a>； <a target="_blank" rel="noopener" href="https://blog.csdn.net/Stanford_Vera/article/details/133359959">Reference</a></li>
+<li>登录计算节点 玛卡巴卡 后，需重新开始 mynew 环境</li>
+<li>更换 hugging face mirror 镜像源，使用 huggingface-cli 下载：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lanlinjnc/article/details/136709225">huggingface-cli</a>；模型不小，所以下载需要一定时间，因此可以用
+sbatch 提交到计算节点运行程序（不能用srun，srun是交互式的） <img src="/2024/04/26/Stable_Diffusion/1714309541109.png" alt="1714309541109">
+或者先在本地下载，再传到服务器中；并不是所有的 .bin
+模型都要下载，只需要下载脚本中用到的即可（可以先不下载大文件，看运行的报错信息，仔一个一个补）。</li>
+<li>注意 .sh 脚本嵌套 .py 脚本，在 .sh
+脚本中配置模型路径，数据集路径等参数</li>
+<li>数据集，由于 example 中用到的宝可梦数据集被下架了，在hugging
+face中找到一个也是 'blip-captions' 的平替数据集
+'cartoon-captions'；data_path应该设置为 train_data
+所在的文件夹；如果想用自己做的数据集，需要按照一定格式，参照：<a target="_blank" rel="noopener" href="https://huggingface.co/docs/datasets/v2.4.0/en/image_load#imagefolder-with-metadata">tutorials
+of data</a></li>
+<li>.sh 脚本注意事项：配置好模型、数据集、output 的路径，不推送至
+hub，dataloader_num_workers=0；环境配置注意事项：不能使用过高版本python，这里
+python=3.10, torch=2.2.2, torchvision=0.17.2, peft=0.6.1,
+cuda=12.2；其他：提前登录 wandb，这是一个可以记录训练过程的网站：<a target="_blank" rel="noopener" href="https://wandb.ai/home">wandb</a>；image.convert需要更改，具体看脚本，多加一个
+convert(image) 函数</li>
+<li>实验结果： <img src="/2024/04/26/Stable_Diffusion/1714444105826.png" alt="1714444105826"> <img src="/2024/04/26/Stable_Diffusion/1714444342256.png" alt="1714444342256"> <a target="_blank" rel="noopener" href="https://wandb.ai/treeby/text2image-fine-tune/reports/Lora-of-Stable-Diffusion---Vmlldzo3NzUxNDA5">Lora-of-Stable-Diffusion-Report</a></li>
+</ol>
+<h2 id="dit">DiT</h2>
+<p>计划有变，由于UNet部署到芯片上太复杂了，不够规整，还有CNN，所以暂时又换成
+DiT，回旋镖了，本来开学想做了，后面没做，现在又要帮忙做了。</p>
+<h3 id="整体结构">整体结构</h3>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715353514686.png" alt="1715353514686">
+<figcaption aria-hidden="true">1715353514686</figcaption>
+</figure>
+<p>这里意思为，实验发现，左边 modulation attention 比 cross attention
+更好，各种大小的网络信息如下：</p>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715353636493.png" alt="1715353636493">
+<figcaption aria-hidden="true">1715353636493</figcaption>
+</figure>
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715353660724.png" alt="1715353660724">
+<figcaption aria-hidden="true">1715353660724</figcaption>
+</figure>
+<p>/2 是指 patch size = 2*2，</p>
+<h3 id="dit-block">DiT Block</h3>
+<ul>
+<li>假设 batch = 1，先忽略</li>
+<li>image space [256, 256, 3] 转到 latent space [32, 32, 4]</li>
+<li>patchfy + posembedded 后，假设 patch = 2*2，则有 input [256,
+d]，其中 d 即为 hidden size</li>
+<li>以 DiT_S_2 为例，DiT Block 输入输出 flow
+如下（画了一整晚，重操旧业了属于是。。。）</li>
 </ul>
-<h2 id="DiT-training"><a href="#DiT-training" class="headerlink" title="DiT training"></a>DiT training</h2><p>github上已有训练脚本代码，先简单解读一下<strong>部分内容</strong>:</p>
-<h3 id="分布式训练"><a href="#分布式训练" class="headerlink" title="分布式训练"></a>分布式训练</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setup DDP:</span></span><br><span class="line">   dist.init_process_group(<span class="string">&quot;nccl&quot;</span>)</span><br><span class="line">   <span class="keyword">assert</span> args.global_batch_size % dist.get_world_size() == <span class="number">0</span>, <span class="string">f&quot;Batch size must be divisible by world size.&quot;</span></span><br><span class="line">   rank = dist.get_rank()</span><br><span class="line">   device = rank % torch.cuda.device_count()</span><br><span class="line">   seed = args.global_seed * dist.get_world_size() + rank</span><br><span class="line">   torch.manual_seed(seed)</span><br><span class="line">   torch.cuda.set_device(device)</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">f&quot;Starting rank=<span class="subst">&#123;rank&#125;</span>, seed=<span class="subst">&#123;seed&#125;</span>, world_size=<span class="subst">&#123;dist.get_world_size()&#125;</span>.&quot;</span>)</span><br></pre></td></tr></table></figure>
-
+<figure>
+<img src="/2024/04/26/Stable_Diffusion/1715361595687.png" alt="1715361595687">
+<figcaption aria-hidden="true">1715361595687</figcaption>
+</figure>
+<ul>
+<li>Timeembedded，labelembedded，latent encoder，final layer
+分析：TODO</li>
+</ul>
+<h2 id="dit-training">DiT training</h2>
+<p>github上已有训练脚本代码，先简单解读一下<strong>部分内容</strong>:</p>
+<h3 id="分布式训练">分布式训练</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setup DDP:</span></span><br><span class="line">   dist.init_process_group(<span class="string">&quot;nccl&quot;</span>)</span><br><span class="line">   <span class="keyword">assert</span> args.global_batch_size % dist.get_world_size() == <span class="number">0</span>, <span class="string">f&quot;Batch size must be divisible by world size.&quot;</span></span><br><span class="line">   rank = dist.get_rank()</span><br><span class="line">   device = rank % torch.cuda.device_count()</span><br><span class="line">   seed = args.global_seed * dist.get_world_size() + rank</span><br><span class="line">   torch.manual_seed(seed)</span><br><span class="line">   torch.cuda.set_device(device)</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">f&quot;Starting rank=<span class="subst">&#123;rank&#125;</span>, seed=<span class="subst">&#123;seed&#125;</span>, world_size=<span class="subst">&#123;dist.get_world_size()&#125;</span>.&quot;</span>)</span><br></pre></td></tr></table></figure>
 <p>这段代码是用于设置PyTorch的分布式数据并行（DDP）环境的。DDP是一种用于在多个GPU上并行训练深度学习模型的技术。以下是代码的详细解释：</p>
-<ol>
-<li><p><code>dist.init_process_group(&quot;nccl&quot;)</code>：初始化进程组，这是DDP的基础。<code>&quot;nccl&quot;</code>是NVIDIA Collective Communications Library的缩写，它是一个用于在GPU之间进行高效通信的库。</p>
-</li>
-<li><p><code>assert args.global_batch_size % dist.get_world_size() == 0</code>：确保全局批处理大小可以被进程数整除。这是必要的，因为DDP将全局批处理大小平均分配给每个进程。</p>
-</li>
-<li><p><code>rank = dist.get_rank()</code>：获取当前进程的排名。在DDP中，每个进程都有一个唯一的排名，用于区分不同的进程。</p>
-</li>
-<li><p><code>device = rank % torch.cuda.device_count()</code>：确定当前进程应该使用哪个GPU。这里通过取余操作来分配GPU，确保所有进程都能均匀地使用可用的GPU资源。</p>
-</li>
-<li><p><code>seed = args.global_seed * dist.get_world_size() + rank</code>：设置随机种子。为了确保可复现性，通常会为每个进程设置一个唯一的随机种子。这里使用全局种子乘以进程数再加上进程的排名来生成每个进程的种子。</p>
-</li>
-<li><p><code>torch.manual_seed(seed)</code>：设置PyTorch的随机种子，以确保当前进程中的随机操作（如参数初始化、数据洗牌等）是确定的。</p>
-</li>
-<li><p><code>torch.cuda.set_device(device)</code>：告诉PyTorch当前进程应该使用指定的GPU。</p>
-</li>
-<li><p><code>print(f&quot;Starting rank=&#123;rank&#125;, seed=&#123;seed&#125;, world_size=&#123;dist.get_world_size()&#125;.&quot;)</code>：打印出当前进程的排名、种子和总的进程数，以便于监控和调试。</p>
-</li>
+<ol type="1">
+<li><p><code>dist.init_process_group("nccl")</code>：初始化进程组，这是DDP的基础。<code>"nccl"</code>是NVIDIA
+Collective Communications
+Library的缩写，它是一个用于在GPU之间进行高效通信的库。</p></li>
+<li><p><code>assert args.global_batch_size % dist.get_world_size() == 0</code>：确保全局批处理大小可以被进程数整除。这是必要的，因为DDP将全局批处理大小平均分配给每个进程。</p></li>
+<li><p><code>rank = dist.get_rank()</code>：获取当前进程的排名。在DDP中，每个进程都有一个唯一的排名，用于区分不同的进程。</p></li>
+<li><p><code>device = rank % torch.cuda.device_count()</code>：确定当前进程应该使用哪个GPU。这里通过取余操作来分配GPU，确保所有进程都能均匀地使用可用的GPU资源。</p></li>
+<li><p><code>seed = args.global_seed * dist.get_world_size() + rank</code>：设置随机种子。为了确保可复现性，通常会为每个进程设置一个唯一的随机种子。这里使用全局种子乘以进程数再加上进程的排名来生成每个进程的种子。</p></li>
+<li><p><code>torch.manual_seed(seed)</code>：设置PyTorch的随机种子，以确保当前进程中的随机操作（如参数初始化、数据洗牌等）是确定的。</p></li>
+<li><p><code>torch.cuda.set_device(device)</code>：告诉PyTorch当前进程应该使用指定的GPU。</p></li>
+<li><p><code>print(f"Starting rank=&#123;rank&#125;, seed=&#123;seed&#125;, world_size=&#123;dist.get_world_size()&#125;.")</code>：打印出当前进程的排名、种子和总的进程数，以便于监控和调试。</p></li>
 </ol>
 <p>通过这段代码，可以为DDP训练准备环境，确保每个进程都能够正确地使用GPU资源，并进行独立的随机操作。这对于在多个GPU上并行训练大型模型非常关键。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setup an experiment folder:</span></span><br><span class="line">    <span class="keyword">if</span> rank == <span class="number">0</span>:</span><br><span class="line">        os.makedirs(args.results_dir, exist_ok=<span class="literal">True</span>)  <span class="comment"># Make results folder (holds all experiment subfolders)</span></span><br><span class="line">        experiment_index = <span class="built_in">len</span>(glob(<span class="string">f&quot;<span class="subst">&#123;args.results_dir&#125;</span>/*&quot;</span>))</span><br><span class="line">        model_string_name = args.model.replace(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;-&quot;</span>)  <span class="comment"># e.g., DiT-XL/2 --&gt; DiT-XL-2 (for naming folders)</span></span><br><span class="line">        experiment_dir = <span class="string">f&quot;<span class="subst">&#123;args.results_dir&#125;</span>/<span class="subst">&#123;experiment_index:03d&#125;</span>-<span class="subst">&#123;model_string_name&#125;</span>&quot;</span>  <span class="comment"># Create an experiment folder</span></span><br><span class="line">        checkpoint_dir = <span class="string">f&quot;<span class="subst">&#123;experiment_dir&#125;</span>/checkpoints&quot;</span>  <span class="comment"># Stores saved model checkpoints</span></span><br><span class="line">        os.makedirs(checkpoint_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">        logger = create_logger(experiment_dir)</span><br><span class="line">        logger.info(<span class="string">f&quot;Experiment directory created at <span class="subst">&#123;experiment_dir&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        logger = create_logger(<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-
 <p>这段代码负责设置实验文件夹，它执行以下操作：</p>
-<ol>
-<li><p><strong>检查进程排名</strong>：只有当<code>rank</code>等于0，即主进程时，才会执行创建文件夹的代码。这确保了实验文件夹和日志文件只被创建一次，避免了在分布式训练中由多个进程创建重复的文件夹或文件。</p>
-</li>
-<li><p><strong>创建结果目录</strong>：使用<code>os.makedirs</code>创建一个名为<code>args.results_dir</code>的文件夹，该文件夹用于存储所有实验的子文件夹。<code>exist_ok=True</code>参数表示如果文件夹已存在，不会抛出错误。</p>
-</li>
-<li><p><strong>计算实验索引</strong>：通过计算在<code>args.results_dir</code>路径下已有的文件和文件夹的数量来确定新的实验索引。<code>glob(f&quot;&#123;args.results_dir&#125;/*&quot;)</code>会获取该目录下所有的文件和文件夹，然后通过<code>len()</code>计算数量。</p>
-</li>
-<li><p><strong>格式化模型名称</strong>：将命令行参数<code>args.model</code>中的斜杠<code>/</code>替换为短横线<code>-</code>，以便于构建文件夹名称。</p>
-</li>
-<li><p><strong>创建实验文件夹</strong>：使用计算出的索引和格式化后的模型名称创建一个新的实验文件夹。索引是三位数，如果小于100，前面会用0填充。</p>
-</li>
-<li><p><strong>创建检查点文件夹</strong>：在实验文件夹内创建一个名为<code>checkpoints</code>的子文件夹，用于存储模型训练过程中的检查点。</p>
-</li>
-<li><p><strong>创建日志记录器</strong>：调用<code>create_logger</code>函数创建一个日志记录器，如果<code>rank</code>不为0，则传递<code>None</code>作为参数，这意味着不会创建实际的日志文件。</p>
-</li>
-<li><p><strong>记录信息</strong>：如果<code>rank</code>为0，使用日志记录器记录实验文件夹的创建信息。</p>
-</li>
+<ol type="1">
+<li><p><strong>检查进程排名</strong>：只有当<code>rank</code>等于0，即主进程时，才会执行创建文件夹的代码。这确保了实验文件夹和日志文件只被创建一次，避免了在分布式训练中由多个进程创建重复的文件夹或文件。</p></li>
+<li><p><strong>创建结果目录</strong>：使用<code>os.makedirs</code>创建一个名为<code>args.results_dir</code>的文件夹，该文件夹用于存储所有实验的子文件夹。<code>exist_ok=True</code>参数表示如果文件夹已存在，不会抛出错误。</p></li>
+<li><p><strong>计算实验索引</strong>：通过计算在<code>args.results_dir</code>路径下已有的文件和文件夹的数量来确定新的实验索引。<code>glob(f"&#123;args.results_dir&#125;/*")</code>会获取该目录下所有的文件和文件夹，然后通过<code>len()</code>计算数量。</p></li>
+<li><p><strong>格式化模型名称</strong>：将命令行参数<code>args.model</code>中的斜杠<code>/</code>替换为短横线<code>-</code>，以便于构建文件夹名称。</p></li>
+<li><p><strong>创建实验文件夹</strong>：使用计算出的索引和格式化后的模型名称创建一个新的实验文件夹。索引是三位数，如果小于100，前面会用0填充。</p></li>
+<li><p><strong>创建检查点文件夹</strong>：在实验文件夹内创建一个名为<code>checkpoints</code>的子文件夹，用于存储模型训练过程中的检查点。</p></li>
+<li><p><strong>创建日志记录器</strong>：调用<code>create_logger</code>函数创建一个日志记录器，如果<code>rank</code>不为0，则传递<code>None</code>作为参数，这意味着不会创建实际的日志文件。</p></li>
+<li><p><strong>记录信息</strong>：如果<code>rank</code>为0，使用日志记录器记录实验文件夹的创建信息。</p></li>
 </ol>
 <p>这段代码的目的是为训练过程创建一个结构化的文件系统，其中可以存储模型的检查点、日志和其他相关数据。这有助于实验的组织和管理，尤其是在进行多次实验或使用分布式训练时。</p>
-<h3 id="创建模型并配置"><a href="#创建模型并配置" class="headerlink" title="创建模型并配置"></a>创建模型并配置</h3><p>除了普通的DiT，还需要将其包装在 EMA 中，同时还要加载创建扩散模型，以及 VAE 编码器</p>
+<h3 id="创建模型并配置">创建模型并配置</h3>
+<p>除了普通的DiT，还需要将其包装在 EMA
+中，同时还要加载创建扩散模型，以及 VAE 编码器</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Note that parameter initialization is done within the DiT constructor</span></span><br><span class="line">    ema = deepcopy(model).to(device)  <span class="comment"># Create an EMA of the model for use after training</span></span><br><span class="line">    requires_grad(ema, <span class="literal">False</span>)</span><br><span class="line">    model = DDP(model.to(device), device_ids=[rank])</span><br><span class="line">    diffusion = create_diffusion(timestep_respacing=<span class="string">&quot;&quot;</span>)  <span class="comment"># default: 1000 steps, linear noise schedule</span></span><br><span class="line">    vae = AutoencoderKL.from_pretrained(<span class="string">f&quot;stabilityai/sd-vae-ft-<span class="subst">&#123;args.vae&#125;</span>&quot;</span>).to(device)</span><br><span class="line">    logger.info(<span class="string">f&quot;DiT Parameters: <span class="subst">&#123;<span class="built_in">sum</span>(p.numel() <span class="keyword">for</span> p <span class="keyword">in</span> model.parameters()):,&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="数据加载处理"><a href="#数据加载处理" class="headerlink" title="数据加载处理"></a>数据加载处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setup data:</span></span><br><span class="line">    transform = transforms.Compose([</span><br><span class="line">        transforms.Lambda(<span class="keyword">lambda</span> pil_image: center_crop_arr(pil_image, args.image_size)),</span><br><span class="line">        transforms.RandomHorizontalFlip(),</span><br><span class="line">        transforms.ToTensor(),</span><br><span class="line">        transforms.Normalize(mean=[<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>], std=[<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>], inplace=<span class="literal">True</span>)</span><br><span class="line">    ])</span><br><span class="line">    dataset = ImageFolder(args.data_path, transform=transform)</span><br><span class="line">    sampler = DistributedSampler(</span><br><span class="line">        dataset,</span><br><span class="line">        num_replicas=dist.get_world_size(),</span><br><span class="line">        rank=rank,</span><br><span class="line">        shuffle=<span class="literal">True</span>,</span><br><span class="line">        seed=args.global_seed</span><br><span class="line">    )</span><br><span class="line">    loader = DataLoader(</span><br><span class="line">        dataset,</span><br><span class="line">        batch_size=<span class="built_in">int</span>(args.global_batch_size // dist.get_world_size()),</span><br><span class="line">        shuffle=<span class="literal">False</span>,</span><br><span class="line">        sampler=sampler,</span><br><span class="line">        num_workers=args.num_workers,</span><br><span class="line">        pin_memory=<span class="literal">True</span>,</span><br><span class="line">        drop_last=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">    logger.info(<span class="string">f&quot;Dataset contains <span class="subst">&#123;<span class="built_in">len</span>(dataset):,&#125;</span> images (<span class="subst">&#123;args.data_path&#125;</span>)&quot;</span>)</span><br></pre></td></tr></table></figure>
-
+<h3 id="数据加载处理">数据加载处理</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Setup data:</span></span><br><span class="line">    transform = transforms.Compose([</span><br><span class="line">        transforms.Lambda(<span class="keyword">lambda</span> pil_image: center_crop_arr(pil_image, args.image_size)),</span><br><span class="line">        transforms.RandomHorizontalFlip(),</span><br><span class="line">        transforms.ToTensor(),</span><br><span class="line">        transforms.Normalize(mean=[<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>], std=[<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>], inplace=<span class="literal">True</span>)</span><br><span class="line">    ])</span><br><span class="line">    dataset = ImageFolder(args.data_path, transform=transform)</span><br><span class="line">    sampler = DistributedSampler(</span><br><span class="line">        dataset,</span><br><span class="line">        num_replicas=dist.get_world_size(),</span><br><span class="line">        rank=rank,</span><br><span class="line">        shuffle=<span class="literal">True</span>,</span><br><span class="line">        seed=args.global_seed</span><br><span class="line">    )</span><br><span class="line">    loader = DataLoader(</span><br><span class="line">        dataset,</span><br><span class="line">        batch_size=<span class="built_in">int</span>(args.global_batch_size // dist.get_world_size()),</span><br><span class="line">        shuffle=<span class="literal">False</span>,</span><br><span class="line">        sampler=sampler,</span><br><span class="line">        num_workers=args.num_workers,</span><br><span class="line">        pin_memory=<span class="literal">True</span>,</span><br><span class="line">        drop_last=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">    logger.info(<span class="string">f&quot;Dataset contains <span class="subst">&#123;<span class="built_in">len</span>(dataset):,&#125;</span> images (<span class="subst">&#123;args.data_path&#125;</span>)&quot;</span>)</span><br></pre></td></tr></table></figure>
 <p>这段代码设置了训练过程中使用的数据加载和预处理流程。以下是每个步骤的详细解释：</p>
-<ol>
-<li><p><strong>定义数据转换</strong> (<code>transform</code>):</p>
+<ol type="1">
+<li><strong>定义数据转换</strong> (<code>transform</code>):
 <ul>
 <li>使用<code>transforms.Compose</code>将多个转换操作组合在一起，用于对数据集中的每个图像进行预处理。</li>
-<li><code>transforms.Lambda</code>: 应用一个lambda函数<code>center_crop_arr</code>进行中心裁剪，确保图像大小符合<code>args.image_size</code>要求。</li>
-<li><code>transforms.RandomHorizontalFlip</code>: 随机水平翻转图像，增加数据多样性。</li>
-<li><code>transforms.ToTensor</code>: 将PIL图像或NumPy <code>ndarray</code>转换为<code>FloatTensor</code>，并将图像的像素值从[0, 255]归一化到[0.0, 1.0]。</li>
-<li><code>transforms.Normalize</code>: 对图像张量进行标准化处理，给出均值<code>mean</code>和标准差<code>std</code>，这里设置的均值和标准差都是[0.5, 0.5, 0.5]，并且指定<code>inplace=True</code>表示直接修改输入张量，而不是返回一个新的张量。</li>
-</ul>
-</li>
-<li><p><strong>创建数据集</strong> (<code>dataset</code>):</p>
+<li><code>transforms.Lambda</code>:
+应用一个lambda函数<code>center_crop_arr</code>进行中心裁剪，确保图像大小符合<code>args.image_size</code>要求。</li>
+<li><code>transforms.RandomHorizontalFlip</code>:
+随机水平翻转图像，增加数据多样性。</li>
+<li><code>transforms.ToTensor</code>: 将PIL图像或NumPy
+<code>ndarray</code>转换为<code>FloatTensor</code>，并将图像的像素值从[0,
+255]归一化到[0.0, 1.0]。</li>
+<li><code>transforms.Normalize</code>:
+对图像张量进行标准化处理，给出均值<code>mean</code>和标准差<code>std</code>，这里设置的均值和标准差都是[0.5,
+0.5,
+0.5]，并且指定<code>inplace=True</code>表示直接修改输入张量，而不是返回一个新的张量。</li>
+</ul></li>
+<li><strong>创建数据集</strong> (<code>dataset</code>):
 <ul>
 <li>使用<code>ImageFolder</code>类加载数据集，它会自动将文件夹中的每个子文件夹视为一个类别，并将图像加载为数据集中的一个样本。</li>
-</ul>
-</li>
-<li><p><strong>创建分布式采样器</strong> (<code>sampler</code>):</p>
+</ul></li>
+<li><strong>创建分布式采样器</strong> (<code>sampler</code>):
 <ul>
 <li><code>DistributedSampler</code>用于在分布式训练中确保每个进程只处理数据集的一部分，以提高效率并避免数据重复。</li>
 <li><code>num_replicas</code>是参与训练的进程总数。</li>
 <li><code>rank</code>是当前进程的索引。</li>
 <li><code>shuffle</code>表示是否在每个epoch开始时对数据进行洗牌。</li>
 <li><code>seed</code>用于确保在不同进程中洗牌的一致性。</li>
-</ul>
-</li>
-<li><p><strong>创建数据加载器</strong> (<code>loader</code>):</p>
+</ul></li>
+<li><strong>创建数据加载器</strong> (<code>loader</code>):
 <ul>
 <li>使用<code>DataLoader</code>类来加载数据集，并提供给训练循环使用。</li>
 <li><code>batch_size</code>是每个进程应处理的批量大小，通过将全局批量大小除以进程数来计算。</li>
@@ -567,21 +654,32 @@
 <li><code>num_workers</code>是用于数据加载的工作进程数。</li>
 <li><code>pin_memory</code>表示是否将数据加载到CUDA固定内存中，这可以加快数据传输到GPU的速度。</li>
 <li><code>drop_last</code>表示是否丢弃最后一个不完整的批次，这通常用于确保每个批次的大小一致。</li>
-</ul>
-</li>
-<li><p><strong>记录数据集大小</strong>:</p>
+</ul></li>
+<li><strong>记录数据集大小</strong>:
 <ul>
 <li>使用<code>logger</code>记录数据集的大小，这有助于监控和调试。</li>
-</ul>
-</li>
+</ul></li>
 </ol>
 <p>通过这些步骤，代码完成了数据加载和预处理的设置，为模型训练提供了必要的数据输入。使用分布式采样器和数据加载器确保了在分布式训练环境中，每个进程只处理数据集的一部分，从而提高了训练的效率。</p>
-<h2 id="实验二：DiT-training"><a href="#实验二：DiT-training" class="headerlink" title="实验二：DiT training"></a>实验二：DiT training</h2><p>原论文中数据集使用的是 Imagenet 1k，100G，太大了，捣鼓了很久，忽然发现，服务器里已经下好了数据集。。。<br><img src="/2024/04/26/Stable_Diffusion/1715447646942.png" alt="1715447646942"><br>开冲！！！<br>还是写个bash脚本吧<br><img src="/2024/04/26/Stable_Diffusion/1715448391178.png" alt="1715448391178"><br>注意：有个坑，hugging face连接不上，要先把vae下载到本地<br><img src="/2024/04/26/Stable_Diffusion/1715455631555.png" alt="1715455631555"><br>imagnet 太大了，需要四个gpu才能装下batch size&#x3D;256 的训练<br><img src="/2024/04/26/Stable_Diffusion/1715455724370.png" alt="1715455724370"><br>四个RTX3090一起训练，速度也并不快，算了下需要81天才能训完！！！哈人。。。<br>重新调整一下，训练周期 epoch&#x3D;80，training steps 应该等于 400,436，假如1step&#x2F;seconds，也需要4.63天</p>
-<h2 id="实验三：Lora-finetune"><a href="#实验三：Lora-finetune" class="headerlink" title="实验三：Lora finetune"></a>实验三：Lora finetune</h2><p>使用 peft 库进行 finetune <a target="_blank" rel="noopener" href="https://github.com/huggingface/peft/blob/main/examples/conditional_generation/peft_lora_seq2seq.ipynb">huggingface</a></p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://huggingface.co/docs/peft/main/en/package_reference/lora#peft.LoraConfig">lora_config</a><br>TODO</li>
+<h2 id="实验二dit-training">实验二：DiT training</h2>
+<p>原论文中数据集使用的是 Imagenet
+1k，100G，太大了，捣鼓了很久，忽然发现，服务器里已经下好了数据集。。。
+<img src="/2024/04/26/Stable_Diffusion/1715447646942.png" alt="1715447646942">
+开冲！！！ 还是写个bash脚本吧 <img src="/2024/04/26/Stable_Diffusion/1715448391178.png" alt="1715448391178">
+注意：有个坑，hugging face连接不上，要先把vae下载到本地 <img src="/2024/04/26/Stable_Diffusion/1715455631555.png" alt="1715455631555"> imagnet
+太大了，需要四个gpu才能装下batch size=256 的训练 <img src="/2024/04/26/Stable_Diffusion/1715455724370.png" alt="1715455724370">
+四个RTX3090一起训练，速度也并不快，算了下需要81天才能训完！！！哈人。。。
+重新调整一下，训练周期 epoch=80，training steps 应该等于
+400,436，假如1step/seconds，也需要4.63天</p>
+<h2 id="实验三lora-finetune">实验三：Lora finetune</h2>
+<p>使用 peft 库进行 finetune <a target="_blank" rel="noopener" href="https://github.com/huggingface/peft/blob/main/examples/conditional_generation/peft_lora_seq2seq.ipynb">huggingface</a></p>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/docs/peft/main/en/package_reference/lora#peft.LoraConfig">lora_config</a>
+TODO</li>
 </ol>
-<h2 id="实验四：quantization"><a href="#实验四：quantization" class="headerlink" title="实验四：quantization"></a>实验四：quantization</h2><p>参考<a target="_blank" rel="noopener" href="https://github.com/zhutmost/lsq-net">zhumost github</a></p>
+<h2 id="实验四quantization">实验四：quantization</h2>
+<p>参考<a target="_blank" rel="noopener" href="https://github.com/zhutmost/lsq-net">zhumost
+github</a></p>
 
       
     </div>
@@ -657,13 +755,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="2024-4-8"><a href="#2024-4-8" class="headerlink" title="2024.4.8"></a>2024.4.8</h2><p>新的一个学期，很忙，而且有很多不想上的课。前面几个星期都为了卓博的事情很苦恼，因为没有任何科研经历，机会渺茫，但是还是想着试试拿这每年5万块钱。在芯片院听了几次组会，对芯片专业也有了更深的了解。数字ic（ASIC）方面，感存算一体，chiplet，AI，三者结合，确实是主流的大方向了；又或者 AI 的软硬件协同 FPGA 设计，也是不错的方向；有几个星期也在犹豫要不要搞 AI for EDA，但后来想通了，感觉这个其实挺鸡肋的，虽然可以借此转算法，但不是个好选择，因为EDA实在并非自己所感兴趣的。不知道为什么，还是想要读博，芯片设计确实某种程度上吸引着我，设计芯片，也是在创造一件艺术品；当然了，写一手好代码，设计一个好的系统，尽管只是像上学期 DSA 的课程小 pj 一样，我觉得这同样也是一件艺术品。</p>
-<p>这周是第七周，一堆作业还没做，集创赛进度也很缓慢，但我也要抽出一点时间，写下一些想法。下午和工研院做机器人的老师和学长聊了聊，虽然打算不做他们那边的项目了，但还是受益匪浅。关于目前具身智能的发展，主要是两点：（1）机器人要像人一样，主要是思考和理解。大模型赋予了机器人的新一场革命。目前做机器人，他们组基本都是做垂直领域，针对特定任务，基于大模型，做点创新。我感觉这对于创新创业项目来说，确实挺好，但如果对于科研来说，模型的缝合可能不是我想做的。PIE，即Process，Imagine，Execute，是交大一位老师对具身智能的定义。大模型给予了机器人理解能力，特别是多模态大模型。然而，直接调用大模型 API，反应时间是让人无法接受的，这也是瓶颈所在。这又回到了，模型轻量化（算法）与芯片支持（算力）上面。大模型落地机器人，或着往后机器人的发展，还是离不开芯片对算法的加速——专用计算。而关于理解部分，是因为机器人要理解复杂多变的环境（有点像自动驾驶，cv），要与人交互（nlp，多模态），这是机器人大脑算法的核心。（2）灵巧手，弹跳，等等，这些涉及了物理与算法，是另一个瓶颈，但我不是太感兴趣。而关于科研方面，和老师学长也聊了聊，感受最深的两点：（1）师傅领进门，修行靠个人。想出idea是最难的，想清楚哪个方向，创新点有哪些，能不能完成，跟SOTA比怎么样。想要在算法、模型上有所建树，还是得多读论文，有扎深的数学功底。（2）可以针对特定任务，针对特定场景、垂直领域，简单的缝补，是挺水的。</p>
+          <h2 id="section">2024.4.8</h2>
+<p>新的一个学期，很忙，而且有很多不想上的课。前面几个星期都为了卓博的事情很苦恼，因为没有任何科研经历，机会渺茫，但是还是想着试试拿这每年5万块钱。在芯片院听了几次组会，对芯片专业也有了更深的了解。数字ic（ASIC）方面，感存算一体，chiplet，AI，三者结合，确实是主流的大方向了；又或者
+AI 的软硬件协同 FPGA 设计，也是不错的方向；有几个星期也在犹豫要不要搞 AI
+for
+EDA，但后来想通了，感觉这个其实挺鸡肋的，虽然可以借此转算法，但不是个好选择，因为EDA实在并非自己所感兴趣的。不知道为什么，还是想要读博，芯片设计确实某种程度上吸引着我，设计芯片，也是在创造一件艺术品；当然了，写一手好代码，设计一个好的系统，尽管只是像上学期
+DSA 的课程小 pj 一样，我觉得这同样也是一件艺术品。</p>
+<p>这周是第七周，一堆作业还没做，集创赛进度也很缓慢，但我也要抽出一点时间，写下一些想法。下午和工研院做机器人的老师和学长聊了聊，虽然打算不做他们那边的项目了，但还是受益匪浅。关于目前具身智能的发展，主要是两点：（1）机器人要像人一样，主要是思考和理解。大模型赋予了机器人的新一场革命。目前做机器人，他们组基本都是做垂直领域，针对特定任务，基于大模型，做点创新。我感觉这对于创新创业项目来说，确实挺好，但如果对于科研来说，模型的缝合可能不是我想做的。PIE，即Process，Imagine，Execute，是交大一位老师对具身智能的定义。大模型给予了机器人理解能力，特别是多模态大模型。然而，直接调用大模型
+API，反应时间是让人无法接受的，这也是瓶颈所在。这又回到了，模型轻量化（算法）与芯片支持（算力）上面。大模型落地机器人，或着往后机器人的发展，还是离不开芯片对算法的加速——专用计算。而关于理解部分，是因为机器人要理解复杂多变的环境（有点像自动驾驶，cv），要与人交互（nlp，多模态），这是机器人大脑算法的核心。（2）灵巧手，弹跳，等等，这些涉及了物理与算法，是另一个瓶颈，但我不是太感兴趣。而关于科研方面，和老师学长也聊了聊，感受最深的两点：（1）师傅领进门，修行靠个人。想出idea是最难的，想清楚哪个方向，创新点有哪些，能不能完成，跟SOTA比怎么样。想要在算法、模型上有所建树，还是得多读论文，有扎深的数学功底。（2）可以针对特定任务，针对特定场景、垂直领域，简单的缝补，是挺水的。</p>
 <p>不要急于做项目了，降低点期待，能直博就行。越来越卷的环境下，还是得读博。定个小目标：直博芯片院，大四发一篇算法类的顶会，博士专心搞芯片，然后发i。已经开始笑了。</p>
-<h2 id="2024-4-15"><a href="#2024-4-15" class="headerlink" title="2024.4.15"></a>2024.4.15</h2><p>这些天来还是在思考ai or ic？有时候在想，当时究竟选对专业了吗？大一分流选择是否该选择cs？假如当时选了cs，我可能又会想是不是该选微电子。</p>
+<h2 id="section-1">2024.4.15</h2>
+<p>这些天来还是在思考ai or
+ic？有时候在想，当时究竟选对专业了吗？大一分流选择是否该选择cs？假如当时选了cs，我可能又会想是不是该选微电子。</p>
 <p>人总是美化未被选择的另一条道路。</p>
 <p>刚刚实在不想学了，回头审视了一下，高考出分后，选择复旦技科是否正确。往事不堪回首，总是对679的高考分数感到遗憾，对数学14题圆锥曲线感到遗憾，还有化学2分同分异构。7分可能真的能改变很多，学校、专业，肯定都不一样，不过最终是好是坏，也无从得知。还是基于679的分数，297的排名，来看看吧。（还挺有意思的，分数和排名最后两位数刚好对称）</p>
-<p>首先是我旦<br><img src="/2024/04/08/2024%E6%98%A5/1713175743751.png" alt="1713175743751"><br>数学填空题不看错就能去工试了，就不用卷了qaq，不过679就只能是技科了。<br>然后看看交和浙，去交浙的话肯定学cs了，但是分数不够也去不了，大类的话不如还是旦<br><img src="/2024/04/08/2024%E6%98%A5/1713176018016.png" alt="1713176018016"><br><img src="/2024/04/08/2024%E6%98%A5/1713176078888.png" alt="1713176078888"><br>南大和中科大，虽然ai确实也挺强，但是始终有个地理位置的劣势，并且总感觉校风与我不太match<br>最后是人大，人大的高瓴人工智能学院确实也还挺不错的，但它的人工智能也是大类，收到673分，如果报这个志愿感觉有点浪费分数<br><img src="/2024/04/08/2024%E6%98%A5/1713176218209.png" alt="1713176218209"><br>综上所述，不打算出国的话，来旦或去交。如果分数高一点，可能就去交了；但在这个分数下，来旦已是最好的选择。</p>
+<p>首先是我旦 <img src="/2024/04/08/2024%E6%98%A5/1713175743751.png" alt="1713175743751">
+数学填空题不看错就能去工试了，就不用卷了qaq，不过679就只能是技科了。
+然后看看交和浙，去交浙的话肯定学cs了，但是分数不够也去不了，大类的话不如还是旦
+<img src="/2024/04/08/2024%E6%98%A5/1713176018016.png" alt="1713176018016"> <img src="/2024/04/08/2024%E6%98%A5/1713176078888.png" alt="1713176078888">
+南大和中科大，虽然ai确实也挺强，但是始终有个地理位置的劣势，并且总感觉校风与我不太match
+最后是人大，人大的高瓴人工智能学院确实也还挺不错的，但它的人工智能也是大类，收到673分，如果报这个志愿感觉有点浪费分数
+<img src="/2024/04/08/2024%E6%98%A5/1713176218209.png" alt="1713176218209">
+综上所述，不打算出国的话，来旦或去交。如果分数高一点，可能就去交了；但在这个分数下，来旦已是最好的选择。</p>
 
       
     </div>
@@ -742,230 +855,377 @@
           <blockquote>
 <p>credit to 《Eﬃcient Processing of Deep Neural Networks》</p>
 </blockquote>
-<h2 id="about-this-paragraph"><a href="#about-this-paragraph" class="headerlink" title="about this paragraph"></a>about this paragraph</h2><p>介绍基本的DNN加速器设计的数据流，主要是对《Eﬃcient Processing of Deep Neural Networks》做的笔记总结</p>
-<h2 id="Key-Metrics"><a href="#Key-Metrics" class="headerlink" title="Key Metrics"></a>Key Metrics</h2><ul>
+<h2 id="about-this-paragraph">about this paragraph</h2>
+<p>介绍基本的DNN加速器设计的数据流，主要是对《Eﬃcient Processing of Deep
+Neural Networks》做的笔记总结</p>
+<h2 id="key-metrics">Key Metrics</h2>
+<ul>
 <li><p><strong>Energy consumption</strong></p>
-<ol>
+<ol type="1">
 <li>减少数据的移动(data movement)</li>
 <li>减少移动单位数据的代价</li>
-</ol>
-</li>
-<li><p><strong>Performance in terms of throughput and latency</strong></p>
-<ol>
+</ol></li>
+<li><p><strong>Performance in terms of throughput and
+latency</strong></p>
+<ol type="1">
 <li>增加并行度(parallel)</li>
 <li>减少PE空闲周期数</li>
-</ol>
-</li>
-<li><p><strong>Area</strong></p>
-</li>
+</ol></li>
+<li><p><strong>Area</strong></p></li>
 </ul>
-<h2 id="Key-Properties-of-DNN-to-Leverage"><a href="#Key-Properties-of-DNN-to-Leverage" class="headerlink" title="Key Properties of DNN to Leverage"></a>Key Properties of DNN to Leverage</h2><p><em><strong>Data reuse</strong></em></p>
+<h2 id="key-properties-of-dnn-to-leverage">Key Properties of DNN to
+Leverage</h2>
+<p><strong><em>Data reuse</em></strong></p>
 <ul>
-<li><strong>Input feature map reuse</strong><br>不同的滤波器(M)，相同的输入</li>
-<li><strong>Filter reuse</strong><br>同一个滤波器，不同样本(N)的输入</li>
-<li><strong>Convolutional reuse</strong><ol>
-<li>每个filter的每个weight，复用 $P\times Q$ 次，产生 $P\times Q$ 个 output 像素点</li>
-<li>若步长 U&#x3D;1，则每个 input 的像素，一般会与 $R\times S$ 个filter weight相乘，得到的 psum 属于不同的 output 像素</li>
-</ol>
-</li>
-<li><strong>Movement of Partial Sums</strong><br>得到一个输出的像素点，有 $C \times R \times S$ 个 psum 需要被 accumulated</li>
+<li><strong>Input feature map reuse</strong>
+不同的滤波器(M)，相同的输入</li>
+<li><strong>Filter reuse</strong> 同一个滤波器，不同样本(N)的输入</li>
+<li><strong>Convolutional reuse</strong>
+<ol type="1">
+<li>每个filter的每个weight，复用 <span class="math inline">\(P\times
+Q\)</span> 次，产生 <span class="math inline">\(P\times Q\)</span> 个
+output 像素点</li>
+<li>若步长 U=1，则每个 input 的像素，一般会与 <span class="math inline">\(R\times S\)</span> 个filter weight相乘，得到的
+psum 属于不同的 output 像素</li>
+</ol></li>
+<li><strong>Movement of Partial Sums</strong> 得到一个输出的像素点，有
+<span class="math inline">\(C \times R \times S\)</span> 个 psum 需要被
+accumulated</li>
 </ul>
-<h2 id="DNN-hardware-design-Consideratuions"><a href="#DNN-hardware-design-Consideratuions" class="headerlink" title="DNN hardware design Consideratuions"></a>DNN hardware design Consideratuions</h2><p>设计一个 DNN 加速器，大致需要以下步骤：</p>
+<h2 id="dnn-hardware-design-consideratuions">DNN hardware design
+Consideratuions</h2>
+<p>设计一个 DNN 加速器，大致需要以下步骤：</p>
 <ul>
-<li><strong>At design time</strong><ol>
+<li><strong>At design time</strong>
+<ol type="1">
 <li>dataflow(s)</li>
 <li>PE(process element)的数量，以及每个PE执行的MAC数量</li>
-<li>the memory hierarchy，包括存储的级数(levels)，以及每一级的容量(capicity)</li>
+<li>the memory
+hierarchy，包括存储的级数(levels)，以及每一级的容量(capicity)</li>
 <li>the allowed pattern of NoC(Network on-chip)</li>
-</ol>
-</li>
-<li><strong>At mapping time</strong><br>将 DNN 网络有效的映射到硬件加速器上</li>
+</ol></li>
+<li><strong>At mapping time</strong> 将 DNN
+网络有效的映射到硬件加速器上</li>
 <li><strong>At configuration time</strong></li>
 <li><strong>At run time</strong></li>
 </ul>
-<h2 id="Data-reuse"><a href="#Data-reuse" class="headerlink" title="Data reuse"></a>Data reuse</h2><ul>
+<h2 id="data-reuse">Data reuse</h2>
+<ul>
 <li><strong>Temporal reuse</strong></li>
 </ul>
 <blockquote>
 <ul>
-<li><em><strong>Temporal reuse occurs when the same data value is used more than once by the same consumer</strong></em></li>
-<li>It can be exploited by adding an intermediate memory level to the memory hierarchy of the hardware, where the intermediate memory level has a smaller storage capacity than the level that acts as the original source of the data</li>
-<li>For exploiting temporal reuse, the reuse distance is defined as the number of data accesses required by the consumer in between the accesses to the same data value, which is a function of the ordering<br>of operations.</li>
+<li><strong><em>Temporal reuse occurs when the same data value is used
+more than once by the same consumer</em></strong></li>
+<li>It can be exploited by adding an intermediate memory level to the
+memory hierarchy of the hardware, where the intermediate memory level
+has a smaller storage capacity than the level that acts as the original
+source of the data</li>
+<li>For exploiting temporal reuse, the reuse distance is defined as the
+number of data accesses required by the consumer in between the accesses
+to the same data value, which is a function of the ordering of
+operations.</li>
 </ul>
 </blockquote>
-<p>比如，以下1-D卷积，filter weight 的存储有两级，L0存放着所有权重，L1仅能存放数量为一的权重，如(d)，则两种不同的计算顺序(order)，其 weight reuse distance 也不同，(output reuse distance 也不同)。<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700057619410.png" alt="任我行"></p>
-<p>因此，重要的是，<strong>reuse distance, 即 the processing order</strong></p>
+<p>比如，以下1-D卷积，filter weight
+的存储有两级，L0存放着所有权重，L1仅能存放数量为一的权重，如(d)，则两种不同的计算顺序(order)，其
+weight reuse distance 也不同，(output reuse distance 也不同)。 <img src="/2023/11/15/Designing_DNN_Accelerators/1700057619410.png" alt="任我行"></p>
+<p>因此，重要的是，<strong>reuse distance, 即 the processing
+order</strong></p>
 <ul>
 <li><strong>Spatial reuse</strong></li>
 </ul>
 <blockquote>
 <ul>
-<li><em><strong>Spatial reuse occurs when the same data value is used by more than one consumer (e.g., a group ofPEs) at different spatial locations ofthe hardware.</strong></em></li>
-<li>It can be exploited by reading the data once fromthe source memory level andmulticasting it to all ofthe consumers.</li>
-<li>For exploiting spatial reuse, the reuse distance is defined as the maximum number of data accesses in between any pair ofconsumers that access the same data value, which is again a function of the ordering of operations.</li>
+<li><strong><em>Spatial reuse occurs when the same data value is used by
+more than one consumer (e.g., a group ofPEs) at different spatial
+locations ofthe hardware.</em></strong></li>
+<li>It can be exploited by reading the data once fromthe source memory
+level andmulticasting it to all ofthe consumers.</li>
+<li>For exploiting spatial reuse, the reuse distance is defined as the
+maximum number of data accesses in between any pair ofconsumers that
+access the same data value, which is again a function of the ordering of
+operations.</li>
 </ul>
 </blockquote>
-<p>比如，以下1-D卷积，有数量为4的 consumers(PE)，可用于同时计算 MAC，<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700058040471.png" alt="任我行"></p>
-<p>因此，重要的是，<strong>reuse distance, 即 the designs of parallel</strong></p>
-<p>同时需要注意，spatial reuse 需要 Noc 来支持，与 Memory 的层级和带宽 (bandwidth) 都有关系。</p>
+<p>比如，以下1-D卷积，有数量为4的 consumers(PE)，可用于同时计算 MAC，
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700058040471.png" alt="任我行"></p>
+<p>因此，重要的是，<strong>reuse distance, 即 the designs of
+parallel</strong></p>
+<p>同时需要注意，spatial reuse 需要 Noc 来支持，与 Memory 的层级和带宽
+(bandwidth) 都有关系。</p>
 <ul>
 <li><p>data reuse 设计关键点</p>
-<ol>
+<ol type="1">
 <li>Process order</li>
 <li>Parallel computation</li>
 <li>Data tiling</li>
 <li>同时考虑 bandwidth, Memory hierarchy 等</li>
-</ol>
-</li>
-<li><p>算法(Algorithm)描述</p>
-</li>
+</ol></li>
+<li><p>算法(Algorithm)描述</p></li>
 </ul>
 <blockquote>
 <ul>
 <li>loop nests</li>
 <li>WS, IS, OS</li>
-<li><em><strong>for</strong></em></li>
+<li><strong><em>for</em></strong></li>
 </ul>
 </blockquote>
-<p>比如，使用伪代码描述下面一个1-D卷积，循环越靠近外层，说明其静态性(stationary)越高，<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700058946892.png" alt="任我行"><br><img src="/2023/11/15/Designing_DNN_Accelerators/1700059062834.png" alt="任我行"><br>以图 (a) 的 WS 为例，完成本次卷积所有操作的 0-35 次 cycle 里面，追踪每次 cycle 用到的数据的索引 (Index) 如下图：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700059237627.png" alt="任我行"></p>
+<p>比如，使用伪代码描述下面一个1-D卷积，循环越靠近外层，说明其静态性(stationary)越高，
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700058946892.png" alt="任我行">
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700059062834.png" alt="任我行">
+以图 (a) 的 WS 为例，完成本次卷积所有操作的 0-35 次 cycle 里面，追踪每次
+cycle 用到的数据的索引 (Index) 如下图： <img src="/2023/11/15/Designing_DNN_Accelerators/1700059237627.png" alt="任我行"></p>
 <blockquote>
-<p><em><strong>parallel-for</strong></em></p>
+<p><strong><em>parallel-for</em></strong></p>
 </blockquote>
-<p>比如，对上述的 <strong>WS</strong> 加入对 <strong>权重</strong> 的并行设计，即将权重的循环更进行的划分(Tiling)：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700059779411.png" alt="任我行"><br>每次执行的状况如下：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700059801549.png" alt="任我行"><br>可将之与无并行进行对比。<br>设计并行时，既要考虑 PE 数量，又要考虑 Memory 的容量与带宽，还要考虑划分是否整除，等等。</p>
+<p>比如，对上述的 <strong>WS</strong> 加入对 <strong>权重</strong>
+的并行设计，即将权重的循环更进行的划分(Tiling)： <img src="/2023/11/15/Designing_DNN_Accelerators/1700059779411.png" alt="任我行">
+每次执行的状况如下： <img src="/2023/11/15/Designing_DNN_Accelerators/1700059801549.png" alt="任我行">
+可将之与无并行进行对比。 设计并行时，既要考虑 PE 数量，又要考虑 Memory
+的容量与带宽，还要考虑划分是否整除，等等。</p>
 <blockquote>
-<p>A dataflow only defines the following aspects of a loop nest: (1) the specific order of the loops to prioritize the data types; (2) the number of loops for each data dimension to describe the tiling; and (3) whether each of the loops is temporal (for) or spatial (parallel-for).</p>
+<p>A dataflow only defines the following aspects of a loop nest: (1) the
+specific order of the loops to prioritize the data types; (2) the number
+of loops for each data dimension to describe the tiling; and (3) whether
+each of the loops is temporal (for) or spatial (parallel-for).</p>
 </blockquote>
-<h2 id="Dataflow-Taxonomy"><a href="#Dataflow-Taxonomy" class="headerlink" title="Dataflow Taxonomy"></a>Dataflow Taxonomy</h2><h3 id="Weight-Stationary-WS"><a href="#Weight-Stationary-WS" class="headerlink" title="Weight Stationary(WS)"></a>Weight Stationary(WS)</h3><blockquote>
+<h2 id="dataflow-taxonomy">Dataflow Taxonomy</h2>
+<h3 id="weight-stationaryws">Weight Stationary(WS)</h3>
+<blockquote>
 <ul>
-<li>The weight-stationary dataflow is designed to minimize the energy consumption of reading weights by maximizing the reuse ofweights from the register file (RF) at each PE</li>
-<li>The processing runs as manyMACs that use the same weight as possible while the weight is present in the RF</li>
-<li>The inputs and partial sums must move through the spatial array and global buffer. The input feature map activations are broadcast to all PEs and then the partial sums are spatially accumulated across the PE array.</li>
+<li>The weight-stationary dataflow is designed to minimize the energy
+consumption of reading weights by maximizing the reuse ofweights from
+the register file (RF) at each PE</li>
+<li>The processing runs as manyMACs that use the same weight as possible
+while the weight is present in the RF</li>
+<li>The inputs and partial sums must move through the spatial array and
+global buffer. The input feature map activations are broadcast to all
+PEs and then the partial sums are spatially accumulated across the PE
+array.</li>
 </ul>
 </blockquote>
-<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700062976339.png" alt="任我行"></p>
+<figure>
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700062976339.png" alt="任我行">
+<figcaption aria-hidden="true">任我行</figcaption>
+</figure>
 <p>比如，nn-X (also called neuFlow)，它有：</p>
 <ul>
 <li>8 个 2-D CONV engines</li>
-<li>每个 engine 有 100 个 PE（因此可以实现最多$10 \times 10$的卷积）</li>
+<li>每个 engine 有 100 个 PE（因此可以实现最多<span class="math inline">\(10 \times 10\)</span>的卷积）</li>
 <li>weight 在每个 PE 里保持静态不变</li>
 <li>input 广播(broadcast) 至每个 PE 中</li>
-<li>由于每次(cycle)所广播的只有一个 input 像素，为保证时序正确性，需要添加寄存器以控制 psum 的相加</li>
+<li>由于每次(cycle)所广播的只有一个 input
+像素，为保证时序正确性，需要添加寄存器以控制 psum 的相加</li>
 </ul>
-<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700063409653.png" alt="任我行"></p>
-<p>再比如，Nvidia’s Deep Learning Accelerator (NVDLA)，与前面不同的是，psum 是一列列相加（不同列不同的 filter ，每一行则对应不同的 input(and filter) channel<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700063949353.png" alt="任我行"><br>其算法如下：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700064715944.png" alt="任我行"></p>
-<h3 id="Output-Stationary-OS"><a href="#Output-Stationary-OS" class="headerlink" title="Output Stationary(OS)"></a>Output Stationary(OS)</h3><blockquote>
+<figure>
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700063409653.png" alt="任我行">
+<figcaption aria-hidden="true">任我行</figcaption>
+</figure>
+<p>再比如，Nvidia’s Deep Learning Accelerator
+(NVDLA)，与前面不同的是，psum 是一列列相加（不同列不同的 filter
+，每一行则对应不同的 input(and filter) channel <img src="/2023/11/15/Designing_DNN_Accelerators/1700063949353.png" alt="任我行">
+其算法如下： <img src="/2023/11/15/Designing_DNN_Accelerators/1700064715944.png" alt="任我行"></p>
+<h3 id="output-stationaryos">Output Stationary(OS)</h3>
+<blockquote>
 <ul>
-<li>The output-stationary dataflow is designed to minimize the energy consumption of reading and writing the partial sums.</li>
-<li>In order to keep the accumulation of partial sums stationary in the RF, one common implementation is to stream the input activations across the PE array and broadcast the weights to all PEs in the array from the global buffer.</li>
+<li>The output-stationary dataflow is designed to minimize the energy
+consumption of reading and writing the partial sums.</li>
+<li>In order to keep the accumulation of partial sums stationary in the
+RF, one common implementation is to stream the input activations across
+the PE array and broadcast the weights to all PEs in the array from the
+global buffer.</li>
 </ul>
 </blockquote>
-<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700065902277.png" alt="任我行"></p>
-<p>可以选择不同的 output 像素保持 stationary<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700065547456.png" alt="任我行"></p>
+<figure>
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700065902277.png" alt="任我行">
+<figcaption aria-hidden="true">任我行</figcaption>
+</figure>
+<p>可以选择不同的 output 像素保持 stationary <img src="/2023/11/15/Designing_DNN_Accelerators/1700065547456.png" alt="任我行"></p>
 <p>未完待续。。。</p>
-<h3 id="Input-Stationary-IS"><a href="#Input-Stationary-IS" class="headerlink" title="Input Stationary(IS)"></a>Input Stationary(IS)</h3><blockquote>
+<h3 id="input-stationaryis">Input Stationary(IS)</h3>
+<blockquote>
 <ul>
-<li>Similar to the previous two dataflows, the input-stationary dataflow is designed to minimize the energy consumption ofreading input activations.</li>
-<li>With minimized reuse distance, each input activation is read from DRAM and put into the RF ofeach PE and stays stationary for further access. Then, it runs through as many MACs as possible in the PE to reuse the same input activation.</li>
-<li>While each input activation stays stationary in the RF, unique filter weights are uni-cast into the PEs at each cycle, while the partial sums are spatially accumulated across the PEs to generate the final output activation.</li>
+<li>Similar to the previous two dataflows, the input-stationary dataflow
+is designed to minimize the energy consumption ofreading input
+activations.</li>
+<li>With minimized reuse distance, each input activation is read from
+DRAM and put into the RF ofeach PE and stays stationary for further
+access. Then, it runs through as many MACs as possible in the PE to
+reuse the same input activation.</li>
+<li>While each input activation stays stationary in the RF, unique
+filter weights are uni-cast into the PEs at each cycle, while the
+partial sums are spatially accumulated across the PEs to generate the
+final output activation.</li>
 </ul>
 </blockquote>
-<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700124708788.png" alt="任我行"></p>
+<figure>
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700124708788.png" alt="任我行">
+<figcaption aria-hidden="true">任我行</figcaption>
+</figure>
 <p>未完待续。。。</p>
-<h3 id="Row-Stationary-RS"><a href="#Row-Stationary-RS" class="headerlink" title="Row Stationary(RS)"></a>Row Stationary(RS)</h3><p>A row-stationary dataflow is proposed in <em>Eyeriss</em>, which aims to maximize the reuse and accumulation at the RF level for all types of data (weights, input activations, and partial sums) for the overall energy efficiency.</p>
+<h3 id="row-stationaryrs">Row Stationary(RS)</h3>
+<p>A row-stationary dataflow is proposed in <em>Eyeriss</em>, which aims
+to maximize the reuse and accumulation at the RF level for all types of
+data (weights, input activations, and partial sums) for the overall
+energy efficiency.</p>
 <ul>
 <li><strong>1-D CONV</strong>：</li>
 </ul>
 <blockquote>
-<p>weight stationary inside the RF<br>streams the activations into PE<br>比如下面 S&#x3D;3，W&#x3D;5，U&#x3D;1 的卷积，得到 F&#x3D;3 的 output，需要三个 step<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700134333058.png" alt="任我行"><img src="/2023/11/15/Designing_DNN_Accelerators/1700134346761.png" alt="1700134346761"><img src="/2023/11/15/Designing_DNN_Accelerators/1700134358771.png" alt="1700134358771"><br>值得注意的是，filter 与 input 流进 PE 与 output 流出，都应使用 FIFO 进行正确的时序控制</p>
+<p>weight stationary inside the RF streams the activations into PE
+比如下面 S=3，W=5，U=1 的卷积，得到 F=3 的 output，需要三个 step <img src="/2023/11/15/Designing_DNN_Accelerators/1700134333058.png" alt="任我行"><img src="/2023/11/15/Designing_DNN_Accelerators/1700134346761.png" alt="1700134346761"><img src="/2023/11/15/Designing_DNN_Accelerators/1700134358771.png" alt="1700134358771"> 值得注意的是，filter 与 input 流进 PE 与 output
+流出，都应使用 FIFO 进行正确的时序控制</p>
 </blockquote>
 <ul>
 <li><strong>2-D CONV</strong>：</li>
 </ul>
 <blockquote>
-<p>由 多个 1-D 卷积组成，<br>比如下面 R&#x3D;3, S&#x3D;3, H&#x3D;5, W&#x3D;5, U&#x3D;1 的卷积，得到 E&#x3D;3, F&#x3D;3 的 output<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700135701893.png" alt="任我行"></p>
+<p>由 多个 1-D 卷积组成， 比如下面 R=3, S=3, H=5, W=5, U=1 的卷积，得到
+E=3, F=3 的 output <img src="/2023/11/15/Designing_DNN_Accelerators/1700135701893.png" alt="任我行"></p>
 </blockquote>
 <hr>
 <blockquote>
-<ol>
+<ol type="1">
 <li>在这个例子中，每一行 output 的产生，仍然需要 3 个 steps</li>
-<li>而每一个 step 所产生的一个 output 像素点，都需要 3 row 的 1-D 卷积同时进行，然后将对应的 psum 相加(accumulated) 得到</li>
+<li>而每一个 step 所产生的一个 output 像素点，都需要 3 row 的 1-D
+卷积同时进行，然后将对应的 psum 相加(accumulated) 得到</li>
 <li>得到所有行的 output 需要进行 3 次上述的操作</li>
-<li><strong>由上述例子可得：每一 Row 的 filter weights 在同一 Row 的 PE 上复用；每一 ROW 的 inputs 则按 相同的 diagnal 复用； 每一 col 的 PE 得到的 psum 要进行相加</strong></li>
+<li><strong>由上述例子可得：每一 Row 的 filter weights 在同一 Row 的 PE
+上复用；每一 ROW 的 inputs 则按 相同的 diagnal 复用； 每一 col 的 PE
+得到的 psum 要进行相加</strong></li>
 </ol>
 </blockquote>
 <ul>
 <li><strong>Higher-dimensional CONV</strong>:</li>
 </ul>
 <blockquote>
-<p><strong>N, M, C</strong>三个维度<br><strong>Interleaving</strong> or <strong>concatenating</strong><br>有下面三种复用：(a) filter reuse of multiple (<strong>N</strong>) input (b) input reuse of multiple (<strong>M</strong>) filters (c) output reuse of multiple filter weights and inputs (<strong>C</strong>)<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700136845875.png" alt="任我行"><br>对应的techniques可以是：(a) concatenating (b) interleaving (c) interleaving<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700136924461.png" alt="任我行"><br>存在问题：PE 阵列的大小是 fixed 的，应如何将不同 shape 的 DNN layer 映射呢？两大techniques：(a) replication (b) folding<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700137378744.png" alt="任我行"><br>总的思想是：提高 PE 的利用率<br>注意：不使用的 PE 应关上使其耗能减少。</p>
+<p><strong>N, M, C</strong>三个维度 <strong>Interleaving</strong> or
+<strong>concatenating</strong> 有下面三种复用：(a) filter reuse of
+multiple (<strong>N</strong>) input (b) input reuse of multiple
+(<strong>M</strong>) filters (c) output reuse of multiple filter weights
+and inputs (<strong>C</strong>) <img src="/2023/11/15/Designing_DNN_Accelerators/1700136845875.png" alt="任我行">
+对应的techniques可以是：(a) concatenating (b) interleaving (c)
+interleaving <img src="/2023/11/15/Designing_DNN_Accelerators/1700136924461.png" alt="任我行"> 存在问题：PE 阵列的大小是 fixed 的，应如何将不同 shape
+的 DNN layer 映射呢？两大techniques：(a) replication (b) folding <img src="/2023/11/15/Designing_DNN_Accelerators/1700137378744.png" alt="任我行">
+总的思想是：提高 PE 的利用率 注意：不使用的 PE 应关上使其耗能减少。</p>
 </blockquote>
 <ul>
 <li><strong>硬件结构支持</strong></li>
 </ul>
-<ol>
+<ol type="1">
 <li>PE array</li>
 <li>Mapping and Configure</li>
 <li>Noc</li>
 <li>Memory hierarchy</li>
 </ol>
-<h3 id="Other-Stationary"><a href="#Other-Stationary" class="headerlink" title="Other Stationary"></a>Other Stationary</h3><blockquote>
+<h3 id="other-stationary">Other Stationary</h3>
+<blockquote>
 <ul>
-<li>Since the stationariness of a dataflow is only relative to a specific level of memory hierarchy, different stationariness can be used at each level of the memory hierarchy.</li>
-<li>From the perspective ofa loop nest, it involves tiling the various data types into multiple levels and then reordering the loops at different levels to prioritize different data types.</li>
-<li>For example, ifthere are K levels ofmemory hierarchy, both dimension Q and S in the loop nest ofFigure 5.8a can be further divided up into K loops (i.e., for the open ranges [Q0, QK) and [S0 to SK) ) and then reordering the loops independently from loop level 0 to level K - 1.</li>
-<li><strong>This also implies that smaller DNN accelerator designs can be further combined together with a new level ofmemory to form a larger accelerator.</strong></li>
-<li><strong>The key to these designs is to propose flexible NoCs and support various memory access patterns in order to execute different dataflows that have different numbers ofloop levels and loop ordering in the loop nest</strong></li>
+<li>Since the stationariness of a dataflow is only relative to a
+specific level of memory hierarchy, different stationariness can be used
+at each level of the memory hierarchy.</li>
+<li>From the perspective ofa loop nest, it involves tiling the various
+data types into multiple levels and then reordering the loops at
+different levels to prioritize different data types.</li>
+<li>For example, ifthere are K levels ofmemory hierarchy, both dimension
+Q and S in the loop nest ofFigure 5.8a can be further divided up into K
+loops (i.e., for the open ranges [Q0, QK) and [S0 to SK) ) and then
+reordering the loops independently from loop level 0 to level K -
+1.</li>
+<li><strong>This also implies that smaller DNN accelerator designs can
+be further combined together with a new level ofmemory to form a larger
+accelerator.</strong></li>
+<li><strong>The key to these designs is to propose flexible NoCs and
+support various memory access patterns in order to execute different
+dataflows that have different numbers ofloop levels and loop ordering in
+the loop nest</strong></li>
 <li>上面的讨论基于一个layer无法在PE中一次就计算完成，然而，若layer足够小，或PE足够大，还需讨论<strong>跨层处理、流水线</strong>等技术</li>
 </ul>
 </blockquote>
-<h2 id="DNN-Accelerator-Buffer-Management-Strategies"><a href="#DNN-Accelerator-Buffer-Management-Strategies" class="headerlink" title="DNN Accelerator Buffer Management Strategies"></a>DNN Accelerator Buffer Management Strategies</h2><p>可大致分为四种结构：</p>
+<h2 id="dnn-accelerator-buffer-management-strategies">DNN Accelerator
+Buffer Management Strategies</h2>
+<p>可大致分为四种结构：</p>
 <ul>
-<li>implicit&#x2F;explicit（隐式&#x2F;显式）: 指的是利用工作负载知识来控制数据缓冲决策的程度</li>
-<li>coupled&#x2F;decoupled（耦合&#x2F;解耦）: 指的是内存响应和请求是往返的(请求-响应)还是前向的(数据自动推送给使用者)<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700150870447.png" alt="好"></li>
+<li>implicit/explicit（隐式/显式）:
+指的是利用工作负载知识来控制数据缓冲决策的程度</li>
+<li>coupled/decoupled（耦合/解耦）:
+指的是内存响应和请求是往返的(请求-响应)还是前向的(数据自动推送给使用者)
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700150870447.png" alt="好"></li>
 </ul>
-<h3 id="EDDO-Explicit-Decoupled-Data-Orchestration"><a href="#EDDO-Explicit-Decoupled-Data-Orchestration" class="headerlink" title="EDDO(Explicit Decoupled Data Orchestration)"></a>EDDO(Explicit Decoupled Data Orchestration)</h3><p><em><strong>buffet</strong></em></p>
+<h3 id="eddoexplicit-decoupled-data-orchestration">EDDO(Explicit
+Decoupled Data Orchestration)</h3>
+<p><strong><em>buffet</em></strong></p>
 <ul>
 <li><em>FIFO</em></li>
 <li>fill: from an <em>NoC</em> link into the <em>tail</em></li>
-<li>read: <em>read command</em> + <em>read address</em>(offset of <em>head</em>)</li>
-<li>update: <em>read + update command</em> + <em>update address</em></li>
-<li>shrink: removes a given number ofvalues from the head of the buffet by adjusting the head pointer<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700190658621.png" alt="1700190658621"></li>
+<li>read: <em>read command</em> + <em>read address</em>(offset of
+<em>head</em>)</li>
+<li>update: <em>read + update command</em> + <em>update
+address</em></li>
+<li>shrink: removes a given number ofvalues from the head of the buffet
+by adjusting the head pointer <img src="/2023/11/15/Designing_DNN_Accelerators/1700190658621.png" alt="1700190658621"></li>
 </ul>
-<p>比如，实现一维卷积时，读入 input 数据的序列为：0，1，2；1，2，3；2，3，4……<br>而 psum 的读入并更新的序列应对应为：0，0，0；1，1，1；2，2，2……<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700191310508.png" alt="1700191310508"></p>
-<h2 id="Flexible-Noc-design"><a href="#Flexible-Noc-design" class="headerlink" title="Flexible Noc design"></a>Flexible Noc design</h2><p>要考虑的是：</p>
+<p>比如，实现一维卷积时，读入 input
+数据的序列为：0，1，2；1，2，3；2，3，4…… 而 psum
+的读入并更新的序列应对应为：0，0，0；1，1，1；2，2，2…… <img src="/2023/11/15/Designing_DNN_Accelerators/1700191310508.png" alt="1700191310508"></p>
+<h2 id="flexible-noc-design">Flexible Noc design</h2>
+<p>要考虑的是：</p>
 <blockquote>
-<p>(1) support processing with high parallelism by efficiently delivering data between storage and datapaths; (2) exploit data reuse to reduce the bandwidth requirement and improve energy efficiency; and (3) can be scaled at a reasonable implementation cost.</p>
+<ol type="1">
+<li>support processing with high parallelism by efficiently delivering
+data between storage and datapaths; (2) exploit data reuse to reduce the
+bandwidth requirement and improve energy efficiency; and (3) can be
+scaled at a reasonable implementation cost.</li>
+</ol>
 </blockquote>
-<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700192611144.png" alt="1700192611144"></p>
-<p>比如：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700195392726.png" alt="1700195392726"></p>
+<figure>
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700192611144.png" alt="1700192611144">
+<figcaption aria-hidden="true">1700192611144</figcaption>
+</figure>
+<p>比如： <img src="/2023/11/15/Designing_DNN_Accelerators/1700195392726.png" alt="1700195392726"></p>
 <ul>
-<li>每一 row 的 weight 来自不同的 filter (M)，同一 row 中的 weight 来自不同的 channel(C)，stationary</li>
+<li>每一 row 的 weight 来自不同的 filter (M)，同一 row 中的 weight
+来自不同的 channel(C)，stationary</li>
 <li>每一 col 的 input 来自不同的 channel(C)</li>
 <li>同一 row 的 psum 相加后在传输到 psum buffer</li>
-<li>input activations (iacts) are reused vertically and partial sums (psums) are accumulated horizontally</li>
+<li>input activations (iacts) are reused vertically and partial sums
+(psums) are accumulated horizontally</li>
 </ul>
-<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700195681895.png" alt="1700195681895"></p>
+<figure>
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700195681895.png" alt="1700195681895">
+<figcaption aria-hidden="true">1700195681895</figcaption>
+</figure>
 <ul>
-<li>每一 row 的 weight 来自不同的 filter (M) 或者 同一 filter 但不同的位置</li>
+<li>每一 row 的 weight 来自不同的 filter (M) 或者 同一 filter
+但不同的位置</li>
 <li>每一 col 的 input 都不同空间位置 (H, W)</li>
-<li>input activations (iacts) are reused vertically and weights are reused horizontally</li>
+<li>input activations (iacts) are reused vertically and weights are
+reused horizontally</li>
 </ul>
-<p>三种通信方式的优缺点：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700197338646.png" alt="1700197338646"></p>
+<p>三种通信方式的优缺点： <img src="/2023/11/15/Designing_DNN_Accelerators/1700197338646.png" alt="1700197338646"></p>
 <blockquote>
 <p><strong>Hierarchical Mesh Network</strong></p>
 </blockquote>
-<p>hierarchical mesh network(HM-NoC)<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700305038591.png" alt="1700305038591"></p>
+<p>hierarchical mesh network(HM-NoC) <img src="/2023/11/15/Designing_DNN_Accelerators/1700305038591.png" alt="1700305038591"></p>
 <ul>
 <li>2 levels</li>
 <li>4 modes</li>
 </ul>
-<p>例子：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700305564774.png" alt="1700305564774"></p>
-<p><img src="/2023/11/15/Designing_DNN_Accelerators/1700305697758.png" alt="1700305697758"></p>
-<h2 id="mapping"><a href="#mapping" class="headerlink" title="mapping"></a>mapping</h2><p>In the processing ofDNNs, the mapper translates the desired DNN layer computation (i.e., problem specification) along with its shape and size4 into a hardware-<br>compatible mapping for execution.<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700305982329.png" alt="1700305982329"></p>
-<p>类比cpu：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700306005539.png" alt="1700306005539"></p>
-<p>mapper 框图：<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700306053391.png" alt="1700306053391"></p>
-<p>根据 Problem Spec&#x2F;Shape 以及约束 Dataflow(s)&#x2F;Constraints<br>在解集 mapper space 里面搜索出最优解，然后对 DNN Accelerator 进行配置</p>
-<p>映射的算法可以用 loop nest 来表示，比如<br><img src="/2023/11/15/Designing_DNN_Accelerators/1700306283046.png" alt="1700306283046"><img src="/2023/11/15/Designing_DNN_Accelerators/1700306290812.png" alt="1700306290812"></p>
+<p>例子： <img src="/2023/11/15/Designing_DNN_Accelerators/1700305564774.png" alt="1700305564774"></p>
+<figure>
+<img src="/2023/11/15/Designing_DNN_Accelerators/1700305697758.png" alt="1700305697758">
+<figcaption aria-hidden="true">1700305697758</figcaption>
+</figure>
+<h2 id="mapping">mapping</h2>
+<p>In the processing ofDNNs, the mapper translates the desired DNN layer
+computation (i.e., problem specification) along with its shape and size4
+into a hardware- compatible mapping for execution. <img src="/2023/11/15/Designing_DNN_Accelerators/1700305982329.png" alt="1700305982329"></p>
+<p>类比cpu： <img src="/2023/11/15/Designing_DNN_Accelerators/1700306005539.png" alt="1700306005539"></p>
+<p>mapper 框图： <img src="/2023/11/15/Designing_DNN_Accelerators/1700306053391.png" alt="1700306053391"></p>
+<p>根据 Problem Spec/Shape 以及约束 Dataflow(s)/Constraints 在解集
+mapper space 里面搜索出最优解，然后对 DNN Accelerator 进行配置</p>
+<p>映射的算法可以用 loop nest 来表示，比如 <img src="/2023/11/15/Designing_DNN_Accelerators/1700306283046.png" alt="1700306283046"><img src="/2023/11/15/Designing_DNN_Accelerators/1700306290812.png" alt="1700306290812"></p>
 
       
     </div>
@@ -1041,33 +1301,61 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="2023-11-15"><a href="#2023-11-15" class="headerlink" title="2023.11.15"></a>2023.11.15</h2><p>开学十一个星期了，感觉自己过得一塌糊涂。<br>本以为，是以三天数模奋战开始的斗志昂扬的一个学期，结果省三的屑成绩再次证明了自己真的是屑。我是多么期盼，果酱名单上有我们队伍的名字，并写着三个成员均来自二中，但那终究只存在于梦里。</p>
-<p>科研，也是一样。虽说进了所谓的实验室，但是，0项目，0论文，我也不知道在做些啥，现在还在看eyeriss论文和Eﬃcient Processing of Deep Neural Networks一书。</p>
-<p>绩点，上学期3.78&#x2F;4.0，这学期感觉还会往下掉，半器、dsp全靠看网课自学，数集抓不住重点，感觉都是重点，也不知道是不是重点，数据结构似乎学的还可以。通识课被卷死了，经济学原理还没怎么看书。</p>
+          <h2 id="section">2023.11.15</h2>
+<p>开学十一个星期了，感觉自己过得一塌糊涂。
+本以为，是以三天数模奋战开始的斗志昂扬的一个学期，结果省三的屑成绩再次证明了自己真的是屑。我是多么期盼，果酱名单上有我们队伍的名字，并写着三个成员均来自二中，但那终究只存在于梦里。</p>
+<p>科研，也是一样。虽说进了所谓的实验室，但是，0项目，0论文，我也不知道在做些啥，现在还在看eyeriss论文和Eﬃcient
+Processing of Deep Neural Networks一书。</p>
+<p>绩点，上学期3.78/4.0，这学期感觉还会往下掉，半器、dsp全靠看网课自学，数集抓不住重点，感觉都是重点，也不知道是不是重点，数据结构似乎学的还可以。通识课被卷死了，经济学原理还没怎么看书。</p>
 <p>绩点、竞赛、科研，唉，真的一塌糊涂。每次我这样想，我也经常这样想，压力、焦虑……我只是想，明年这个时候，有书读而已。常常想，微电子科学与工程，这个专业，究竟选对了没？虽然，这个问题，可能没有答案。但是，这学期来，我已经因为这些，几次感觉到压抑并且喘不过气来。我不知道会不会是抑郁，但如果没有二中的朋友和音乐，我感觉我真的没法活。</p>
-<p><img src="/2023/11/15/2023%E7%A7%8B/1699979698443.png" alt="焦焦焦"></p>
+<figure>
+<img src="/2023/11/15/2023%E7%A7%8B/1699979698443.png" alt="焦焦焦">
+<figcaption aria-hidden="true">焦焦焦</figcaption>
+</figure>
 <p>还有这段时间，又为感情的琐事纠缠了很久，当然，缘由我起，现在黯然落幕了，也说不了什么。</p>
-<p><img src="/2023/11/15/2023%E7%A7%8B/1699979406940.png" alt="true friends or tree hole？"></p>
+<figure>
+<img src="/2023/11/15/2023%E7%A7%8B/1699979406940.png" alt="true friends or tree hole？">
+<figcaption aria-hidden="true">true friends or tree hole？</figcaption>
+</figure>
 <blockquote>
-<p>即使一生多出一根刺<br>没有刺痛别要知<br>就当共你有剧情没有故事</p>
+<p>即使一生多出一根刺 没有刺痛别要知 就当共你有剧情没有故事</p>
 </blockquote>
-<p><em><strong>像你没来过没去过~</strong></em></p>
+<p><strong><em>像你没来过没去过~</em></strong></p>
 <p>迷茫的树安，现在只能选择继续相信，彼方尚有荣光在。这学期还剩不到两个月，得振作起来了，学业最重要！！！</p>
 <p><strong>提前祝我亲爱的二中，93周年生日快乐！</strong></p>
-<p><img src="/2023/11/15/2023%E7%A7%8B/1699980268904.png" alt="二中！我的二中！"></p>
+<figure>
+<img src="/2023/11/15/2023%E7%A7%8B/1699980268904.png" alt="二中！我的二中！">
+<figcaption aria-hidden="true">二中！我的二中！</figcaption>
+</figure>
 <p><strong>今晚梦里，必归去兮！</strong></p>
-<h2 id="2023-12-18"><a href="#2023-12-18" class="headerlink" title="2023.12.18"></a>2023.12.18</h2><p>又自己一个人去唱k了。。。没想到还拉扯到昨天，可能是最后一次一起自习吃饭了，因为确实感觉到心更远了。</p>
-<p>但是人与人的感情就是会突然变淡，不是么？<br><img src="/2023/11/15/2023%E7%A7%8B/1702913142869.png" alt="1702913142869"></p>
-<p>还有一个星期考试了，希望能赶紧恢复状态。<br>感谢zr和jl听我发癫，兄弟才是永远的！</p>
+<h2 id="section-1">2023.12.18</h2>
+<p>又自己一个人去唱k了。。。没想到还拉扯到昨天，可能是最后一次一起自习吃饭了，因为确实感觉到心更远了。</p>
+<p>但是人与人的感情就是会突然变淡，不是么？ <img src="/2023/11/15/2023%E7%A7%8B/1702913142869.png" alt="1702913142869"></p>
+<p>还有一个星期考试了，希望能赶紧恢复状态。
+感谢zr和jl听我发癫，兄弟才是永远的！</p>
 <p><code>ls -a</code></p>
 <blockquote>
-<p>想讲句一切算了你听不到又怎算<br>想失也无可失这刻<br>我也曾赚了温暖<br>——《尘埃落定》</p>
+<p>想讲句一切算了你听不到又怎算 想失也无可失这刻 我也曾赚了温暖
+——《尘埃落定》</p>
 </blockquote>
 <p>祝十天后的树安生日快乐！</p>
-<h2 id="2024-2-20"><a href="#2024-2-20" class="headerlink" title="2024.2.20"></a>2024.2.20</h2><p>2023年秋季在一个多月前就早已结束了，千言万语心中，今天终于有空诉说。<br>这个学期，评价是如梦如幻。学不懂的半器，写不完的数据结构代码，全靠网课的DSP，还有摸不透的数集……我已经不记得，究竟有没有试过在十二点半前睡着觉。最开心的时光，或许是在和夜宵F4或沈老师在commune畅谈，亦或许是每晚凌晨1点独自从三教走回南区，与春秋为伴。</p>
-<p>焦虑，或许能概括我整个星期的精神状态：焦虑有没有书读，焦虑能不能跟到好的导师，选到好方向，焦虑读博还是读硕，读硕能不能有学硕……还有fucking情感生活，自己还是那么幼稚。<br>瞎忙活了一个学期，最终绩点不尽人意，但还好排名掉的不是很多。</p>
-<p>学期结束去了上海 AI Lab 实习了，邵老师和学长都挺好，学到了很多的东西。vta 仿真虽然最终没跑出来一个，但确实已经尽力了，首先把方案修改成目测可行，然后环境版本问题也无可奈何，并且还总结了许多神经网络模型和算子维度，下学期还做不做再看吧！集创赛并没有想象的那么简单，数据不够，如何抽象表示特征，等等，都是问题。</p>
-<p>整个寒假，除了在玩，还学了点ai基本功。从mlp到cnn，从transformer到llm；而春节期间 Sora 的登场更是炸裂；软件确实是比硬件迭代的更快，机会更多；我总是在想，微电子这个专业，是不是选错了。但想了想，就算当初选择了 cs，也是更加的卷，自己真的能生存下来吗？ai芯片很卷，ai更卷。英伟达垄断了芯片，OpenAI，Google，Meta，Amazon等美国科技巨头在 ai 圈更是遥遥领先。无论哪个行业，强的都是大厂，初创公司的生存问题，在任何赛道都是同样的。软件是轻资产，硬件是重资产，芯片设计是较轻的重资产。重资产创业难，风险大，但获利也更多。AGI 时代，肯定是需要算力的支持，英伟达已经成为云端的霸主，但边缘侧和终端还能有较大的发展，并且现在的算力应该也是不够的，不然 Altman 也不会打算豪掷7亿解决算力问题。无论算法如何，最终实现的也是硬件，离不开硅基生命。</p>
+<h2 id="section-2">2024.2.20</h2>
+<p>2023年秋季在一个多月前就早已结束了，千言万语心中，今天终于有空诉说。
+这个学期，评价是如梦如幻。学不懂的半器，写不完的数据结构代码，全靠网课的DSP，还有摸不透的数集……我已经不记得，究竟有没有试过在十二点半前睡着觉。最开心的时光，或许是在和夜宵F4或沈老师在commune畅谈，亦或许是每晚凌晨1点独自从三教走回南区，与春秋为伴。</p>
+<p>焦虑，或许能概括我整个星期的精神状态：焦虑有没有书读，焦虑能不能跟到好的导师，选到好方向，焦虑读博还是读硕，读硕能不能有学硕……还有fucking情感生活，自己还是那么幼稚。
+瞎忙活了一个学期，最终绩点不尽人意，但还好排名掉的不是很多。</p>
+<p>学期结束去了上海 AI Lab
+实习了，邵老师和学长都挺好，学到了很多的东西。vta
+仿真虽然最终没跑出来一个，但确实已经尽力了，首先把方案修改成目测可行，然后环境版本问题也无可奈何，并且还总结了许多神经网络模型和算子维度，下学期还做不做再看吧！集创赛并没有想象的那么简单，数据不够，如何抽象表示特征，等等，都是问题。</p>
+<p>整个寒假，除了在玩，还学了点ai基本功。从mlp到cnn，从transformer到llm；而春节期间
+Sora
+的登场更是炸裂；软件确实是比硬件迭代的更快，机会更多；我总是在想，微电子这个专业，是不是选错了。但想了想，就算当初选择了
+cs，也是更加的卷，自己真的能生存下来吗？ai芯片很卷，ai更卷。英伟达垄断了芯片，OpenAI，Google，Meta，Amazon等美国科技巨头在
+ai
+圈更是遥遥领先。无论哪个行业，强的都是大厂，初创公司的生存问题，在任何赛道都是同样的。软件是轻资产，硬件是重资产，芯片设计是较轻的重资产。重资产创业难，风险大，但获利也更多。AGI
+时代，肯定是需要算力的支持，英伟达已经成为云端的霸主，但边缘侧和终端还能有较大的发展，并且现在的算力应该也是不够的，不然
+Altman
+也不会打算豪掷7亿解决算力问题。无论算法如何，最终实现的也是硬件，离不开硅基生命。</p>
 <p>汪玉老师是真牛逼！强推：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Cw411F7xz/?spm_id_from=333.1007.top_right_bar_window_default_collection.content.click">【争鸣讲坛03】面向下一代人工智能的高能效电路与系统——机遇与挑战（清华大学汪玉教授）_哔哩哔哩_bilibili</a></p>
 <p>新学期，新气象。许个愿吧：希望卓博顺利，然后学术上的研究真能为人类文明进步发挥出一丁点价值！当然还期待解锁新角色！</p>
 
@@ -1146,112 +1434,130 @@
 
       
           <blockquote>
-<p><strong>credit to</strong> 《人工智能芯片技术白皮书2018，清华大学》《AI 芯片前沿技术与创新未来，张臣雄》 《2022亿库关于中国ai芯片行业的调研》</p>
+<p><strong>credit to</strong>
+《人工智能芯片技术白皮书2018，清华大学》《AI
+芯片前沿技术与创新未来，张臣雄》
+《2022亿库关于中国ai芯片行业的调研》</p>
 </blockquote>
-<p><em><strong>当英伟达成为全球首家市值超过1万亿美元芯片公司时，便意味着AI芯片的的热潮前所未有地席卷各行各业，成为人工智能时代的最重要的物理基石——无芯片，不 AI</strong></em></p>
-<h2 id="什么是-AI-芯片？"><a href="#什么是-AI-芯片？" class="headerlink" title="什么是 AI 芯片？"></a>什么是 AI 芯片？</h2><p><strong>定义</strong>：从广义上讲只要能够运行人工智能算法的芯片都叫作 AI 芯片。但是通常意义上的 AI 芯片指的是针对人工智能算法做了特殊加速设计的芯片，现阶段，这些人工智能算法一般以深度学习算法为主 (比如包括 DNN, CNN, RNN, LSTM, GAN, Transformer)</p>
+<p><strong><em>当英伟达成为全球首家市值超过1万亿美元芯片公司时，便意味着AI芯片的的热潮前所未有地席卷各行各业，成为人工智能时代的最重要的物理基石——无芯片，不
+AI</em></strong></p>
+<h2 id="什么是-ai-芯片">什么是 AI 芯片？</h2>
+<p><strong>定义</strong>：从广义上讲只要能够运行人工智能算法的芯片都叫作
+AI 芯片。但是通常意义上的 AI
+芯片指的是针对人工智能算法做了特殊加速设计的芯片，现阶段，这些人工智能算法一般以深度学习算法为主
+(比如包括 DNN, CNN, RNN, LSTM, GAN, Transformer)</p>
 <ul>
 <li>研究如何设计出高效的硬件友好型的智能算法</li>
 <li>研究如何将这些算法有效可靠地在芯片上实现</li>
 </ul>
-<p><strong>AI 芯片本身处于整个链条的中部，向上为应用和算法提供高效支持，向下对器件和电路、工艺和材料提出需求。</strong></p>
-<p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696787293538.png" alt="Fig1"></p>
-<h2 id="AI-芯片的种类"><a href="#AI-芯片的种类" class="headerlink" title="AI 芯片的种类"></a>AI 芯片的种类</h2><h3 id="按类型"><a href="#按类型" class="headerlink" title="按类型"></a>按类型</h3><ol>
+<p><strong>AI
+芯片本身处于整个链条的中部，向上为应用和算法提供高效支持，向下对器件和电路、工艺和材料提出需求。</strong></p>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696787293538.png" alt="Fig1">
+<figcaption aria-hidden="true">Fig1</figcaption>
+</figure>
+<h2 id="ai-芯片的种类">AI 芯片的种类</h2>
+<h3 id="按类型">按类型</h3>
+<ol type="1">
 <li><p><strong>经过软硬件优化可以高效支持 AI 应用的通用芯片</strong></p>
 <ul>
 <li><p><strong>GPU</strong></p>
-<p>GPU是单指令、多数据处理，采用数量众多的计算单元和超长的流水线，主要处理图像领域的运算加速。GPU是不能单独使用的，它只是处理大数据计算时的能手，必须由CPU进行调用，下达指令才能工作。为此开发的专用编程系统CUDA，能够帮助工程师们运行数万个并发线程和数百个处理器核。<br><strong>高度并行计算，软硬件协同</strong><br><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144036046.png" alt="1698144036046"></p>
-</li>
-<li><p><strong>TPU, NPU</strong></p>
-</li>
-</ul>
-</li>
+<p>GPU是单指令、多数据处理，采用数量众多的计算单元和超长的流水线，主要处理图像领域的运算加速。GPU是不能单独使用的，它只是处理大数据计算时的能手，必须由CPU进行调用，下达指令才能工作。为此开发的专用编程系统CUDA，能够帮助工程师们运行数万个并发线程和数百个处理器核。
+<strong>高度并行计算，软硬件协同</strong> <img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144036046.png" alt="1698144036046"></p></li>
+<li><p><strong>TPU, NPU</strong></p></li>
+</ul></li>
 <li><p><strong>侧重加速机器学习（尤其是神经网络、深度学习）算法的芯片</strong></p>
 <ul>
 <li><p><strong>FPGA</strong></p>
-<p>可编程逻辑门阵列，是一种“可重构”芯片，具有模块化和规则化的架构，主要包含可编程逻辑模块、片上储存器及用于连接逻辑模块的可重构互连层次结构。</p>
-</li>
+<p>可编程逻辑门阵列，是一种“可重构”芯片，具有模块化和规则化的架构，主要包含可编程逻辑模块、片上储存器及用于连接逻辑模块的可重构互连层次结构。</p></li>
 <li><p><strong>ASIC</strong></p>
-<p>特定用户要求和特定电子系统的需要而设计、制造的集成电路。</p>
-</li>
-<li><p><strong>两者对比</strong><br>FPGA具有开发周期短，上市速度快，可配置性等特点，目前被大量的应用在大型企业的线上数据处理中心和军工单位。ASIC一次性成本远远高于FPGA，但由于其量产成本低，应用上就偏向于消费电子，如移动终端等领域。<br><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144099559.png" alt="1698144099559"><br><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144177110.png" alt="1698144177110"></p>
-</li>
-</ul>
-</li>
+<p>特定用户要求和特定电子系统的需要而设计、制造的集成电路。</p></li>
+<li><p><strong>两者对比</strong>
+FPGA具有开发周期短，上市速度快，可配置性等特点，目前被大量的应用在大型企业的线上数据处理中心和军工单位。ASIC一次性成本远远高于FPGA，但由于其量产成本低，应用上就偏向于消费电子，如移动终端等领域。
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144099559.png" alt="1698144099559"> <img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144177110.png" alt="1698144177110"></p></li>
+</ul></li>
 <li><p><strong>受生物脑启发设计的神经形态计算芯片</strong></p>
 <ul>
 <li><p><strong>类脑芯片</strong></p>
-<p>类脑芯片架构是一款模拟人脑的神经网络模型的新型芯片编程架构，这一系统可以模拟人脑功能进行感知方式、行为方式和思维方式，使用的是脉冲神经网络(SNN)。如，清华大学天机系列芯片。<br><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144682568.png" alt="1698144682568"></p>
-</li>
-</ul>
-</li>
+<p>类脑芯片架构是一款模拟人脑的神经网络模型的新型芯片编程架构，这一系统可以模拟人脑功能进行感知方式、行为方式和思维方式，使用的是脉冲神经网络(SNN)。如，清华大学天机系列芯片。
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1698144682568.png" alt="1698144682568"></p></li>
+</ul></li>
 </ol>
-<h3 id="按功能分类"><a href="#按功能分类" class="headerlink" title="按功能分类"></a>按功能分类</h3><p>根据机器学习算法步骤，可分为训练和推断两个环节：</p>
+<h3 id="按功能分类">按功能分类</h3>
+<p>根据机器学习算法步骤，可分为训练和推断两个环节：</p>
 <ul>
 <li><p><strong>训练 (Training)</strong></p>
-<p>训练环节通常需要通过大量的数据输入，训练出一个复杂的深度神经网络模型。训练过程由于涉及海量的训练数据和复杂的深度神经网络结构，运算量巨大，需要庞大的计算规模。训练要求<strong>高精度、高吞吐量、强大的算力</strong>。目前市场上通常使用英伟达的GPU集群，Google的 TPU 来训练。</p>
-</li>
+<p>训练环节通常需要通过大量的数据输入，训练出一个复杂的深度神经网络模型。训练过程由于涉及海量的训练数据和复杂的深度神经网络结构，运算量巨大，需要庞大的计算规模。训练要求<strong>高精度、高吞吐量、强大的算力</strong>。目前市场上通常使用英伟达的GPU集群，Google的
+TPU 来训练。</p></li>
 <li><p><strong>推断 (Inference)</strong></p>
-<p>推断环节是指利用训练好的模型，使用新的数据去“推断”出各种结论。这个环节的计算量相对训练环节少很多，但仍然会涉及到大量的矩阵运算。因此，对于众多应用场景来说，<strong>速度、能效、安全和硬件成本</strong>是考虑的因素。</p>
-</li>
+<p>推断环节是指利用训练好的模型，使用新的数据去“推断”出各种结论。这个环节的计算量相对训练环节少很多，但仍然会涉及到大量的矩阵运算。因此，对于众多应用场景来说，<strong>速度、能效、安全和硬件成本</strong>是考虑的因素。</p></li>
 <li><p><strong>趋势</strong></p>
-<p>在未来的 AI 应用当中，训练（学习）和推断在更多场景下会是交织在一起的。<br>推断放在边缘侧，更低延时，更安全隐私</p>
-</li>
+<p>在未来的 AI
+应用当中，训练（学习）和推断在更多场景下会是交织在一起的。
+推断放在边缘侧，更低延时，更安全隐私</p></li>
 </ul>
-<h3 id="按-AI-部署的位置"><a href="#按-AI-部署的位置" class="headerlink" title="按 AI 部署的位置"></a>按 AI 部署的位置</h3><p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696788206981.png" alt="Fig2"></p>
+<h3 id="按-ai-部署的位置">按 AI 部署的位置</h3>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696788206981.png" alt="Fig2">
+<figcaption aria-hidden="true">Fig2</figcaption>
+</figure>
 <ul>
 <li><p><strong>云端</strong></p>
-<p>云端是指在数据中心或超级计算机，利用海量的数据和庞大而复杂的深度学习算法进行模型训练，也能用作推理。</p>
-</li>
+<p>云端是指在数据中心或超级计算机，利用海量的数据和庞大而复杂的深度学习算法进行模型训练，也能用作推理。</p></li>
 <li><p><strong>边缘侧</strong></p>
-<p>数据中心外的设备，如自动驾驶汽车、机器人、智能手机、物联网设备等，一般用训练好的模型进行推理。</p>
-</li>
+<p>数据中心外的设备，如自动驾驶汽车、机器人、智能手机、物联网设备等，一般用训练好的模型进行推理。</p></li>
 <li><p><strong>趋势</strong></p>
-<p>云的边界也 逐渐向数据的源头推进，未来很可能在传统的终端设备和云端设备直接出现更多的边缘设备，把 AI 处理分布在各种网络设备（比如5G的基站）中，让数据尽量实现本地处理，这样更低延时，更安全隐私。</p>
-</li>
+<p>云的边界也
+逐渐向数据的源头推进，未来很可能在传统的终端设备和云端设备直接出现更多的边缘设备，把
+AI
+处理分布在各种网络设备（比如5G的基站）中，让数据尽量实现本地处理，这样更低延时，更安全隐私。</p></li>
 </ul>
-<h2 id="AI-芯片的技术挑战"><a href="#AI-芯片的技术挑战" class="headerlink" title="AI 芯片的技术挑战"></a>AI 芯片的技术挑战</h2><ul>
+<h2 id="ai-芯片的技术挑战">AI 芯片的技术挑战</h2>
+<ul>
 <li><strong>冯·诺依曼瓶颈</strong></li>
 </ul>
 <p><strong>内存墙</strong>问题。</p>
-<p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696789769571.png" alt="Fig3"></p>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696789769571.png" alt="Fig3">
+<figcaption aria-hidden="true">Fig3</figcaption>
+</figure>
 <ul>
 <li><strong>CMOS工艺和器件瓶颈</strong></li>
 </ul>
-<p><strong>Dennard Scaling定律</strong>已经失效，<strong>Amdahl’s Law</strong>已经达到了极限，<strong>Moore’s Law</strong>也变得越来越难以遵循，而且成本也越来越高，特别是在功率和性能效益下降的情况下。</p>
-<h2 id="AI-芯片的优化方向"><a href="#AI-芯片的优化方向" class="headerlink" title="AI 芯片的优化方向"></a>AI 芯片的优化方向</h2><h3 id="新型计算范式"><a href="#新型计算范式" class="headerlink" title="新型计算范式"></a>新型计算范式</h3><p>目前，AI芯片主要用于DNN模型的训练和推理，计算量非常大，故需从硬件友好方面考虑对算法的改进，降低计算成本。</p>
+<p><strong>Dennard Scaling定律</strong>已经失效，<strong>Amdahl’s
+Law</strong>已经达到了极限，<strong>Moore's
+Law</strong>也变得越来越难以遵循，而且成本也越来越高，特别是在功率和性能效益下降的情况下。</p>
+<h2 id="ai-芯片的优化方向">AI 芯片的优化方向</h2>
+<h3 id="新型计算范式">新型计算范式</h3>
+<p>目前，AI芯片主要用于DNN模型的训练和推理，计算量非常大，故需从硬件友好方面考虑对算法的改进，降低计算成本。</p>
 <ul>
 <li><p><strong>降低数值精度的量化技术</strong></p>
-<p>减少位宽，实现一个精度与硬件开销的 trade-off</p>
-</li>
+<p>减少位宽，实现一个精度与硬件开销的 trade-off</p></li>
 <li><p><strong>压缩网络规模、修剪网络</strong></p>
-<p>在DNN计算中，有许多值是0或接近于0或重复的值，将这些值输入一个MAC进行乘积累加运算没有意义，浪费资源，因此需要压缩和剪枝。</p>
-</li>
+<p>在DNN计算中，有许多值是0或接近于0或重复的值，将这些值输入一个MAC进行乘积累加运算没有意义，浪费资源，因此需要压缩和剪枝。</p></li>
 <li><p><strong>二值、三值神经网络</strong></p>
 <p>BNN: Binary Neural Network</p>
-<p>TNN: Ternary Neural Network</p>
-</li>
+<p>TNN: Ternary Neural Network</p></li>
 <li><p><strong>增加和利用网络稀疏性</strong></p>
-<p>稀疏化数据流感知</p>
-</li>
+<p>稀疏化数据流感知</p></li>
 </ul>
-<h3 id="架构的设计和优化"><a href="#架构的设计和优化" class="headerlink" title="架构的设计和优化"></a>架构的设计和优化</h3><ul>
-<li><p><strong>CPU+GPU+DSA异构并行计算</strong></p>
-</li>
+<h3 id="架构的设计和优化">架构的设计和优化</h3>
+<ul>
+<li><p><strong>CPU+GPU+DSA异构并行计算</strong></p></li>
 <li><p><strong>存算感一体新架构</strong></p>
-<p>有望突破冯·诺依曼架构，存内运算、近内存计算、基于新型存储器的人工神经网络、生物神经网络，等等。</p>
-</li>
+<p>有望突破冯·诺依曼架构，存内运算、近内存计算、基于新型存储器的人工神经网络、生物神经网络，等等。</p></li>
 </ul>
-<h3 id="电路的设计和优化"><a href="#电路的设计和优化" class="headerlink" title="电路的设计和优化"></a>电路的设计和优化</h3><ul>
+<h3 id="电路的设计和优化">电路的设计和优化</h3>
+<ul>
 <li><p><strong>FPGA Overlay技术</strong></p>
-<p>为了提高FPGA的开发效率、更好的利用FPGA的逻辑资源、方便FPGA的大规模部署和应用，需要将FPGA进行一定程度的逻辑抽象，使顶层用户不必太多关注于FPGA硬件逻辑的实现方式与细节。</p>
-</li>
-<li><p><strong>模数混合电路设计MAC</strong></p>
-</li>
+<p>为了提高FPGA的开发效率、更好的利用FPGA的逻辑资源、方便FPGA的大规模部署和应用，需要将FPGA进行一定程度的逻辑抽象，使顶层用户不必太多关注于FPGA硬件逻辑的实现方式与细节。</p></li>
+<li><p><strong>模数混合电路设计MAC</strong></p></li>
 <li><p><strong>软件定义芯片</strong></p>
 <p>可重构计算技术允许硬件架构和功能随软件变化而变化，具备处理器的灵活性和专用集成电路的高性能和低功耗，被认为是突破性的下一代集成电路技术</p>
-<p><img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696789666625.png" alt="Fig4"></p>
-</li>
+<figure>
+<img src="/2023/10/09/AI_and_ML_Accelerator_Research/1696789666625.png" alt="Fig4">
+<figcaption aria-hidden="true">Fig4</figcaption>
+</figure></li>
 </ul>
 <blockquote>
 <p>2023年10月24日，按照李炎原来的说法“调查一下该方向的历史发展啊，研究现状啊”进行了pre，结果被李炎说太宽泛有点水。本来就是自己没说清楚。但是，我觉得他有句话说得对，“像是在半导体大会上做报告”，这是不是说我有做企业高管领导的潜质捏？😜</p>
@@ -1331,94 +1637,182 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="2023-7-31"><a href="#2023-7-31" class="headerlink" title="2023.7.31"></a>2023.7.31</h2><ul>
-<li><strong>2023年7月16日11点13分，浙江绍兴，上虞南站。</strong><br>兴奋、期待、忐忑……不知道应该用什么样的词语来形容我此刻的心情，这是我第一次，孤身一人，来到一座陌生的城市。公司环境会是怎样，新舍友怎么样，同事们怎么样，工作究竟会不会做……无数的想法充斥着我的脑海里，但是这是一次全新的体验，因为这意味着第一次走出学校，走进社会。<br>在火车站等公交车等了半小时竟然都等不到一辆，我只好打车来到中芯集成，并在一番折腾后终于拖着重重的箱子，满头大汗并忐忑地敲开了新宿舍的门。<br><strong>“hi~，我是你们的新舍友。”</strong></li>
-<li>我的三个新舍友都是研二的学生，也是暑假来实习的。由于他们都比我大了好几岁，并且我本身就比较内向与社恐，刚开始跟他们交流的时候就显得有点胆怯（可能不止一点），尽管他们都非常的友善。当他们惊叹于我大二就来实习的时候并且是fdu的学生时，我连忙摇头摆手说自己很菜。我从小到大都是这样，过于内敛，害怕被人夸赞，但实际上虽然谦虚是好事，可是有时候就应该大方自信一点。反思过后，我认为再来一次的话应该要这样子回答：<br><em>Q:大二就来实习了吗？</em><br>*A:对，早点来实习长长见识！<br><em>Q:你是fdu的啊？牛逼</em><br><em>A:哈哈哈还行吧，以后还得向你们多多请教呢！</em></li>
-<li>我被安排到的部门是 <em>Technique &amp; Marketing Centre - Design Enablement - Spice Model - HV&#x2F;Anolog SPICE</em>，职位是 <em>HVS</em>。带我的周扬师兄，以及其他所有同事都很热情友善，整个小组氛围也很好。但可能还是因为年龄差的原因，并且我觉得我没有一点工作经验以及对于能否做好实习的工作缺少底气，我和同事们交流的时候还是放不开，不太自然（自己听自己的声音都能明显感觉得到）。唉，树安，下次自信一点，展示一下fdu高材生魅力，how say！</li>
+          <h2 id="section">2023.7.31</h2>
+<ul>
+<li><strong>2023年7月16日11点13分，浙江绍兴，上虞南站。</strong>
+兴奋、期待、忐忑……不知道应该用什么样的词语来形容我此刻的心情，这是我第一次，孤身一人，来到一座陌生的城市。公司环境会是怎样，新舍友怎么样，同事们怎么样，工作究竟会不会做……无数的想法充斥着我的脑海里，但是这是一次全新的体验，因为这意味着第一次走出学校，走进社会。
+在火车站等公交车等了半小时竟然都等不到一辆，我只好打车来到中芯集成，并在一番折腾后终于拖着重重的箱子，满头大汗并忐忑地敲开了新宿舍的门。
+<strong>“hi~，我是你们的新舍友。”</strong></li>
+<li>我的三个新舍友都是研二的学生，也是暑假来实习的。由于他们都比我大了好几岁，并且我本身就比较内向与社恐，刚开始跟他们交流的时候就显得有点胆怯（可能不止一点），尽管他们都非常的友善。当他们惊叹于我大二就来实习的时候并且是fdu的学生时，我连忙摇头摆手说自己很菜。我从小到大都是这样，过于内敛，害怕被人夸赞，但实际上虽然谦虚是好事，可是有时候就应该大方自信一点。反思过后，我认为再来一次的话应该要这样子回答：
+<em>Q:大二就来实习了吗？</em> <em>A:对，早点来实习长长见识！
+</em>Q:你是fdu的啊？牛逼<em>
+</em>A:哈哈哈还行吧，以后还得向你们多多请教呢！*</li>
+<li>我被安排到的部门是 <em>Technique &amp; Marketing Centre - Design
+Enablement - Spice Model - HV/Anolog SPICE</em>，职位是
+<em>HVS</em>。带我的周扬师兄，以及其他所有同事都很热情友善，整个小组氛围也很好。但可能还是因为年龄差的原因，并且我觉得我没有一点工作经验以及对于能否做好实习的工作缺少底气，我和同事们交流的时候还是放不开，不太自然（自己听自己的声音都能明显感觉得到）。唉，树安，下次自信一点，展示一下fdu高材生魅力，how
+say！</li>
 <li>第一个星期还没配好电脑，于是自己看了看书，复习了一下半物和模电，在b站上学了点强化学习；第二个星期终于等来了电脑，但是周扬师兄让我先看下培训资料，讲的是一些器件原理，仿真、测试原理和流程，公司的工艺平台，等等，还是学到不少东西。</li>
-<li>星期五晚上和同事们一起出去吃顿海鲜自助餐😋😆<br><strong>明天，八月！</strong></li>
+<li>星期五晚上和同事们一起出去吃顿海鲜自助餐😋😆
+<strong>明天，八月！</strong></li>
 </ul>
-<h2 id="2023-8-6"><a href="#2023-8-6" class="headerlink" title="2023.8.6"></a>2023.8.6</h2><ul>
-<li>上一周学会了如何用hspice仿真电路，学会了看懂一点点网表并且尝试自己写了一下（其实不知道对不对），学会了看版图，学会了Resistance Extraction的流程。In my opinion，写网表和绘版图还是有点技术含量的，但是学会用excel绘图也还是有用的（还没学，下周研究下）。其实有很多测试的原理也没有完全搞懂，但是其实不是很重要，因为这里的很多工作都是非常完善的，无需从原理研究起来，并且来实习也不是为了学原理和技术。</li>
+<h2 id="section-1">2023.8.6</h2>
+<ul>
+<li>上一周学会了如何用hspice仿真电路，学会了看懂一点点网表并且尝试自己写了一下（其实不知道对不对），学会了看版图，学会了Resistance
+Extraction的流程。In my
+opinion，写网表和绘版图还是有点技术含量的，但是学会用excel绘图也还是有用的（还没学，下周研究下）。其实有很多测试的原理也没有完全搞懂，但是其实不是很重要，因为这里的很多工作都是非常完善的，无需从原理研究起来，并且来实习也不是为了学原理和技术。</li>
 <li>对于待人接物（对于陌生人和一些不是很熟很交心的朋友）的方式又有了深刻的体会：首先要自信，这意味着，气场要强大，有自己独立思考的能力，有自己的想法，不能显露出自己的情绪，要时刻保持冷静和理性；其次是尊重别人，微笑，gentleman。</li>
-<li>据我猜测，在这个岗位上的正式员工，应该是一两万一个月左右，工作不会很多，压力不会很大，有一定的技术含量，这样一个年能有个二十来万。实习摸鱼的时候，我在思考这样的问题，假设以后毕业出来打工，一年能有五十万，虽然确实已经挺好了，但还是无法十年内全款买房。怎么样，才能实现真正的跨越？我目前想到的只有以下三种方向：<strong>创业&#x2F;从工程师到高管&#x2F;投资</strong>（当然应该在有稳定的较好的工作的基础之上）。前两种的一个前提是，技术本身要够硬，专业知识够强；前两者都要具备创新能力，并且创业更需要创新。第二种则需要很好的管理能力。创业难度大，风险高，需要技术与机遇，综合考虑人脉、市场等因素；而成为企业高管，需要提升自己全方位能力。投资暂未了解。</li>
+<li>据我猜测，在这个岗位上的正式员工，应该是一两万一个月左右，工作不会很多，压力不会很大，有一定的技术含量，这样一个年能有个二十来万。实习摸鱼的时候，我在思考这样的问题，假设以后毕业出来打工，一年能有五十万，虽然确实已经挺好了，但还是无法十年内全款买房。怎么样，才能实现真正的跨越？我目前想到的只有以下三种方向：<strong>创业/从工程师到高管/投资</strong>（当然应该在有稳定的较好的工作的基础之上）。前两种的一个前提是，技术本身要够硬，专业知识够强；前两者都要具备创新能力，并且创业更需要创新。第二种则需要很好的管理能力。创业难度大，风险高，需要技术与机遇，综合考虑人脉、市场等因素；而成为企业高管，需要提升自己全方位能力。投资暂未了解。</li>
 <li>ok，上面一段都是瞎jb讲的。</li>
 <li>今天是tfboys十周年之约，虽然我也不完全算是四叶草，但是我感觉他们（无论是团体还是个人）确实都有很多很好听的歌，并且有些歌真的让人充满能量（比如样YOUNG）。十年之前，我也没想到十年之后是怎么样的，我现在也无法设想十年之后，这个世界，身边的人，自己，还有tfboys，都会变成怎么样。</li>
 </ul>
-<h2 id="2023-8-11"><a href="#2023-8-11" class="headerlink" title="2023.8.11"></a>2023.8.11</h2><p>实习终于结束了！明天就回家了！前两天写了篇实习报告给赵总看，听说还被赵总传阅了，树安你是有点东西的。</p>
-<h2 id="实习报告"><a href="#实习报告" class="headerlink" title="实习报告"></a>实习报告</h2><h3 id="实习记录"><a href="#实习记录" class="headerlink" title="实习记录"></a>实习记录</h3><ul>
+<h2 id="section-2">2023.8.11</h2>
+<p>实习终于结束了！明天就回家了！前两天写了篇实习报告给赵总看，听说还被赵总传阅了，树安你是有点东西的。</p>
+<h2 id="实习报告">实习报告</h2>
+<h3 id="实习记录">实习记录</h3>
+<ul>
 <li>2023年7月18日，我来到了绍兴中芯集成电路制造股份有限公司，开启了我人生中的第一次实习。</li>
 <li>7月18日是实习报道日，办理入职手续和参加新员工培训，培训内容包括对公司介绍、总务情况、消防安全等等。</li>
-<li>7月19日，我来到我的工作岗位上正式开始我的实习之旅。我的部门是 Technology &amp; Marketing Center - Design Enablement - SPICE Modeling - HV&#x2F;Analog SPICE，岗位是 HVS，即负责器件的 SPICE 测试，仿真与建模。一开始还没有申请到电脑，于是我看了两三天书，复习了一下半导体器件原理，听了一些培训讲座。</li>
+<li>7月19日，我来到我的工作岗位上正式开始我的实习之旅。我的部门是
+Technology &amp; Marketing Center - Design Enablement - SPICE Modeling -
+HV/Analog SPICE，岗位是 HVS，即负责器件的 SPICE
+测试，仿真与建模。一开始还没有申请到电脑，于是我看了两三天书，复习了一下半导体器件原理，听了一些培训讲座。</li>
 <li>7月25日申请到电脑后，看了几天公司内部的培训资料，ppt，平台手册等，了解了整个岗位的基本任务和操作。</li>
-<li>7月28日，给电脑安装好工作需要用到的软件后，终于可以开始动手操作，边做边学，如用 Hspice 仿真，进行 Resistor 参数的抽取建模，等等。</li>
-<li>实习期间，还到实验室观摩了带教师兄进行WAT测试，亲眼看到了晶圆的样子。每周开例会我也都参与了，深入理解了我们SPICE MODEL组，甚至可以说是整个公司的工作，皆是以客户需求为核心，以市场为导向。</li>
+<li>7月28日，给电脑安装好工作需要用到的软件后，终于可以开始动手操作，边做边学，如用
+Hspice 仿真，进行 Resistor 参数的抽取建模，等等。</li>
+<li>实习期间，还到实验室观摩了带教师兄进行WAT测试，亲眼看到了晶圆的样子。每周开例会我也都参与了，深入理解了我们SPICE
+MODEL组，甚至可以说是整个公司的工作，皆是以客户需求为核心，以市场为导向。</li>
 </ul>
-<h3 id="实习收获"><a href="#实习收获" class="headerlink" title="实习收获"></a>实习收获</h3><ol>
+<h3 id="实习收获">实习收获</h3>
+<ol type="1">
 <li>扎实的学科基础是做好实习工作的前提条件。比如，进行WAT测试，当然得先知道要进行测试的电学特性都有哪些，并且需要非常熟悉各种半导体器件(如MOS，BIT，Diode等)的基本原理，这样在进行分析与测试时才能熟练地运用上去。这些知识都是在学校里习得的，也就是说专业知识一定要扎实，并且沉淀为自身的“常识”。</li>
-<li>但实习时仅靠在学校里学过的知识是远远不够的，因为工作是一种对知识的运用，并且还会涉及许许多多没有学过的知识。这也是为什么公司要对新员工进行入职的培训。但是工作中会遇到非常多的问题，单靠培训获得的知识也是难以 handle 的，这就需要在整个工作中都要具备汲取新知识的能力，边做边学，学以致用。</li>
-<li>实习第一天，我对于做些什么，为什么要这样做，应该怎么做，没有一点概念。但慢慢的，我逐渐搞明白了这三个问题。从逆向的逻辑来看：我们要做的是SPICE Model的仿真与建模，因为这是芯片设计到物理实现的重要桥梁：芯片设计好后进行物理实现要用到的元器件等，由PDK工具包来提供，而产生PDK前的关键步骤就是进行SPICE Modeling，包括器件的有关方程与参数。那么我们该如何完成这项工作呢？这就需要获得两部分数据：理想的 target 与实测的 value，然后再进行数据分析、拟合并建模。这让我明白了，无论是实习工作，还是处理其他的事情，都需要搞清楚，what, why, how。</li>
-<li>Communication &amp; Corporation。小组内部每周会开一次例会，总结上周工作，提出一些新问题，并布置下周任务；平时同事们也经常探讨问题，发邮件、发信息、打电话联系其他部门的同事，以更好地进行团队合作与工作上的协调。Partnership，是公司文化中四大理念之首，这也是我这段实习中感觉最有收获的地方。因为我一直以来都不太擅长与人沟通，甚至害怕跟陌生人交流。而这次实习给了我一个改变自己的机会，慢慢走出我的 comfort zone，去认识新同事，去向比我年纪大、经验丰富的前辈请教。总之，我明白了待人接物除了要谦虚礼貌外，更要充满自信。当然我还需要更多地锻炼，学习如何更有效地与人沟通交流，进一步学习如何管理好一个团队。</li>
-<li>当然，在整个实习和培训过程中还学习了许多学术上的知识和技能（详见实习笔记部分）：<ul>
+<li>但实习时仅靠在学校里学过的知识是远远不够的，因为工作是一种对知识的运用，并且还会涉及许许多多没有学过的知识。这也是为什么公司要对新员工进行入职的培训。但是工作中会遇到非常多的问题，单靠培训获得的知识也是难以
+handle
+的，这就需要在整个工作中都要具备汲取新知识的能力，边做边学，学以致用。</li>
+<li>实习第一天，我对于做些什么，为什么要这样做，应该怎么做，没有一点概念。但慢慢的，我逐渐搞明白了这三个问题。从逆向的逻辑来看：我们要做的是SPICE
+Model的仿真与建模，因为这是芯片设计到物理实现的重要桥梁：芯片设计好后进行物理实现要用到的元器件等，由PDK工具包来提供，而产生PDK前的关键步骤就是进行SPICE
+Modeling，包括器件的有关方程与参数。那么我们该如何完成这项工作呢？这就需要获得两部分数据：理想的
+target 与实测的
+value，然后再进行数据分析、拟合并建模。这让我明白了，无论是实习工作，还是处理其他的事情，都需要搞清楚，what,
+why, how。</li>
+<li>Communication &amp;
+Corporation。小组内部每周会开一次例会，总结上周工作，提出一些新问题，并布置下周任务；平时同事们也经常探讨问题，发邮件、发信息、打电话联系其他部门的同事，以更好地进行团队合作与工作上的协调。Partnership，是公司文化中四大理念之首，这也是我这段实习中感觉最有收获的地方。因为我一直以来都不太擅长与人沟通，甚至害怕跟陌生人交流。而这次实习给了我一个改变自己的机会，慢慢走出我的
+comfort
+zone，去认识新同事，去向比我年纪大、经验丰富的前辈请教。总之，我明白了待人接物除了要谦虚礼貌外，更要充满自信。当然我还需要更多地锻炼，学习如何更有效地与人沟通交流，进一步学习如何管理好一个团队。</li>
+<li>当然，在整个实习和培训过程中还学习了许多学术上的知识和技能（详见实习笔记部分）：
+<ul>
 <li>对半导体整个产业链、芯片设计制造封装整个流程，有了更深的认识；</li>
-<li>深入了解了公司的Smec BCD_Platform, 体验了实验室 WAT 测试过程 ，学会了使用hspic进行仿真，KLayout查看版图；</li>
+<li>深入了解了公司的Smec BCD_Platform, 体验了实验室 WAT 测试过程
+，学会了使用hspic进行仿真，KLayout查看版图；</li>
 <li>基本 Device 的电学性能与测试原理，网表、版图的基础知识；</li>
 <li>许许多多的集成电路英文专有名词。</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h3 id="实习感想"><a href="#实习感想" class="headerlink" title="实习感想"></a>实习感想</h3><ol>
+<h3 id="实习感想">实习感想</h3>
+<ol type="1">
 <li>人生中第一次到大厂实习，真的非常开心。特别是当我拿到工牌、坐上属于自己工位的那一刻，顿时感到自身价值倍增。</li>
-<li>这次实习见识到了一个大公司究竟是怎么样的：首先在部门设计上，大概分为 TMC, Supporting Center, 运营中心，等等，分工明确，各司其职，并且内部还分为多个级别，并有相对应的主管；其次是OA系统，支撑着各种事务的正常运作；然后是部门之间的沟通方式多渠道，电脑端 Skype for Business 即使通讯，Outlook 邮件联系，手机端企业微信，还有平时在部门里面能用座机打电话联络，这些都使得一个拥有5000多名员工的大公司内部能够进行正常有效便捷的交流；而最令我印象深刻的是，公司的保密、信息安全工作做得相当严格，个人的笔记本、平板电脑都不能带进工作区域。总而言之，来到国际大公司、大厂上班给我带来的感觉还是相当的震撼。</li>
+<li>这次实习见识到了一个大公司究竟是怎么样的：首先在部门设计上，大概分为
+TMC, Supporting Center,
+运营中心，等等，分工明确，各司其职，并且内部还分为多个级别，并有相对应的主管；其次是OA系统，支撑着各种事务的正常运作；然后是部门之间的沟通方式多渠道，电脑端
+Skype for Business 即使通讯，Outlook
+邮件联系，手机端企业微信，还有平时在部门里面能用座机打电话联络，这些都使得一个拥有5000多名员工的大公司内部能够进行正常有效便捷的交流；而最令我印象深刻的是，公司的保密、信息安全工作做得相当严格，个人的笔记本、平板电脑都不能带进工作区域。总而言之，来到国际大公司、大厂上班给我带来的感觉还是相当的震撼。</li>
 <li>公司的饭堂算是比较实惠，菜的品种也较为丰富，价格与复旦饭堂差不多，口味也相当不错。宿舍环境超好，四人间比复旦的宽敞多了，还有独立卫浴，干净舒适，唯一的缺点是没有热水饮用。公司的其他硬件设施也非常完备，但是在环境方面，每到傍晚六点多左右，厂房排出来的废气带着一些异味，空气质量下降，感觉再吸多几个星期会少活那么个几年。</li>
 <li>新人入职培养方面，公司的培训计划与一对一的老带新制度可谓是非常完善和周到，能让新员工快速入门与适应工作。但我觉得培训时间还是太长了点，坐我旁边的一位老哥是新来的应届毕业生，入职一个月了还没什么事情做，还在培训阶段，看各种资料。其实我觉得这个岗位的话一两个星期基本上就能掌握一些核心的原理与操作了，很快就能上手干活，其它的完全可以边做边学。</li>
-<li>在实习中发生了一件让我比较难受的事情。办理离职申请手续需要经过比较多的审核，整个流程很长比较慢，这很正常。但是如果它卡在了一个节点三四天不动，就让人很难受。8月4号13:02:19到信息安全中心进行审核，8月7日下午17:00还没审核完。于是我联系了对应负责人询问情况，问他是否可以快一点，他答应帮我催促一下。第二天早上9点半，审核还是卡在那里一动不动，于是我又在 Skype for business 上发消息给负责人，想问一下审核进行得怎么样。最让人气愤的是，这名负责人状态是在线at work，但是并没有回复消息。我又发了好几条信息恳求他能否帮忙催促一下，并且提出希望他看到信息可以回复一下，结果还是没有答复。我在企业微信和Outlook上联系他依旧不回。我还真不信他这么忙没有看到消息，于是我在OA系统上找到他的主管，和他说明了情况，请他帮忙联系一下。幸运的是那名主管人比较好，立刻在企业微信里面把我们三人拉了个群，并且 @ 那名负责人，那人立刻出现回复说好，并在不到三十分钟内就完成了审核。这很明显就是那人拖着不去审核，明明几十分钟就能完成的事情拖了好几天，办事效率极其低下，如果不是找到主管督促都不知道还要拖几天；关键是态度极差，之前答应说帮忙催促显然就是敷衍，而且看到消息不回素质非常差；这可能也是公司比较大的缘故吧，监管不到位，导致总会有人做事拖拖拉拉的，一定程度上降低了整个公司的办事效率。</li>
+<li>在实习中发生了一件让我比较难受的事情。办理离职申请手续需要经过比较多的审核，整个流程很长比较慢，这很正常。但是如果它卡在了一个节点三四天不动，就让人很难受。8月4号13:02:19到信息安全中心进行审核，8月7日下午17:00还没审核完。于是我联系了对应负责人询问情况，问他是否可以快一点，他答应帮我催促一下。第二天早上9点半，审核还是卡在那里一动不动，于是我又在
+Skype for business
+上发消息给负责人，想问一下审核进行得怎么样。最让人气愤的是，这名负责人状态是在线at
+work，但是并没有回复消息。我又发了好几条信息恳求他能否帮忙催促一下，并且提出希望他看到信息可以回复一下，结果还是没有答复。我在企业微信和Outlook上联系他依旧不回。我还真不信他这么忙没有看到消息，于是我在OA系统上找到他的主管，和他说明了情况，请他帮忙联系一下。幸运的是那名主管人比较好，立刻在企业微信里面把我们三人拉了个群，并且
+@
+那名负责人，那人立刻出现回复说好，并在不到三十分钟内就完成了审核。这很明显就是那人拖着不去审核，明明几十分钟就能完成的事情拖了好几天，办事效率极其低下，如果不是找到主管督促都不知道还要拖几天；关键是态度极差，之前答应说帮忙催促显然就是敷衍，而且看到消息不回素质非常差；这可能也是公司比较大的缘故吧，监管不到位，导致总会有人做事拖拖拉拉的，一定程度上降低了整个公司的办事效率。</li>
 </ol>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总之，非常感激这段实习经历，给我带来的学习上、能力上、生活上的各种收获，得到一次从未有过的人生体验。衷心感谢师兄赵奇总经理给予这样一次提升自我的机会！祝愿中芯集成越做越好！</p>
-<h3 id="附：实习笔记"><a href="#附：实习笔记" class="headerlink" title="附：实习笔记"></a>附：实习笔记</h3><h4 id="PDK"><a href="#PDK" class="headerlink" title="PDK"></a>PDK</h4><ul>
-<li>PDK(Process Design kit) is the bridge between foudary and Design house</li>
-<li>PDK &#x3D; SPICE MODEL + Pcell(Parameterized Cell Library) + Layout Designs + RC&#x2F;PEX(parastic Resistance and Capacitance extraction)</li>
+<h3 id="总结">总结</h3>
+<p>总之，非常感激这段实习经历，给我带来的学习上、能力上、生活上的各种收获，得到一次从未有过的人生体验。衷心感谢师兄赵奇总经理给予这样一次提升自我的机会！祝愿中芯集成越做越好！</p>
+<h3 id="附实习笔记">附：实习笔记</h3>
+<h4 id="pdk">PDK</h4>
+<ul>
+<li>PDK(Process Design kit) is the bridge between foudary and Design
+house</li>
+<li>PDK = SPICE MODEL + Pcell(Parameterized Cell Library) + Layout
+Designs + RC/PEX(parastic Resistance and Capacitance extraction)</li>
 </ul>
-<h4 id="SPICE-Model"><a href="#SPICE-Model" class="headerlink" title="SPICE Model"></a>SPICE Model</h4><ol>
-<li>SPICE Modeling flow:<br>Testkey Designs(BaseTK(DC数据), ROTK, AC-Cox&#x2F;CGC TK) -&gt; T&#x2F;O and Production -&gt; Measurement(WAT) -&gt; Curve Fitting -&gt; On-target Fitting(LDE Fitting, flicker(1&#x2F;f) noise fitting, mismatch Fitting, corner Fitting) -&gt; Statistic Fitting -&gt; Model Document -&gt; Model release</li>
-<li>SPICE Mdodel content: a series of equation + corresponded parameters<br>eg. MOS model equation + MOS model card</li>
+<h4 id="spice-model">SPICE Model</h4>
+<ol type="1">
+<li>SPICE Modeling flow: Testkey Designs(BaseTK(DC数据), ROTK,
+AC-Cox/CGC TK) -&gt; T/O and Production -&gt; Measurement(WAT) -&gt;
+Curve Fitting -&gt; On-target Fitting(LDE Fitting, flicker(1/f) noise
+fitting, mismatch Fitting, corner Fitting) -&gt; Statistic Fitting -&gt;
+Model Document -&gt; Model release</li>
+<li>SPICE Mdodel content: a series of equation + corresponded parameters
+eg. MOS model equation + MOS model card</li>
 </ol>
-<h5 id="WAT-Wafer-Acceptance-Test-or-E-Test"><a href="#WAT-Wafer-Acceptance-Test-or-E-Test" class="headerlink" title="WAT(Wafer Acceptance Test or E-Test)"></a>WAT(Wafer Acceptance Test or E-Test)</h5><ol>
+<h5 id="watwafer-acceptance-test-or-e-test">WAT(Wafer Acceptance Test or
+E-Test)</h5>
+<ol type="1">
 <li>Inline WAT（后段工艺）or Final WAT（全部工艺完成）</li>
-<li>测量的是：DUT(Device under Test)<br>Active Device: MOS BJT Diode<br>Passive Device: RS RC Capacitor<br>Process: Isolation Bridge</li>
-<li>the relationship among WAT, SPICE Model, PDK:<br>TS Device provide golden wafer -&gt; Spice Testing(WAT) -&gt; Spcie Modeling -&gt; Generate PDK -&gt; CTM IP design in (pre&#x2F;post-simulation)</li>
-<li>测试程式：WAT CIM系统 （Test + Prober）<br>Tester: tst(Test condition), lim(Spec), waf(Site location), die(Test key location), prb(PIC to Channel Mapping)<br>Prober: Probe Card Alignment, Wafer Alignment</li>
-<li>测试结构和参数<br>Resistor: RS(Rs Rskv), RC(Rc Rckv)<br>Capacitor:Cap(MIM MOM Varactor), Ileak, Vbd<br>Inductor, Contimuity, Bridge, Isolation(介质隔离, LOCOS隔离, STI, Guard Ring, DNWring, Sealring)<br>Diode: Cg, Leak<br>BJT: Vbe β Vce<br>Mosfet: Vt Id Ioff Bvds Swing Cgg Cgc Cgs DIBL Vhg Rout .etc<br>Cmos: Vtc<br>Ring Oscillator: Freq<br>SRAM: IDDQ SNM WM Iread Iwrite</li>
-<li>先进测试工艺<br>Array-based Test Structure, share pads among DUTs</li>
-<li>DUT<ul>
-<li>Resistance:<br>RS(Resistance Square): to monitor metal&#x2F;dielectric film resistance<br>Film type: Metal(interconection), AA(N+, P+, Salicide), Poly(N, P, Salicide), Well, STI<br>Rm&#x3D;V&#x2F;I&#x3D;(ρ&#x2F;T)<em>(L&#x2F;W), Rs&#x3D;ρ&#x2F;T&#x3D;Rm</em>(L&#x2F;W)  (T:thickness, Rs is for 2-terminal, Rskv is for Kelvin Structure)<br>RC: to monitor the contact&#x2F;via with the under layer</li>
-<li>Capacitor:<br>Cap@ 100kHz, 45mV, VH&#x3D;0V, VL&#x3D;0V, Cap&#x3D;Cap*(1e+15)&#x2F;Area<br>Vbd: Search Vh from 0 to 15V @ Ih&#x3D;4e-8A, H&#x3D; sweep V, L&#x3D; GND<br>Ileak: Ilk@ Vh&#x3D;Vdd</li>
-<li>Continuity: to verify a continuous path in the circuit, if a variance of Rs in the layer or the pattern is open, it can be detected</li>
-<li>Bridge: a bridge means a short between two patterns in the same layer due to an isolation defect(Errors during the mask or etch step)</li>
+<li>测量的是：DUT(Device under Test) Active Device: MOS BJT Diode
+Passive Device: RS RC Capacitor Process: Isolation Bridge</li>
+<li>the relationship among WAT, SPICE Model, PDK: TS Device provide
+golden wafer -&gt; Spice Testing(WAT) -&gt; Spcie Modeling -&gt;
+Generate PDK -&gt; CTM IP design in (pre/post-simulation)</li>
+<li>测试程式：WAT CIM系统 （Test + Prober） Tester: tst(Test condition),
+lim(Spec), waf(Site location), die(Test key location), prb(PIC to
+Channel Mapping) Prober: Probe Card Alignment, Wafer Alignment</li>
+<li>测试结构和参数 Resistor: RS(Rs Rskv), RC(Rc Rckv) Capacitor:Cap(MIM
+MOM Varactor), Ileak, Vbd Inductor, Contimuity, Bridge,
+Isolation(介质隔离, LOCOS隔离, STI, Guard Ring, DNWring, Sealring)
+Diode: Cg, Leak BJT: Vbe β Vce Mosfet: Vt Id Ioff Bvds Swing Cgg Cgc Cgs
+DIBL Vhg Rout .etc Cmos: Vtc Ring Oscillator: Freq SRAM: IDDQ SNM WM
+Iread Iwrite</li>
+<li>先进测试工艺 Array-based Test Structure, share pads among DUTs</li>
+<li>DUT
+<ul>
+<li>Resistance: RS(Resistance Square): to monitor metal/dielectric film
+resistance Film type: Metal(interconection), AA(N+, P+, Salicide),
+Poly(N, P, Salicide), Well, STI Rm=V/I=(ρ/T)<em>(L/W),
+Rs=ρ/T=Rm</em>(L/W) (T:thickness, Rs is for 2-terminal, Rskv is for
+Kelvin Structure) RC: to monitor the contact/via with the under
+layer</li>
+<li>Capacitor: Cap@ 100kHz, 45mV, VH=0V, VL=0V, Cap=Cap*(1e+15)/Area
+Vbd: Search Vh from 0 to 15V @ Ih=4e-8A, H= sweep V, L= GND Ileak: Ilk@
+Vh=Vdd</li>
+<li>Continuity: to verify a continuous path in the circuit, if a
+variance of Rs in the layer or the pattern is open, it can be
+detected</li>
+<li>Bridge: a bridge means a short between two patterns in the same
+layer due to an isolation defect(Errors during the mask or etch
+step)</li>
 <li>Diode: DC current-Voltage characterisic</li>
 <li>BJT: DC, AC caracteristic</li>
 <li>SRAM</li>
 <li>CMOS: DC current-Voltage characterisic, VTC 曲线偏移</li>
 <li>Ring Oscillator: Frequence, 即时钟频率</li>
-<li>MOSFET:<br>DC characteristic: 转移特性，id-Vds<br>Backup Materials: DIBL(Drain insuced barrier lower), Vtsb(Vt @ saturation region wi Body effect), Swing, IDVG, Jginv, GIDL(gate induced drain leak), Idlin, Ioff, Rout, BVDS(击穿电压), Isub(热电子引起基底电流)<br>AC characteristic: cgc, cgb, cgg, 寄生电容等</li>
-</ul>
-</li>
+<li>MOSFET: DC characteristic: 转移特性，id-Vds Backup Materials:
+DIBL(Drain insuced barrier lower), Vtsb(Vt @ saturation region wi Body
+effect), Swing, IDVG, Jginv, GIDL(gate induced drain leak), Idlin, Ioff,
+Rout, BVDS(击穿电压), Isub(热电子引起基底电流) AC characteristic: cgc,
+cgb, cgg, 寄生电容等</li>
+</ul></li>
 </ol>
-<h5 id="Corner"><a href="#Corner" class="headerlink" title="Corner"></a>Corner</h5><ol>
+<h5 id="corner">Corner</h5>
+<ol type="1">
 <li>芯片延迟由 PVT(Process, Voltage, Temperature) 影响</li>
-<li>Process corner 工艺角，包括：<ul>
+<li>Process corner 工艺角，包括：
+<ul>
 <li>global variation 全局工艺偏差，同一器件在不同芯片上的误差</li>
-<li>local variation 局部工艺偏差，同一器件在同一芯片上不同区域的误差</li>
-</ul>
-</li>
-<li>global variation: tt(typical nmos and typical pmos), ff, ss, sf, fs （s 代表 slow，电流小；f 代表 fast）</li>
+<li>local variation
+局部工艺偏差，同一器件在同一芯片上不同区域的误差</li>
+</ul></li>
+<li>global variation: tt(typical nmos and typical pmos), ff, ss, sf, fs
+（s 代表 slow，电流小；f 代表 fast）</li>
 <li>Corner 仿真实现：STA(Static Timing Analysis)</li>
-<li>Monte Carlo 仿真：在容差内随机运算几千次或更多<br><img src="/2023/07/30/2023%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0/%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E4%B8%8Ecorner.jpg" alt="蒙特卡洛与corner"></li>
+<li>Monte Carlo 仿真：在容差内随机运算几千次或更多 <img src="/2023/07/30/2023%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0/蒙特卡洛与corner.jpg" alt="蒙特卡洛与corner"></li>
 </ol>
-<h5 id="Hspice-仿真"><a href="#Hspice-仿真" class="headerlink" title="Hspice 仿真"></a>Hspice 仿真</h5><ol>
+<h5 id="hspice-仿真">Hspice 仿真</h5>
+<ol type="1">
 <li>是一个电路仿真eda软件，以网表为输入</li>
-<li>网表编写（.sp文件）<ol>
-<li>包括元器件描述语句，输入控制语句，输出控制语句等<ul>
+<li>网表编写（.sp文件）
+<ol type="1">
+<li>包括元器件描述语句，输入控制语句，输出控制语句等
+<ul>
 <li>.DATA</li>
 <li>.DEL LIB</li>
 <li>.INCUDE</li>
@@ -1433,51 +1827,59 @@
 <li>.TRAN .DC .AC</li>
 <li>.PRINT .PLOT .GRAPH .PROBE .MEASURE</li>
 <li>.end</li>
-</ul>
-</li>
-<li>例如 M1 ADDR STG1 GND SBS N1 10u 100u<br>规定了一个名字为M1的MOSFET，漏极、门极、源极、衬底的节点分别命名为ADDR STG1 GND SBS，参考名为N1的Model，width&#x3D;10μ吗，length&#x3D;100μm</li>
+</ul></li>
+<li>例如 M1 ADDR STG1 GND SBS N1 10u 100u
+规定了一个名字为M1的MOSFET，漏极、门极、源极、衬底的节点分别命名为ADDR
+STG1 GND SBS，参考名为N1的Model，width=10μ吗，length=100μm</li>
 <li>.LIB表示库，连接到.lib文件中，网表里的一些元器件需要从里面找对应的model</li>
 <li>文件结尾为.end</li>
 <li>.TRAN .DC .AC 分别为瞬态，直流，交流分析</li>
 <li>.PARAM 为定义各种参数，可理解为define</li>
 <li>.OPTION设置条件</li>
-<li>等等<br>网表编写可认为是一门语言，需要细细研究</li>
+<li>等等 网表编写可认为是一门语言，需要细细研究</li>
+</ol></li>
+<li><strong>SPICE 测试后得到数据，进行 SPICE
+建模，完成后得到器件所有参数，即可打包成一个文档，以库(.lib)和参考模型(.model)的方式提供给所需网表(.sp)供hspice进行仿真</strong></li>
 </ol>
-</li>
-<li><strong>SPICE 测试后得到数据，进行 SPICE 建模，完成后得到器件所有参数，即可打包成一个文档，以库(.lib)和参考模型(.model)的方式提供给所需网表(.sp)供hspice进行仿真</strong></li>
-</ol>
-<h4 id="Resistance-Extraction"><a href="#Resistance-Extraction" class="headerlink" title="Resistance Extraction"></a>Resistance Extraction</h4><ol>
-<li>parameters:<ul>
+<h4 id="resistance-extraction">Resistance Extraction</h4>
+<ol type="1">
+<li>parameters:
+<ul>
 <li>Rsh: sheet resistance</li>
 <li>DW, DL: Delta width and length</li>
 <li>TC1R, TC2R: temperature coefficient</li>
 <li>RVC0, RVC1, RVC2: Voltage coefficient</li>
 <li>JC1A, JC1B, JC2A, JC2B: Current density coefficient</li>
 <li>COX, CFOX, CWAPSW, CLOUP: interconnect parastic capacitor</li>
-</ul>
-</li>
-<li>equations:<ul>
-<li>R&#x3D;R0<em>k1</em>k2</li>
-<li>R0&#x3D;Rsh*(L-2DL)&#x2F;(W-2DW)</li>
-<li>k1&#x3D;1.5-1&#x2F;(2+RVC<em>V</em>V), when k1 &gt; 1<br>0.5+1&#x2F;(2+RVC<em>V</em>V), when k1 &lt; 1<br>RVC&#x3D;(RVC0+RVC1<em>W+RVC2</em>L&#x2F;W)&#x2F;(L-2<em>DL)&#x2F;(L-2</em>DL)</li>
-<li>K2&#x3D;R0*(TC2R<em>DT</em>DT+TC1R*DT+1)<br>DT&#x3D;T-T(25°C)</li>
-</ul>
-</li>
-<li>extractions:<ul>
-<li>examine R @ V&#x3D;0.1V, T&#x3D;25°C, then optimize, get Rsh, DL, DW</li>
-<li>examine R @ T&#x3D;25°C, sweep Voltage, get RVC0, RVC1, RVC2</li>
-<li>examine R @ V&#x3D;0.1V, sweep Temperature, get TC1R, TC2R</li>
+</ul></li>
+<li>equations:
+<ul>
+<li>R=R0<em>k1</em>k2</li>
+<li>R0=Rsh*(L-2DL)/(W-2DW)</li>
+<li>k1=1.5-1/(2+RVC<em>V</em>V), when k1 &gt; 1
+0.5+1/(2+RVC<em>V</em>V), when k1 &lt; 1
+RVC=(RVC0+RVC1<em>W+RVC2</em>L/W)/(L-2<em>DL)/(L-2</em>DL)</li>
+<li>K2=R0<em>(TC2R</em>DT<em>DT+TC1R</em>DT+1) DT=T-T(25°C)</li>
+</ul></li>
+<li>extractions:
+<ul>
+<li>examine R @ V=0.1V, T=25°C, then optimize, get Rsh, DL, DW</li>
+<li>examine R @ T=25°C, sweep Voltage, get RVC0, RVC1, RVC2</li>
+<li>examine R @ V=0.1V, sweep Temperature, get TC1R, TC2R</li>
 <li>mismatch extraction</li>
 <li>corner extraction</li>
 <li>parasitics capacitor extraction</li>
-</ul>
-</li>
+</ul></li>
 <li>model: .lib .sucket</li>
 </ol>
-<h4 id="Layout-Designs"><a href="#Layout-Designs" class="headerlink" title="Layout Designs"></a>Layout Designs</h4><ol>
+<h4 id="layout-designs">Layout Designs</h4>
+<ol type="1">
 <li>版图将电路映射到硅片，是电路功能和性能的物理实现</li>
-<li>包括基本元器件版图设计，模块设计-&gt;芯片规划-&gt;布局布线，版图检验分析(DRC(design Rules Check), LVS(Layout Versus Schematic), 电学可靠性检查(ERC, ESD))</li>
-<li>绘图层<ul>
+<li>包括基本元器件版图设计，模块设计-&gt;芯片规划-&gt;布局布线，版图检验分析(DRC(design
+Rules Check), LVS(Layout Versus Schematic), 电学可靠性检查(ERC,
+ESD))</li>
+<li>绘图层
+<ul>
 <li>N well</li>
 <li>Active: 有源层，需要进行场氧(Oxide)</li>
 <li>Poly: 多晶硅栅层，互连，生成电阻等</li>
@@ -1487,72 +1889,100 @@
 <li>Metal: 金属层，互连</li>
 <li>Text: 文字标注层</li>
 <li>Pad: 焊盘层，提供芯片内部信号到封装接脚的连接</li>
-</ul>
-</li>
+</ul></li>
 </ol>
-<h4 id="SMEC-BCD-Platform"><a href="#SMEC-BCD-Platform" class="headerlink" title="SMEC BCD Platform"></a>SMEC BCD Platform</h4><ol>
-<li>工艺平台，high density, high power, high voltage<br>features: 完整的BCD技术，高附加值器件，高车规模质量，专业的设计支持</li>
-<li>IPS: 标准BCD工艺&#x2F;器件 + 嵌入式特色工艺&#x2F;器件(Vertical)<br>180 BCD eflash: 标准BCD工艺&#x2F;器件 + ESFI(3 more masks)<br>BCD-SOI: 使用SOI(Silicon-On-Insulator) Substrate(一种工艺)<br>HVIC: 高压(hig voltage)集成电路</li>
-<li>PDK &amp; IP for Industrial and Automotive<ul>
-<li>SPICE MODEL: environment temperature range for modeling, Mos Aging Model for Simulation</li>
+<h4 id="smec-bcd-platform">SMEC BCD Platform</h4>
+<ol type="1">
+<li>工艺平台，high density, high power, high voltage features:
+完整的BCD技术，高附加值器件，高车规模质量，专业的设计支持</li>
+<li>IPS: 标准BCD工艺/器件 + 嵌入式特色工艺/器件(Vertical) 180 BCD
+eflash: 标准BCD工艺/器件 + ESFI(3 more masks) BCD-SOI:
+使用SOI(Silicon-On-Insulator) Substrate(一种工艺) HVIC: 高压(hig
+voltage)集成电路</li>
+<li>PDK &amp; IP for Industrial and Automotive
+<ul>
+<li>SPICE MODEL: environment temperature range for modeling, Mos Aging
+Model for Simulation</li>
 <li>PDK: DRC &amp; Pcell, EM</li>
 <li>IP: Reliability, Functional, Safety</li>
-<li>Quality: QMS of FTP R&amp;D organization, Quality Manual of QMS for R&amp;V organization</li>
-<li>Readiness: Indurial, Automotive G0&#x2F;G1</li>
-</ul>
-</li>
-<li>180nm BCD 40V SPICE<ul>
-<li>SPICE Model: Spectre&#x2F;Hspice&#x2F;ACPS(即所支持的建模eda工具)</li>
+<li>Quality: QMS of FTP R&amp;D organization, Quality Manual of QMS for
+R&amp;V organization</li>
+<li>Readiness: Indurial, Automotive G0/G1</li>
+</ul></li>
+<li>180nm BCD 40V SPICE
+<ul>
+<li>SPICE Model: Spectre/Hspice/ACPS(即所支持的建模eda工具)</li>
 <li>PDK: Cadence OA PDK</li>
-<li>IP: Standard Cell library, GPIO, Memory Compiler, e-fuse, MTP, OTP, e-flash</li>
-</ul>
-</li>
-<li>document example<ul>
-<li>Title: 0.18μm HVIC 120V platform introduction and charater design mannual</li>
-<li>Purpose: this design mannual defines…</li>
+<li>IP: Standard Cell library, GPIO, Memory Compiler, e-fuse, MTP, OTP,
+e-flash</li>
+</ul></li>
+<li>document example
+<ul>
+<li>Title: 0.18μm HVIC 120V platform introduction and charater design
+mannual</li>
+<li>Purpose: this design mannual defines...</li>
 <li>Scope</li>
 <li>Nomenclature</li>
 <li>Reference</li>
 <li>Responsibility</li>
-<li>Subject Content<ul>
-<li>Introduction: Document Overview, Process Overciew, Supported potentials, Device Size Setting in Model &amp; PDK, Effect in Spice Model</li>
-<li>Device Characterization Summary: Device description, Operation voltage range, Device symbol, layout, Cross section, Spice data vs PCM spec</li>
-</ul>
-</li>
-<li>CMOS, HVMOS(DEMOS, LDMOS, DMOS(VDMOS, DDDMOS)), BJT, Diode, Resistor(DIFF, POLY, NW, Metal), ESD Diode&#x2F;BJT, Capacitor(MIM, MOM, Varactor), IGBT(MOSFET + PNP, VDMOS + PN junction), .etc</li>
-</ul>
-</li>
+<li>Subject Content
+<ul>
+<li>Introduction: Document Overview, Process Overciew, Supported
+potentials, Device Size Setting in Model &amp; PDK, Effect in Spice
+Model</li>
+<li>Device Characterization Summary: Device description, Operation
+voltage range, Device symbol, layout, Cross section, Spice data vs PCM
+spec</li>
+</ul></li>
+<li>CMOS, HVMOS(DEMOS, LDMOS, DMOS(VDMOS, DDDMOS)), BJT, Diode,
+Resistor(DIFF, POLY, NW, Metal), ESD Diode/BJT, Capacitor(MIM, MOM,
+Varactor), IGBT(MOSFET + PNP, VDMOS + PN junction), .etc</li>
+</ul></li>
 </ol>
-<h4 id="半导体行业情况"><a href="#半导体行业情况" class="headerlink" title="半导体行业情况"></a>半导体行业情况</h4><h5 id="半导体产业链全景"><a href="#半导体产业链全景" class="headerlink" title="半导体产业链全景"></a>半导体产业链全景</h5><p><img src="/2023/07/30/2023%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0/%E5%8D%8A%E5%AF%BC%E4%BD%93%E4%BA%A7%E4%B8%9A%E9%93%BE%E5%85%A8%E6%99%AF.png" alt="半导体产业链全景"></p>
-<h5 id="半导体产业模式"><a href="#半导体产业模式" class="headerlink" title="半导体产业模式"></a>半导体产业模式</h5><ul>
+<h4 id="半导体行业情况">半导体行业情况</h4>
+<h5 id="半导体产业链全景">半导体产业链全景</h5>
+<figure>
+<img src="/2023/07/30/2023%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0/半导体产业链全景.png" alt="半导体产业链全景">
+<figcaption aria-hidden="true">半导体产业链全景</figcaption>
+</figure>
+<h5 id="半导体产业模式">半导体产业模式</h5>
+<ul>
 <li>IDM(Integrated Device Manufacture): Sumsung, Intel</li>
 <li>Fabless: 海思, 联发科</li>
 <li>Foundry: SMIC, 日月光</li>
 </ul>
-<h5 id="半导体PRODUCT市值"><a href="#半导体PRODUCT市值" class="headerlink" title="半导体PRODUCT市值"></a>半导体PRODUCT市值</h5><p>半导体产品（$4688亿）包括 集成电路（$3933亿）+ O-S-D（$755亿），其中，集成电路 包括 模拟电路（$588亿）+ 数字电路（$3345亿）</p>
-<h5 id="IC-Products"><a href="#IC-Products" class="headerlink" title="IC Products"></a>IC Products</h5><ol>
-<li>Memory:<ul>
-<li>voliatile(易失性): SRAM(LPSRAM, HS SRAM, eSRAM), DRAM(FP&#x2F;EDO, SDRAM), DDR(Rmbus, eDRAM)</li>
-<li>non-voliatile: Flash, EPROM&#x2F;EEROM, MaskROM, MRAM, embedded(Smart Card, National ID)</li>
-</ul>
-</li>
-<li>Logic:<ul>
-<li>computing: CPU, MPU, DSP, DPU, Chipset, Graphics, Peripheral, Mem controller</li>
-<li>consumer: PDA, GPS, MPEG, DVD&#x2F;VCD, FPGA, Voice synthesis</li>
+<h5 id="半导体product市值">半导体PRODUCT市值</h5>
+<p>半导体产品（$4688亿）包括 集成电路（$3933亿）+
+O-S-D（$755亿），其中，集成电路 包括 模拟电路（$588亿）+
+数字电路（$3345亿）</p>
+<h5 id="ic-products">IC Products</h5>
+<ol type="1">
+<li>Memory:
+<ul>
+<li>voliatile(易失性): SRAM(LPSRAM, HS SRAM, eSRAM), DRAM(FP/EDO,
+SDRAM), DDR(Rmbus, eDRAM)</li>
+<li>non-voliatile: Flash, EPROM/EEROM, MaskROM, MRAM, embedded(Smart
+Card, National ID)</li>
+</ul></li>
+<li>Logic:
+<ul>
+<li>computing: CPU, MPU, DSP, DPU, Chipset, Graphics, Peripheral, Mem
+controller</li>
+<li>consumer: PDA, GPS, MPEG, DVD/VCD, FPGA, Voice synthesis</li>
 <li>Automotive: MCU, Sensor</li>
-</ul>
-</li>
-<li>Mixual signal:<ul>
+</ul></li>
+<li>Mixual signal:
+<ul>
 <li>computing: audio processor</li>
-<li>communiting: Switching, Sonet, phone, fax, LAN, Router, Bluetooth, Cellular(GPS, CDMA), Modern(xDSL, Cable)</li>
-</ul>
-</li>
-<li>Photo Electronics:<ul>
+<li>communiting: Switching, Sonet, phone, fax, LAN, Router, Bluetooth,
+Cellular(GPS, CDMA), Modern(xDSL, Cable)</li>
+</ul></li>
+<li>Photo Electronics:
+<ul>
 <li>Image Sensor: CCD, CMOS</li>
 <li>Display: LCD driver, LCD controller, μ-Display</li>
 <li>Security: Touch chip</li>
-</ul>
-</li>
+</ul></li>
 </ol>
 
       
@@ -1629,35 +2059,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>树洞上说今天是教务处出分ddl，信号与系统概论的成绩也确实在今天出了，大二生活在这一刻终于画上了句号。这可能是两年来令我最难以忘怀的一个学期，因为它带给我极大的痛苦，但却是最有意义的。</p>
-<h2 id="学习"><a href="#学习" class="headerlink" title="学习"></a>学习</h2><p><em><strong>彼方尚有荣光在</strong></em></p>
-<p>本来以为这学期绩点会大寄的，因为我三个月来根本没有一个时刻有在认真学习，每天都因为某些事emo，但幸好在期末季时三教再现女娲补天，速通四门专业课，最后发现结果好像并没有那么的糟糕。请原谅我不厚道地在这里稍微装一下杯（大佬请跳过 &amp;&amp; 有些得了b+的课没放出来其实）：<strong>（手动tag：引起不适）</strong><br><img src="/2023/06/30/2023%E6%98%A5/1688109417357.png" alt="1688131543947"><br>锐评一下这学期的四门专业课：</p>
+          <h2 id="前言">前言</h2>
+<p>树洞上说今天是教务处出分ddl，信号与系统概论的成绩也确实在今天出了，大二生活在这一刻终于画上了句号。这可能是两年来令我最难以忘怀的一个学期，因为它带给我极大的痛苦，但却是最有意义的。</p>
+<h2 id="学习">学习</h2>
+<p><strong><em>彼方尚有荣光在</em></strong></p>
+<p>本来以为这学期绩点会大寄的，因为我三个月来根本没有一个时刻有在认真学习，每天都因为某些事emo，但幸好在期末季时三教再现女娲补天，速通四门专业课，最后发现结果好像并没有那么的糟糕。请原谅我不厚道地在这里稍微装一下杯（大佬请跳过
+&amp;&amp;
+有些得了b+的课没放出来其实）：<strong>（手动tag：引起不适）</strong>
+<img src="/2023/06/30/2023%E6%98%A5/1688109417357.png" alt="1688131543947">
+锐评一下这学期的四门专业课：</p>
 <ul>
-<li><strong>信号与系统概论</strong>（A-）：本质在学数学，但是老师课上却在讲哲学。。。考前划重点就差把题目放出来了，虽然减轻了复习负担，但是改卷不就更加严格了吗？还有就是题目出得是真的不太严谨，比如填空题第四题明明就没写f(t)是实函数，又怎么能有X(-w)&#x3D;X(w)，R(-w)&#x3D;-R(w)呢？（和助教说了但感觉助教最后还是没给我分😭）</li>
+<li><strong>信号与系统概论</strong>（A-）：本质在学数学，但是老师课上却在讲哲学。。。考前划重点就差把题目放出来了，虽然减轻了复习负担，但是改卷不就更加严格了吗？还有就是题目出得是真的不太严谨，比如填空题第四题明明就没写f(t)是实函数，又怎么能有X(-w)=X(w)，R(-w)=-R(w)呢？（和助教说了但感觉助教最后还是没给我分😭）</li>
 <li><strong>半导体物理</strong>（A）：传说中的翻转教学。本来应该在课堂上获取知识，变成了完完全全靠自己课下自习。或许其本意是帮助我们能够更加深刻的理解知识，毕竟自己学会跟能够把知识讲出来是不一样的，但是这门又难又基础的课，自学起来真的非常非常吃力。期末考的卷子也不好评价，考的感觉好多都没学过，做题时一堆不确定的，不过老师和助教都很好，浅浅捞了一把。</li>
 <li><strong>计算机软件基础</strong>（A）：我觉得课的内容真心挺好的，学会了基本的Linux与数据结构，就是卷子出的太简单了（期末和期中都是半个小时就做完了），然后给分强行正态。。。但是获得了赵大爷的握手😂</li>
-<li><strong>嵌入式处理器与芯片系统设计</strong>（A）：处理器的前世今生，基本的流水线设计，分支预测，页表和缓存，I&#x2F;O管理，等等，其实课上和ppt都讲得十分清楚，理论课10分能打9分，确实学到了很多东西；实验课的话说实话不太行，特别是每次做实验之前都没有讲清楚实验原理，然后就有一堆的bug，并且很多实验都是机械的重复同一个操作（十分无语且崩溃）；另外期末考真的是太tm难了！！！</li>
+<li><strong>嵌入式处理器与芯片系统设计</strong>（A）：处理器的前世今生，基本的流水线设计，分支预测，页表和缓存，I/O管理，等等，其实课上和ppt都讲得十分清楚，理论课10分能打9分，确实学到了很多东西；实验课的话说实话不太行，特别是每次做实验之前都没有讲清楚实验原理，然后就有一堆的bug，并且很多实验都是机械的重复同一个操作（十分无语且崩溃）；另外期末考真的是太tm难了！！！</li>
 </ul>
 <p>学微电子真的是啥都要学，确实会让人感慨“微电子🐶不学”。但实际上，我觉得其实很多课都能够考前速通，除了数学。只有数学好的人才是真的强，真的很佩服数学好的人啊！（比如棍、隽立和俊宇）</p>
-<h2 id="感情"><a href="#感情" class="headerlink" title="感情"></a>感情</h2><p><em><strong>我堕入情网你却在网外看</strong></em></p>
+<h2 id="感情">感情</h2>
+<p><strong><em>我堕入情网你却在网外看</em></strong></p>
 <p>这学期喜欢上了一个不喜欢我的女生，这也是我这学期痛苦的来源。</p>
-<p>我们是在一次我认为很巧合的情况下认识的，并且相处得十分愉快。佛说，五百次回眸，才换来今生一次擦肩而过。我觉得我们的相遇真的十分的有缘，并且内心在告诉我，树安你就是喜欢她。于是之后我经常主动找她聊天。她的回复也挺热情的，看上去也有聊天的欲望。<br>后来她主动约我去看十大复赛的音乐节，这是我们第二次见面。由于音乐节有点无聊，于是我们在南区里边走边聊。可能因为是e人，她话说得比较多，我反而表现得比较收敛。她非常爱笑，笑起来真的非常的好看，给人带来快乐。之后接下来几天的线上聊天，我们聊得都还算比较好。<br>我想继续约她出来玩，但人家好像真的很忙，我约了几次都没有成功。在这之后，聊天都是我在主动，她的回复感觉远没有之前热情了。这时按道理应该及时止损，但当时恋爱脑的我，一边处于“她是不是其实不喜欢我”的深深内耗中，一边却依旧抱有一丝的希望。第三次见面，也是最后一次见面，是我约的她出去吃饭。虽然聊了两小时没停下来，但我知道，我们之间已经不可能了。回去之后，由于一些原因，我们就闹僵了。</p>
+<p>我们是在一次我认为很巧合的情况下认识的，并且相处得十分愉快。佛说，五百次回眸，才换来今生一次擦肩而过。我觉得我们的相遇真的十分的有缘，并且内心在告诉我，树安你就是喜欢她。于是之后我经常主动找她聊天。她的回复也挺热情的，看上去也有聊天的欲望。
+后来她主动约我去看十大复赛的音乐节，这是我们第二次见面。由于音乐节有点无聊，于是我们在南区里边走边聊。可能因为是e人，她话说得比较多，我反而表现得比较收敛。她非常爱笑，笑起来真的非常的好看，给人带来快乐。之后接下来几天的线上聊天，我们聊得都还算比较好。
+我想继续约她出来玩，但人家好像真的很忙，我约了几次都没有成功。在这之后，聊天都是我在主动，她的回复感觉远没有之前热情了。这时按道理应该及时止损，但当时恋爱脑的我，一边处于“她是不是其实不喜欢我”的深深内耗中，一边却依旧抱有一丝的希望。第三次见面，也是最后一次见面，是我约的她出去吃饭。虽然聊了两小时没停下来，但我知道，我们之间已经不可能了。回去之后，由于一些原因，我们就闹僵了。</p>
 <p>上面的故事或许说得有点轻描淡写，但实际上三个月来，可以用crazy来形容我，恋爱脑的内耗或许只有亲身体会才知道有多么痛苦，每天都在猜测对方的心意，分析她回复的每一句话的情感。现在回过头来看，或许别人从一开始仅仅就只是想交个朋友而已，只是我自己比较上头，属于是有点小丑了。</p>
 <p><strong>但是爱而不得那不是人生常事吗？</strong></p>
-<h2 id="有意思的东西"><a href="#有意思的东西" class="headerlink" title="有意思的东西"></a>有意思的东西</h2><p><em><strong>抬头就有一片星光</strong></em></p>
+<h2 id="有意思的东西">有意思的东西</h2>
+<p><strong><em>抬头就有一片星光</em></strong></p>
 <ul>
-<li>狠狠体会了一把在图书馆被恰v是什么感觉😎<br><img src="/2023/06/30/2023%E6%98%A5/1688108763378.png" alt="1688108763378"></li>
-<li>狠狠体会了一把以一种奇怪的方式被挂树洞😰（真的有难酮！）<br><img src="/2023/06/30/2023%E6%98%A5/image.png" alt="Alt text"></li>
+<li>狠狠体会了一把在图书馆被恰v是什么感觉😎 <img src="/2023/06/30/2023%E6%98%A5/1688108763378.png" alt="1688108763378"></li>
+<li>狠狠体会了一把以一种奇怪的方式被挂树洞😰（真的有难酮！） <img src="/2023/06/30/2023%E6%98%A5/image.png" alt="Alt text"></li>
 </ul>
-<h2 id="友情与致谢"><a href="#友情与致谢" class="headerlink" title="友情与致谢"></a>友情与致谢</h2><p><em><strong>人生如路，朋友如雾。难得知心，几经风暴，为着我不退半步，正是你。</strong></em></p>
+<h2 id="友情与致谢">友情与致谢</h2>
+<p><strong><em>人生如路，朋友如雾。难得知心，几经风暴，为着我不退半步，正是你。</em></strong></p>
 <p>我不敢想象，如果这学期没有了好朋友的支持与鼓励，该变得多么的糟糕！</p>
 <ul>
-<li>First of all，真的非常非常非常地感谢隽立，在我每次（其实是每天）都快要崩溃的时候，拯救了我；每当遇到想不懂的事，想不通的问题，都能给我码顺；也是隽立给了我期末季补天的无限动力——人生在世，又能有多少知己？所以能有清华✌做好兄弟，真的是上辈子修来的福气。<br><img src="/2023/06/30/2023%E6%98%A5/1688108889614.png" alt="1688108889614"></li>
+<li>First of
+all，真的非常非常非常地感谢隽立，在我每次（其实是每天）都快要崩溃的时候，拯救了我；每当遇到想不懂的事，想不通的问题，都能给我码顺；也是隽立给了我期末季补天的无限动力——人生在世，又能有多少知己？所以能有清华✌做好兄弟，真的是上辈子修来的福气。
+<img src="/2023/06/30/2023%E6%98%A5/1688108889614.png" alt="1688108889614"></li>
 <li>还有天宝，在我心情不好的时候陪我唱k、喝酒(虽然我喝不了一点)，让我感受到，我在复旦其实不是一个人；天宝唱功也越来越强了（都快赶上我了😋），我愿称之为我旦华晨宇。数院大神俊宇，以及杰哥和棍他们，每天都在提醒我要学习，但是现在我的数学跟他们差距真的很大，暑假真的要好好沉淀。</li>
 <li>当然少不了大一的3位舍友，这里特别点名准“莙政学者”zh到了<strong>阿美莉卡</strong>之后“苟富贵，毋相忘”。还有微电的朋友们也给了我很多学习和生活上的帮助，他们每个人都真的是又强又有趣，真的很幸运能有如此优秀的同学。</li>
 <li>还有很多很多的friends……</li>
 </ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><em><strong>明天你好，我只能奔跑</strong></em></p>
+<h2 id="总结">总结</h2>
+<p><strong><em>明天你好，我只能奔跑</em></strong></p>
 <p>说实话，大学两年了，我发现自己好像真的没做出什么成绩来。特别是这学期挫败感尤为地强烈：集创赛没进分赛区决赛，喜欢的女生不喜欢我，大二都结束了才刚刚开始接触科研……绩点似乎能够聊以自慰，但也有好多好多人绩点比我高，并且我感觉拿A也只是意味着考试考得好罢了，代表不了什么。所以我常常自我怀疑，是不是自己真的没有什么独特之处？自己真的适合学微电子吗？</p>
 <p>可能确实是这样的，我也确确实实只是个极其普通的人罢了。我现在只希望，能做自己喜欢做的事，能够实现一些小小的愿望，然后好好过完这一生。</p>
 <p>明天你好，七月你好。</p>
@@ -1787,18 +2231,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
+          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very
+first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for
+more info. If you get any problems when using Hexo, you can find the
+answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or
+you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 
       
